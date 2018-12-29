@@ -1,0 +1,78 @@
+{
+  "manifest_version": 2,
+  "name": "MPL Bibliovation Extension",
+  "short_name": "MPL BibEx",
+  "version": "0.0.1",
+  "author": "Lucas Schneider",
+  "description": "PTFS Bibliovation modifications to benefit Wisconsin's South Central Library System",
+  "homepage_url": "http://lrschneider.com/mpl-bibex",
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "mpl-bibex@lrschneider.com",
+      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/updates.json",
+      "strict_min_version": "48.0"
+    }
+  },
+  
+  "incognito": "spanning",
+  
+  "icons": {
+    "16": "content/img/mpl-icon-16.png",
+    "32": "content/img/mpl-icon-32.png",
+    "48": "content/img/mpl-icon-48.png",
+    "64": "content/img/mpl-icon-64.png",
+    "128": "content/img/mpl-icon-128.png"
+  },
+  
+  "browser_action": {
+    "default_title": "MPL BibEx",
+    "default_area": "navbar",
+    "browser_style": true,
+    "default_icon": {
+      "16": "content/img/mpl-icon-16.png",
+      "32": "content/img/mpl-icon-32.png",
+      "48": "content/img/mpl-icon-48.png",
+      "64": "content/img/mpl-icon-64.png",
+      "128": "content/img/mpl-icon-128.png"
+    },
+    "default_popup": "browserAction/popup.html"
+  },
+  
+  "background": {
+      "scripts": [
+        "thirdParty/browser-polyfill.js",
+        "thirdParty/jquery-3.3.1.min.js",
+        "background/main.js"
+      ]
+  },
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.bibliovation.com/*"
+      ],
+      "js": [
+        "thirdParty/browser-polyfill.js"
+      ]
+    }
+  ],
+
+  "options_ui": {
+      "page": "optionsPage/options.html",
+      "browser_style": true
+  },
+  
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "tabs",
+    "webRequest",
+    "webNavigation",
+    "*://*.bibliovation.com/*",
+    "*://*.census.gov/*",
+    "*://*.googleapis.com/*",
+    "*://mpl-bibex.lrschneider.com/*"
+  ]
+}
