@@ -10,8 +10,8 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
-      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/updates.json",
-      "strict_min_version": "48.0"
+      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex/master/releases/updates.json",
+      "strict_min_version": "54.0"
     }
   },
   
@@ -41,8 +41,8 @@
   
   "background": {
       "scripts": [
-        "thirdParty/browser-polyfill.js",
-        "thirdParty/jquery-3.3.1.min.js",
+        "background/browser-polyfill.js",
+        "background/jquery-3.3.1.min.js",
         "background/main.js"
       ]
   },
@@ -53,7 +53,7 @@
         "*://*.bibliovation.com/*"
       ],
       "js": [
-        "thirdParty/browser-polyfill.js"
+        "background/browser-polyfill.js"
       ]
     }
   ],

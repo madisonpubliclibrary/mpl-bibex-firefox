@@ -1,0 +1,203 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="options.css" />
+    <script type="text/javascript" src="../background/browser-polyfill.min.js"></script>
+    <title>MPL BibEx Options</title>
+  </head>
+
+  <body>
+    <form>
+      <div class="option">
+        <h1>Select a Logo</h1>
+        <select id="skin">
+          <option value="SCLS">SCLS</option>
+          <optgroup label="Library">
+            <option value="MAD">MAD</option>
+            <option value="MID">MID</option>
+            <option value="SUN">SUN</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="option">
+        <h1>Additional Patron Messages</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="patronMsgSwitch">
+                <input type="checkbox" id="patronMsg">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="patronMsg">Replace several of LibLime's predefined patron messages with messages more often used by MPL circ</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Validate Madison Addresses</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="validAddrSwitch">
+                <input type="checkbox" id="validAddr">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="validAddr">Alerts library staff when an unacceptable or restricted Madison address has been entered</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Autofill OPAC Login Number</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="autoBarcodeSwitch">
+                <input type="checkbox" id="autoBarcode">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="autoBarcode">Autofill a patron's OPAC username to the value of their library card</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Lookup PSTAT</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="lookupPSTATSwitch">
+                <input type="checkbox" id="lookupPSTAT">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="lookupPSTAT">Automatically lookup PSTAT value for all libraries in the SCLS that sort by county subdivision or census tract number. If the PSTAT is able to be determined, a button will appear allowing staff to automatically select the geographically closest MPL location for the patron's home library</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Autoselect "Digests Only"</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="digestOnlySwitch">
+                <input type="checkbox" id="digestOnly">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="digestOnly">Automatically selects the "Digests Only" option (when available) while selecting patron notification options</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Due Date/Advanced Notice Toggle</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="dueDateToggleSwitch">
+                <input type="checkbox" id="dueDateToggle">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="dueDateToggle">Forces library staff to select either "Due Date" or "Advanced Notice" notification options, but not both</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Generate Middle Initials</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="middleInitialsSwitch">
+                <input type="checkbox" id="middleInitials">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="middleInitials">Automatically generates a patron's middle initial from the first name field</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Update Account Type</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="updateAccountTypeSwitch">
+                <input type="checkbox" id="updateAccountType">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="updateAccountType">Update JU -> AD and LUJ -> LU when saving a patron record if the patron is 18 years or older</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Receipt Font</h1>
+        <select id="receiptFont">
+          <option value="MPL">MPL (36px)</option>
+          <option value="MOO">MOO (28px)</option>
+        </select>
+        <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
+      </div>
+      <div class="option">
+        <h1>Sunday Dropbox</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="sundayDropboxSwitch">
+                <input type="checkbox" id="sundayDropbox">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="sundayDropbox">Automatically checks "Dropbox Mode" on Sundays. If enabled, unchecking the box for dropbox mode on Sundays will disable it for 3 minutes (unless manually enabled).</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
+        <h1>Customize Action Button Shortcut Links</h1>
+        <table id="shortcutLinkTable">
+          <tr>
+            <th>Link #</th>
+            <th>Link Text</th>
+            <th>URL</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td><input type="text" id="shortcutText1"/></td>
+            <td><input type="text" id="shortcutLink1"/></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><input type="text" id="shortcutText2"/></td>
+            <td><input type="text" id="shortcutLink2"/></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><input type="text" id="shortcutText3"/></td>
+            <td><input type="text" id="shortcutLink3"/></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><input type="text" id="shortcutText4"/></td>
+            <td><input type="text" id="shortcutLink4"/></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><input type="text" id="shortcutText5"/></td>
+            <td><input type="text" id="shortcutLink5"/></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><input type="text" id="shortcutText6"/></td>
+            <td><input type="text" id="shortcutLink6"/></td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <button id="setDefault">Set Default Preferences</button>
+      </div>
+    </form>
+    <script src="options.js"></script>
+  </body>
+</html>

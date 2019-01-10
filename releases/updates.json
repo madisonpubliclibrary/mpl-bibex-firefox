@@ -1,0 +1,14 @@
+{
+  "addons": {
+    "mpl-bibex@lrschneider.com": {
+      "updates": [
+        { "version": "0.0.1",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex/master/releases/mpl-bibex-0.0.1.zip",
+          "applications": {
+            "gecko": { "strict_min_version": "54" }
+          }
+        }
+      ]
+    }
+  }
+}
