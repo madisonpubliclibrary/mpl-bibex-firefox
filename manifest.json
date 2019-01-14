@@ -43,7 +43,8 @@
       "scripts": [
         "background/browser-polyfill.js",
         "background/jquery-3.3.1.min.js",
-        "background/main.js"
+        "background/main.js",
+        "background/defaultPrefs.js"
       ]
   },
   
