@@ -1,4 +1,4 @@
-﻿var setIcon = function() {
+var setIcon = function() {
   browser.storage.sync.get('skin').then((res) => {
     var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD'
 
