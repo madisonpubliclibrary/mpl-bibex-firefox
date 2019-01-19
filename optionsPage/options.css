@@ -13,7 +13,7 @@ button {
   margin-top: 1em;
 }
 
-table td:first-child {
+table td {
   padding-right: 1em;
 }
 
@@ -83,4 +83,21 @@ input:focus + .slider {
 input:checked + .slider:before {
   -webkit-transform: translateX(13px);
   transform: translateX(13px);
+}
+
+/* Fieldset & Legend */
+fieldset {
+  border: 2px solid #444;
+  border-radius: 5px;
+  margin-top: 1em;
+  padding: 15px;
+}
+legend {
+  border: 2px solid #444;
+  background: #444;
+  color: #ffffff;
+  text-shadow: 1px 1px #000000;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 3px;
 }
