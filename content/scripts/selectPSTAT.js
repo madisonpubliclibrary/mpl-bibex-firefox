@@ -1,5 +1,6 @@
 ﻿var PSTATS = function() {
   this.data = {
+    /* SCLS Counties */
     "Adams": {
       "Adams city": "A-ADM-C",
       "Adams town": "A-ADM-T",
@@ -21,6 +22,109 @@
       "Springville town": "A-SPV-T",
       "Strongs Prairie town": "A-STP-T",
       "Wisconsin Dells city": "A-WID-C"
+    },
+    "Ashland": {
+      "Ashland city": "AS-LIB",
+      "La Pointe town": "AS-LIB",
+      "Mellen city": "AS-LIB",
+      "__default__": "AS-NOLIB"
+    },
+    "Barron": {
+      "Barron city": "BA-LIB",
+      "Cameron village": "BA-LIB",
+      "Chetek city": "BA-LIB",
+      "Cumberland city": "BA-LIB",
+      "Rice Lake city": "BA-LIB",
+      "Turtle Lake town": "BA-LIB",
+      "__default__": "BA-NOLIB"
+    },
+    "Bayfield": {
+      "Ashland city": "BY-LIB",
+      "Bayfield city": "BY-LIB",
+      "Cable town": "BY-LIB",
+      "Drummond town": "BY-LIB",
+      "Iron River town": "BY-LIB",
+      "Washburn city": "BY-LIB",
+      "__default__": "BY-NOLIB"
+    },
+    "Brown": {
+      "default": "BR-LIB"
+    },
+    "Buffalo": {
+      "Alma city": "BU-LIB",
+      "Mondovi city": "BU-LIB",
+      "__default__": "BU-NOLIB"
+    },
+    "Burnett": {
+      "Grantsburg village": "BT-LIB",
+      "Webster village": "BT-LIB",
+      "__default__": "BT-NOLIB"
+    },
+    "Calumet": {
+      "Appleton city": "CA-LIB",
+      "Brillion city": "CA-LIB",
+      "Chilton city": "CA-LIB",
+      "Kiel city": "CA-LIB",
+      "Menasha city": "CA-LIB",
+      "New Holstein city": "CA-LIB",
+      "__default__": "CA-NOLIB"
+      
+    },
+    "Chippewa": {
+      "Bloomer city": "CH-LIB",
+      "Cadott village": "CH-LIB",
+      "Chippewa Falls city": "CH-LIB",
+      "Cornell city": "CH-LIB",
+      "Eau Claire city": "CH-LIB",
+      "Stanley city": "CH-LIB",
+      "__default__": "CH-NOLIB"
+    },
+    "Clark": {
+      "Abbotsford city": "CL-ABB-C",
+      "Beaver town": "CL-BEA-T",
+      "Butler town": "CL-BUT-T",
+      "Colby city": "CL-COL-C",
+      "Colby town": "CL-COL-T",
+      "Curtiss village": "CL-CUR-V",
+      "Dewhurst town": "CL-DEW-T",
+      "Dorchester village": "CL-DOR-V",
+      "Eaton town": "CL-EAT-T",
+      "Foster town": "CL-FOS-T",
+      "Fremont town": "CL-FRE-T",
+      "Grant town": "CL-GRA-T",
+      "Green Grove town": "CL-GRG-T",
+      "Granton village": "CL-GRN-V",
+      "Greenwood city": "CL-GWD-C",
+      "Hendren town": "CL-HEN-T",
+      "Hewett town": "CL-HEW-T",
+      "Hixon town": "CL-HIX-T",
+      "Hoard town": "CL-HOA-T",
+      "Levis town": "CL-LEV-T",
+      "Loyal city": "CL-LOY-C",
+      "Loyal town": "CL-LOY-T",
+      "Longwood town": "CL-LWD-T",
+      "Lynn town": "CL-LYN-T",
+      "Mayville town": "CL-MAY-T",
+      "Mead town": "CL-MEA-T",
+      "Mentor town": "CL-MEN-T",
+      "Neillsville city": "CL-NEI-C",
+      "Owen city": "CL-OWN-C",
+      "Pine Valley town": "CL-PNV-T",
+      "Reseburg town": "CL-RES-T",
+      "Seif town": "CL-SEI-T",
+      "Sherman town": "CL-SHM-T",
+      "Sherwood town": "CL-SHW-T",
+      "Thorp city": "CL-THP-C",
+      "Thorp town": "CL-THP-T",
+      "Unity town": "CL-UNI-T",
+      "Unity village": "CL-UNI-V",
+      "Warner town": "CL-WAR-T",
+      "Washburn town": "CL-WAS-T",
+      "Weston town": "CL-WES-T",
+      "Withee town": "CL-WIT-T",
+      "Withee village": "CL-WIT-V",
+      "Worden town": "CL-WOR-T",
+      "York town": "CL-YOR-T"
     },
     "Columbia": {
       "Arlington town": "C-ARL-T",
@@ -59,200 +163,460 @@
       "Wyocena town": "C-WYO-T",
       "Wyocena village": "C-WYO-V"
     },
+    "Crawford": {
+      "De Soto village": "CR-LIB",
+      "Gays Mills village": "CR-LIB",
+      "Prairie du Chien city": "CR-LIB",
+      "Soldiers Grove village": "CR-LIB",
+      "__default__": "CR-NOLIB"
+    },
     "Dane": {
-      "Albion town": "D-ALB-T";
-      "Black Earth town": "D-BE-T";
-      "Black Earth village": "D-BE-V";
-      "Belleville village": "D-BEL-VD";
-      "Berry town": "D-BERR-T";
-      "Blooming Grove town": "D-BG-T";
-      "Blue Mounds town": "D-BM-T";
-      "Blue Mounds village": "D-BM-V";
-      "Bristol town": "D-BRI-T";
-      "Brooklyn village": "D-BRO-VD";
-      "Burke town": "D-BUR-T";
-      "Cambridge village": "D-CAM-VD";
-      "Cottage Grove town": "D-CG-T";
-      "Cottage Grove village": "D-CG-V";
-      "Christiana town": "D-CHR-T";
-      "Cross Plains town": "D-CP-T";
-      "Cross Plains village": "D-CP-V";
-      "Dane town": "D-DAN-T";
-      "Dane village": "D-DAN-V";
-      "Deerfield town": "D-DEE-T";
-      "Deerfield village": "D-DEE-V";
-      "DeForest village": "D-DF-V";
-      "Dunkirk town": "D-DUNK-T";
-      "Dunn town": "D-DUNN-T";
-      "Fitchburg city": "D-FIT-T";
+      "Albion town": "D-ALB-T",
+      "Black Earth town": "D-BE-T",
+      "Black Earth village": "D-BE-V",
+      "Belleville village": "D-BEL-VD",
+      "Berry town": "D-BERR-T",
+      "Blooming Grove town": "D-BG-T",
+      "Blue Mounds town": "D-BM-T",
+      "Blue Mounds village": "D-BM-V",
+      "Bristol town": "D-BRI-T",
+      "Brooklyn village": "D-BRO-VD",
+      "Burke town": "D-BUR-T",
+      "Cambridge village": "D-CAM-VD",
+      "Cottage Grove town": "D-CG-T",
+      "Cottage Grove village": "D-CG-V",
+      "Christiana town": "D-CHR-T",
+      "Cross Plains town": "D-CP-T",
+      "Cross Plains village": "D-CP-V",
+      "Dane town": "D-DAN-T",
+      "Dane village": "D-DAN-V",
+      "Deerfield town": "D-DEE-T",
+      "Deerfield village": "D-DEE-V",
+      "DeForest village": "D-DF-V",
+      "Dunkirk town": "D-DUNK-T",
+      "Dunn town": "D-DUNN-T",
+      "Edgerton city": "D-EDG-C",
+      "Fitchburg city": "D-FIT-T",
       //"Madison city": "", // Handled separately
-      "Madison town": "D-MAD-T";
-      "Marshall village": "D-MARS-V";
-      "Mazomanie town": "D-MAZ-T";
-      "Mazomanie village": "D-MAZ-V";
-      "Maple Bluff village": "D-MB-V";
-      "McFarland village": "D-MCF-V";
-      "Medina town": "D-MED-T";
-      "Mount Horeb village": "D-MH-V";
+      "Madison town": "D-MAD-T",
+      "Marshall village": "D-MARS-V",
+      "Mazomanie town": "D-MAZ-T",
+      "Mazomanie village": "D-MAZ-V",
+      "Maple Bluff village": "D-MB-V",
+      "McFarland village": "D-MCF-V",
+      "Medina town": "D-MED-T",
+      "Mount Horeb village": "D-MH-V",
       //"Middleton city": "", // Handled separately
-      "Middleton town": "D-MID-T";
-      "Monona city": "D-MON-C1";
-      "Montrose town": "D-MONT-T";
-      "Oregon town": "D-ORE-T";
-      "Oregon village": "D-ORE-V";
-      "Perry town": "D-PER-T";
-      "Primrose town": "D-PRI-T";
-      "Pleasant Springs town": "D-PS-T";
-      "Rockdale village": "D-ROC-V";
-      "Roxbury town": "D-ROX-T";
-      "Rutland town": "D-RUT-T";
-      "Shorewood Hills village": "D-SH-V";
+      "Middleton town": "D-MID-T",
+      "Monona city": "D-MON-C1",
+      "Montrose town": "D-MONT-T",
+      "Oregon town": "D-ORE-T",
+      "Oregon village": "D-ORE-V",
+      "Perry town": "D-PER-T",
+      "Primrose town": "D-PRI-T",
+      "Pleasant Springs town": "D-PS-T",
+      "Rockdale village": "D-ROC-V",
+      "Roxbury town": "D-ROX-T",
+      "Rutland town": "D-RUT-T",
+      "Shorewood Hills village": "D-SH-V",
       //"Sun Prairie city": "", // Handled separately
-      "Sun Prairie town": "D-SP-T";
-      "Springdale town": "D-SPD-T";
-      "Springfield town": "D-SPF-T";
-      "Stoughton city": "D-STO-C1";
-      "Vermont town": "D-VERM-T";
+      "Sun Prairie town": "D-SP-T",
+      "Springdale town": "D-SPD-T",
+      "Springfield town": "D-SPF-T",
+      "Stoughton city": "D-STO-C1",
+      "Vermont town": "D-VERM-T",
       //"Verona city": "", // Handled separately
-      "Verona town": "D-VERO-T";
-      "Vienna town": "D-VIE-T";
-      "Waunakee village": "D-WAU-V";
-      "Westport town": "D-WESP-T";
-      "Windsor village": "D-WIN-T";
-      "York town": "D-YOR-TD";
+      "Verona town": "D-VERO-T",
+      "Vienna town": "D-VIE-T",
+      "Waunakee village": "D-WAU-V",
+      "Westport town": "D-WESP-T",
+      "Windsor village": "D-WIN-T",
+      "York town": "D-YOR-TD"
+    },
+    "Dodge": {
+      "Ashippun town":= "DG-ASH-T",
+      "Beaver Dam city": "DG-BDM-C",
+      "Beaver Dam village": "DG-BDM-T",
+      "Brownsville village": "DG-BRO-V",
+      "Burnett town":  "DG-BUR-T",
+      "Calamus town": "DG-CAL-T",
+      "Chester town": "DG-CHE-T",
+      "Clyman town": "DG-CLY-T",
+      "Clyman village": "DG-CLY-V",
+      "Columbus city": "DG-COL-C",
+      "Elba town": "DG-ELB-T",
+      "Emmet town": "DG-EMM-T",
+      "Fox Lake city": "DG-FXL-C",
+      "Fox Lake town": "DG-FXL-T",
+      "Hartford city": "DG-HAR-T",
+      "Herman town": "DG-HER-T",
+      "Horicon city": "DG-HOR-C",
+      "Hubbard town": "DG-HUB-T",
+      "Hustisford town": "DG-HUS-T",
+      "Hustisford village": "DG-HUS-V",
+      "Iron Ridge village": "DG-IRO-V",
+      "Juneau city": "DG-JUN-C",
+      "Kekoskee village": "DG-KEK-V",
+      "Lebanon town": "DG-LEB-T",
+      "Leroy town": "DG-LER-T",
+      "Lomira town": "DG-LOM-T",
+      "Lomira village": "DG-LOM-V",
+      "Lowell town": "DG-LOW-T",
+      "Lowell village": "DG-LOW-V",
+      "Mayville city": "DG-MAY-C",
+      "Neosho village": "DG-NEO-V",
+      "Oak Grove town": "DG-OAK-T",
+      "Portland town": "DG-POR-T",
+      "Randolph village": "DG-RAN-V",
+      "Reeseville village": "DG-REE-V",
+      "Rubicon town": "DG-RUB-T",
+      "Shields town": "DG-SHI-T",
+      "Theresa town": "DG-THE-T",
+      "Theresa village": "DG-THE-V",
+      "Trenton town": "DG-TRE-T",
+      "Watertown city": "DG-WAT-C",
+      "Waupun city": "DG-WAU-C",
+      "Westford town": "DG-WES-T",
+      "Williamstown town": "DG-WIL-T"
+    },
+    "Door": {
+      "__default__": "DO-LIB"
+    },
+    "Douglas": {
+      "Solon Springs town": "DS-LIB",
+      "Superior city": "DS-LIB",
+      "__default__": "DS-NOLIB"
+    },
+    "Dunn": {
+      "Boyceville village": "DU-LIB",
+      "Colfax town": "DU-LIB",
+      "Menomonie city": "DU-LIB",
+      "Sand Creek town": "DU-LIB",
+      "__default__": "DU-NOLIB"
+    },
+    "Eau Claire": {
+      "Altoona city": "EC-LIB",
+      "Augusta city": "EC-LIB",
+      "Eau Claire city": "EC-LIB",
+      "Fairchild town": "EC-LIB",
+      "Fall Creek village": "EC-LIB",
+      "__default__": "EC-NOLIB"
+    },
+    "Florence": {
+      "__default__": "FL-LIB"
+    },
+    "Fond du Lac": {
+      "Brandon village": "FO-LIB",
+      "Campbellsport village": "FO-LIB",
+      "Fond du Lac city": "FO-LIB",
+      "Kewaskum village": "FO-LIB",
+      "North Fond du Lac village": "FO-LIB",
+      "Oakfield town": "FO-LIB",
+      "Ripon city": "FO-LIB",
+      "Waupun city": "FO-LIB",
+      "__default__": "FO-NOLIB"
+    },
+    "Forest": {
+      "Crandon city": "FR-LIB",
+      "Laona town": "FR-LIB",
+      "Wabeno town": "FR-LIB",
+      "__default__": "FR-NOLIB"
+    },
+    "Grant": {
+      "Bloomington town": "GR-LIB",
+      "Boscobel city": "GR-LIB",
+      "Cassville town": "GR-LIB",
+      "Cuba City city": "GR-LIB",
+      "Dickeyville village": "GR-LIB",
+      "Fennimore city": "GR-LIB",
+      "Hazel Green town": "GR-LIB",
+      "Lancaster city": "GR-LIB",
+      "Livingston village": "GR-LIB",
+      "Montfort village": "GR-LIB",
+      "Muscoda village": "GR-LIB",
+      "Platteville city": "GR-LIB",
+      "Potosi town": "GR-LIB",
+      "__default__": "GR-NOLIB"
     },
     "Green": {
-      "Adams town": "G-ADA-T";
-      "Albany town": "G-ALB-T2";
-      "Albany village": "G-ALB-V";
-      "Belleville village": "G-BEL-VG";
-      "Brooklyn town": "G-BRO-T";
-      "Brooklyn village": "G-BRO-VG";
-      "Brodhead city": "G-BROD-C";
+      "Adams town": "G-ADA-T",
+      "Albany town": "G-ALB-T2",
+      "Albany village": "G-ALB-V",
+      "Belleville village": "G-BEL-VG",
+      "Brooklyn town": "G-BRO-T",
+      "Brooklyn village": "G-BRO-VG",
+      "Brodhead city": "G-BROD-C",
       "Browntown village": "G-MRO-SD", // Don't use G-BROW-V per SCLS PSTAT spreadsheet
+      "Cadiz town": "G-CAD-T",
       "Clarno town": "G-MRO-SD", // Don't use G-CLA-T per SCLS PSTAT spreadsheet
+      "Decatur town": "G-DEC-T",
+      "Exeter town": "G-EXE-T",
+      "Jefferson town": "G-JEF-T",
+      "Jordan town": "G-JOR-T",
       "Monroe city": "G-MRO-SD", // Don't use G-MONR-C per SCLS PSTAT spreadsheet
-      "Cadiz town": "G-CAD-T";
-      "Decatur town": "G-DEC-T";
-      "Exeter town": "G-EXE-T";
-      "Jefferson town": "G-JEF-T";
-      "Jordan town": "G-JOR-T";
-      "Monroe town": "G-MONR-T";
-      "Monticello village": "G-MONT-V";
-      "Mount Pleasant town": "G-MP-T";
-      "New Glarus town": "G-NG-T";
-      "New Glarus village": "G-NG-V";
-      "Spring Grove town": "G-SGO-T";
-      "Sylvester town": "G-SYL-T";
-      "Washington town": "G-WAS-TG";
-      "York town": "G-YOR-TG";
+      "Monroe town": "G-MONR-T",
+      "Monticello village": "G-MONT-V",
+      "Mount Pleasant town": "G-MP-T",
+      "New Glarus town": "G-NG-T",
+      "New Glarus village": "G-NG-V",
+      "Spring Grove town": "G-SGO-T",
+      "Sylvester town": "G-SYL-T",
+      "Washington town": "G-WAS-TG",
+      "York town": "G-YOR-TG"
     },
+    "Green Lake": {
+      "Berlin city": "GL-BER-C",
+      "Berlin town": "GL-BER-T",
+      "Brooklyn town": "GL-BRO-T",
+      "Green Lake city": "GL-GLK-C",
+      "Green Lake town": "GL-GLK-T",
+      "Kingston town": "GL-KIN-T",
+      "Kingston village": "GL-KIN-V",
+      "Mackford town": "GL-MAC-T",
+      "Manchester town": "GL-MAN-T",
+      "Markesan city": "GL-MKN-C",
+      "Marquette town": "GL-MRQ-T",
+      "Marquette village": "GL-MRQ-V",
+      "Princeton city": "GL-PRI-C",
+      "Princeton town": "GL-PRI-T",
+      "Seneca town": "GL-SEN-T",
+      "St. Marie town": "GL-STM-T"
+    },
+    "Iowa": {
+      "Arena town": "IO-ARE-T",
+      "Arena village": "IO-ARE-V",
+      "Avoca village": "IO-AVO-V",
+      "Barneveld village": "IO-BAR-V",
+      "Blanchardville village": "IO-BLA-V",
+      "Brigham town": "IO-BRI-T",
+      "Clyde town": "IO-CLY-T",
+      "Cobb village": "IO-COB-T",
+      "Dodgeville city": "IO-DGV-C",
+      "Dodgeville town": "IO-DGV-T",
+      "Eden town": "IO-EDN-T",
+      "Highland town": "IO-HGH-T",
+      "Highland village": "IO-HGH-V",
+      "Hollandale village": "IO-HOL-V",
+      "Linden town": "IO-LIN-T",
+      "Linden village": "IO-LIN-V",
+      "Livingston village": "IO-LIV-V",
+      "Mifflin town": "IO-MIF-T",
+      "Mineral Point city": "IO-MNP-C",
+      "Mineral Point town": "IO-MNP-T",
+      "Montfort village": "IO-MON-V",
+      "Moscow town": "IO-MOS-T",
+      "Muscoda village": "IO-MUS-V",
+      "Pulaski town": "IO-PUL-T",
+      "Rewey village": "IO-REW-V",
+      "Ridgeway town": "IO-RDG-T",
+      "Ridgeway village": "IO-RDG-V",
+      "Waldwick town": "IO-WAL-T",
+      "Wyoming town": "IO-WYO-T"
+    },
+    "Iron": {
+      "Hurley city": "IR-LIB",
+      "Mercer town": "IR-LIB",
+      "Montreal city": "IR-LIB",
+      "__default__": "IR-NOLIB"
+    },
+    "Jackson": {
+      "Adams town": "JK-ADA-T",
+      "Albion town": "JK-ALB-T",
+      "Alma Center village": "JK-ACT-T",
+      "Alma town": "JK-ALM-T",
+      "Bear Bluff town": "JK-BBF-T",
+      "Black River Falls city": "JK-BRF-C",
+      "Brockway town": "JK-BRO-T",
+      "City Point town": "JK-CPT-T",
+      "Cleveland town": "JK-CLE-T",
+      "Curran town": "JK-CUR-T",
+      "Franklin town": "JK-FRA-T",
+      "Garden Valley town": "JK-GVA-T",
+      "Garfield town": "JK-GAR-T",
+      "Hixton town": "JK-HIX-T",
+      "Hixton village": "JK-HIX-V",
+      "Irving town": "JK-IRV-T",
+      "Knapp town": "JK-KNA-T",
+      "Komensky town": "JK-KOM-T",
+      "Manchester town": "JK-MAN-T",
+      "Melrose town": "JK-MEL-T",
+      "Melrose village": "JK-MEL-V",
+      "Merrillan village": "JK-MER-V",
+      "Millston town": "JK-MIL-T",
+      "North Bend town": "JK-NBD-T",
+      "Northfield town": "JK-NOR-T",
+      "Springfield town": "JK-SPR-T",
+      "Taylor village": "JK-TAY-V"
+    },
+    "Jefferson": {
+      "Aztalan town": "JF-AZT-T",
+      "Cambridge village": "JF-CAM-V",
+      "Cold Spring town": "JF-COS-T",
+      "Concord town": "JF-CON-T",
+      "Farmington town": "JF-FAR-T",
+      "Fort Atkinson city": "JF-FTA-C",
+      "Hebron town": "JF-HEB-T",
+      "Ixonia town": "JF-IXO-T",
+      "Jefferson city": "JF-JEF-C",
+      "Jefferson town": "JF-JEF-T",
+      "Johnson Creek village": "JF-JOC-V",
+      "Koshkonong town": "JF-KOS-T",
+      "Lac La Belle village": "JF-LLB-V",
+      "Lake Mills city": "JF-LKM-C",
+      "Lake Mills town": "JF-LKM-T",
+      "Milford town": "JF-MIL-T",
+      "Oakland town": "JF-OAK-T",
+      "Palmyra town": "JF-PAL-T",
+      "Palmyra village": "JF-PAL-V",
+      "Sullivan town": "JF-SUL-T",
+      "Sullivan village": "JF-SUL-V",
+      "Sumner town": "JF-SUM-T",
+      "Waterloo city": "JF-WTL-C",
+      "Waterloo town": "JF-WTL-T",
+      "Watertown city": "JF-WAT-C",
+      "Watertown town": "JF-WAT-T",
+      "Whitewater city": "JF-WHI-C"
+    },
+    "Juneau": {
+      "Armenia town": "JU-ARM-T",
+      "Camp Douglas village": "JU-CAD-V",
+      "Clearfield town": "JU-CLR-T",
+      "Cutler town": "JU-CUT-T",
+      "Elroy city": "JU-ELR-C",
+      "Finley town": "JU-FIN-T",
+      "Fountain town": "JU-FOU-T",
+      "Germantown town": "JU-GER-T",
+      "Hustler village": "JU-HUS-V",
+      "Kildare town": "JU-KIL-T",
+      "Kingston town":"JU-KNG-T",
+      "Lemonweir town": "JU-LEM-T",
+      "Lindina town": "JU-LIN-T",
+      "Lisbon town": "JU-LIS-T",
+      "Lyndon Station village": "JU-LST-V",
+      "Lyndon town": "JU-LYN-T",
+      "Marion town": "JU-MAR-T",
+      "Mauston city": "JU-MAU-C",
+      "Necedah town": "JU-NEC-T",
+      "Necedah village": "JU-NEC-V",
+      "New Lisbon city": "JU-NLI-C",
+      "Orange town": "JU-ORA-T",
+      "Plymouth town": "JU-PLY-T",
+      "Seven Mile Creek town": "JU-7MC-T",
+      "Summit town": "JU-SUM-T",
+      "Union Center village": "JU-UNC-V",
+      "Wisconsin Dells city": "JU-WID-C",
+      "Wonewoc town": "JU-WON-T",
+      "Wonewoc village": "JU-WON-V"
+    },
+    
+    /*** CONTINUE HERE ***/
+    
     "Portage": {
-      "Alban town": "P-ALB-T";
-      "Almond town": "P-ALM-T";
-      "Almond village": "P-ALM-V";
-      "Amherst town": "P-AMH-T";
-      "Amherst village": "P-AMH-V";
-      "Amherst Junction village": "P-AMJ-V";
-      "Belmont town": "P-BEL-T";
-      "Buena Vista town": "P-BUV-T";
-      "Carson town": "P-CAR-T";
-      "Dewey town": "P-DEW-T";
-      "Eau Pleine town": "P-EPL-T";
-      "Grant town": "P-GRT-T";
-      "Hull town": "P-HUL-T";
-      "Junction City village": "P-JNC-V";
-      "Lanark town": "P-LAN-T";
-      "Linwood town": "P-LIN-T";
-      "Nelsonville village": "P-NEL-V";
-      "New Hope town": "P-NHP-T";
-      "Pine Grove town": "P-PIN-T";
-      "Park Ridge village": "P-PKR-V";
-      "Plover town": "P-PLO-T";
-      "Plover village": "P-PLO-V";
-      "Rosholt village": "P-ROS-V";
-      "Sharon town": "P-SHA-T";
-      "Stockton town": "P-STO-T";
-      "Stevens Point city": "P-STP-C";
-      "Whiting village": "P-WHI-V";
+      "Alban town": "P-ALB-T",
+      "Almond town": "P-ALM-T",
+      "Almond village": "P-ALM-V",
+      "Amherst town": "P-AMH-T",
+      "Amherst village": "P-AMH-V",
+      "Amherst Junction village": "P-AMJ-V",
+      "Belmont town": "P-BEL-T",
+      "Buena Vista town": "P-BUV-T",
+      "Carson town": "P-CAR-T",
+      "Dewey town": "P-DEW-T",
+      "Eau Pleine town": "P-EPL-T",
+      "Grant town": "P-GRT-T",
+      "Hull town": "P-HUL-T",
+      "Junction City village": "P-JNC-V",
+      "Lanark town": "P-LAN-T",
+      "Linwood town": "P-LIN-T",
+      "Nelsonville village": "P-NEL-V",
+      "New Hope town": "P-NHP-T",
+      "Pine Grove town": "P-PIN-T",
+      "Park Ridge village": "P-PKR-V",
+      "Plover town": "P-PLO-T",
+      "Plover village": "P-PLO-V",
+      "Rosholt village": "P-ROS-V",
+      "Sharon town": "P-SHA-T",
+      "Stockton town": "P-STO-T",
+      "Stevens Point city": "P-STP-C",
+      "Whiting village": "P-WHI-V"
     },
     "Sauk": {
-      "Baraboo city": "S-BAR-C1";
-      "Baraboo town": "S-BAR-T";
-      "Bear Creek town": "S-BC-T";
-      "Cazenovia village": "S-CAZ-V";
-      "Dellona town": "S-DELL-T";
-      "Delton town": "S-DELT-T";
-      "Excelsior town": "S-EXC-T";
-      "Fairfield town": "S-FAI-T";
-      "Franklin town": "S-FRA-T";
-      "Freedom town": "S-FRE-T";
-      "Greenfield town": "S-GRE-T";
-      "Honey Creek town": "S-HC-T";
-      "Hillpoint village": "S-HILL-V";
-      "Ironton town": "S-IRO-T";
-      "Ironton village": "S-IRO-V";
-      "Lake Delton village": "S-LD-V";
-      "Loganville village": "S-LOG-V";
-      "Lime Ridge village": "S-LR-V";
-      "La Valle town": "S-LV-T";
-      "La Valle village": "S-LV-V";
-      "Merrimac town": "S-MER-T";
-      "Merrimac village": "S-MER-V";
-      "North Freedom village": "S-NF-V";
-      "Prairie du Sac town": "S-PDS-T";
-      "Prairie du Sac village": "S-PDS-V";
-      "Plain village": "S-PLA-V";
-      "Reedsburg city": "S-REE-C";
-      "Reedsburg town": "S-REE-T";
-      "Rock Springs village": "S-RS-V";
-      "Sauk City village": "S-SC-V";
-      "Spring Green town": "S-SGE-T";
-      "Spring Green village": "S-SGE-V";
-      "Sumpter town": "S-SUM-T";
-      "Troy town": "S-TRO-T";
-      "Washington town": "S-WAS-TS";
-      "West Baraboo village": "S-WB-V";
-      "Wisconsin Dells city": "S-WD-CS";
-      "Westfield town": "S-WESF-T";
-      "Winfield town": "S-WIN-T2";
-      "Woodland town": "S-WOO-T";
+      "Baraboo city": "S-BAR-C1",
+      "Baraboo town": "S-BAR-T",
+      "Bear Creek town": "S-BC-T",
+      "Cazenovia village": "S-CAZ-V",
+      "Dellona town": "S-DELL-T",
+      "Delton town": "S-DELT-T",
+      "Excelsior town": "S-EXC-T",
+      "Fairfield town": "S-FAI-T",
+      "Franklin town": "S-FRA-T",
+      "Freedom town": "S-FRE-T",
+      "Greenfield town": "S-GRE-T",
+      "Honey Creek town": "S-HC-T",
+      "Hillpoint village": "S-HILL-V",
+      "Ironton town": "S-IRO-T",
+      "Ironton village": "S-IRO-V",
+      "Lake Delton village": "S-LD-V",
+      "Loganville village": "S-LOG-V",
+      "Lime Ridge village": "S-LR-V",
+      "La Valle town": "S-LV-T",
+      "La Valle village": "S-LV-V",
+      "Merrimac town": "S-MER-T",
+      "Merrimac village": "S-MER-V",
+      "North Freedom village": "S-NF-V",
+      "Prairie du Sac town": "S-PDS-T",
+      "Prairie du Sac village": "S-PDS-V",
+      "Plain village": "S-PLA-V",
+      "Reedsburg city": "S-REE-C",
+      "Reedsburg town": "S-REE-T",
+      "Rock Springs village": "S-RS-V",
+      "Sauk City village": "S-SC-V",
+      "Spring Green town": "S-SGE-T",
+      "Spring Green village": "S-SGE-V",
+      "Sumpter town": "S-SUM-T",
+      "Troy town": "S-TRO-T",
+      "Washington town": "S-WAS-TS",
+      "West Baraboo village": "S-WB-V",
+      "Wisconsin Dells city": "S-WD-CS",
+      "Westfield town": "S-WESF-T",
+      "Winfield town": "S-WIN-T2",
+      "Woodland town": "S-WOO-T"
     },
-    "Wood" {
-      "Arpin town": "W-ARP-T";
-      "Arpin village": "W-ARP-V";
-      "Auburndale town": "W-AUB-T";
-      "Auburndale village": "W-AUB-V";
-      "Biron village": "W-BIR-V";
-      "Cameron town": "W-CAM-T";
-      "Cary town": "W-CAR-T";
-      "Cranmoor town": "W-CRAN-T";
-      "Dexter town": "W-DEX-T";
-      "Grand Rapids town": "W-GRAP-T";
-      "Hansen town": "W-HAN-T";
-      "Hewitt village": "W-HEW-V";
-      "Hiles town": "W-HIL-T";
-      "Lincoln town": "W-LIN-T";
-      "Marshfield city": "W-MAR-C";
-      "Marshfield town": "W-MAR-T";
-      "Milladore town": "W-MILL-T";
-      "Milladore village": "W-MILL-V";
-      "Nekoosa city": "W-NEK-C";
-      "Port Edwards town": "W-PE-T";
-      "Port Edwards village": "W-PE-V";
-      "Pittsville city": "W-PIT-C";
-      "Richfield town": "W-RCH-T";
-      "Remington town": "W-REM-T";
-      "Rock town": "W-ROC-T";
-      "Rudolph town": "W-RUD-T";
-      "Rudolph village": "W-RUD-V";
-      "Saratoga town": "W-SARA-T";
-      "Seneca town": "W-SENE-T";
-      "Sherry town": "W-SHR-T";
-      "Sigel town": "W-SIG-T";
-      "Vesper village": "W-VESP-V";
-      "Wisconsin Rapids city": "W-WSRP-C";
-      "Wood town": "W-WOD-T";
+    "Wood": {
+      "Arpin town": "W-ARP-T",
+      "Arpin village": "W-ARP-V",
+      "Auburndale town": "W-AUB-T",
+      "Auburndale village": "W-AUB-V",
+      "Biron village": "W-BIR-V",
+      "Cameron town": "W-CAM-T",
+      "Cary town": "W-CAR-T",
+      "Cranmoor town": "W-CRAN-T",
+      "Dexter town": "W-DEX-T",
+      "Grand Rapids town": "W-GRAP-T",
+      "Hansen town": "W-HAN-T",
+      "Hewitt village": "W-HEW-V",
+      "Hiles town": "W-HIL-T",
+      "Lincoln town": "W-LIN-T",
+      "Marshfield city": "W-MAR-C",
+      "Marshfield town": "W-MAR-T",
+      "Milladore town": "W-MILL-T",
+      "Milladore village": "W-MILL-V",
+      "Nekoosa city": "W-NEK-C",
+      "Port Edwards town": "W-PE-T",
+      "Port Edwards village": "W-PE-V",
+      "Pittsville city": "W-PIT-C",
+      "Richfield town": "W-RCH-T",
+      "Remington town": "W-REM-T",
+      "Rock town": "W-ROC-T",
+      "Rudolph town": "W-RUD-T",
+      "Rudolph village": "W-RUD-V",
+      "Saratoga town": "W-SARA-T",
+      "Seneca town": "W-SENE-T",
+      "Sherry town": "W-SHR-T",
+      "Sigel town": "W-SIG-T",
+      "Vesper village": "W-VESP-V",
+      "Wisconsin Rapids city": "W-WSRP-C",
+      "Wood town": "W-WOD-T"
     }
   };
   this.find = (county, countySub, censusTract) => {
@@ -265,8 +629,7 @@
     } else if (county === "Dane" && countySub === "Verona city") {
       console.log("Special lookup");
     } else {
-      return this.data[county][countySub];
+      return this.data[county][countySub] || this.data[county].__default__;
     }
   }
-  
 };
