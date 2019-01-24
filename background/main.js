@@ -1,4 +1,4 @@
-var setIcon = function() {
+﻿var setIcon = function() {
   browser.storage.sync.get('skin').then((res) => {
     var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD'
 
@@ -54,6 +54,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "updateExtensionIcon":
       setIcon();
+      break;
+    case "addLostCardNote":
+      browser.tabs.executeScript({
+        file: "/browserAction/scripts/addLostCardNote.js"
+      });
+      break;
+    case "alternatePSTAT":
       break;
   }
 });
