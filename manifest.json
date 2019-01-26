@@ -6,7 +6,7 @@
   "author": "Lucas Schneider",
   "description": "PTFS Bibliovation modifications to benefit Wisconsin's South Central Library System",
   "homepage_url": "http://lrschneider.com/mpl-bibex",
-  
+
   "browser_specific_settings": {
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
@@ -14,9 +14,9 @@
       "strict_min_version": "54.0"
     }
   },
-  
+
   "incognito": "spanning",
-  
+
   "icons": {
     "16": "content/img/mpl-icon-16.png",
     "32": "content/img/mpl-icon-32.png",
@@ -24,7 +24,7 @@
     "64": "content/img/mpl-icon-64.png",
     "128": "content/img/mpl-icon-128.png"
   },
-  
+
   "browser_action": {
     "default_title": "MPL BibEx",
     "default_area": "navbar",
@@ -38,7 +38,7 @@
     },
     "default_popup": "browserAction/popup.html"
   },
-  
+
   "background": {
       "scripts": [
         "background/browser-polyfill.js",
@@ -47,15 +47,17 @@
         "background/defaultPrefs.js"
       ]
   },
-  
+
   "content_scripts": [
     {
       "matches": [
         "*://*.bibliovation.com/*"
       ],
       "js": [
-        "background/browser-polyfill.js"
-      ]
+        "background/browser-polyfill.js",
+        "content/scripts/standardFormat.js"
+      ],
+      "all_frames": true
     }
   ],
 
@@ -63,7 +65,7 @@
       "page": "optionsPage/options.html",
       "browser_style": true
   },
-  
+
   "permissions": [
     "activeTab",
     "contextMenus",
