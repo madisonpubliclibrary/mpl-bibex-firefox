@@ -49,7 +49,7 @@
     }
   });
 }
-  
+
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "updateExtensionIcon":
@@ -64,3 +64,15 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
   }
 });
+
+//JSON Request w/out jquery
+/*var xmlhttp = new XMLHttpRequest();
+var url = "https://mpl-bibex.lrschneider.com/pstats/ver/?val=all&regex=true";
+
+xmlhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    console.log(this.responseText)
+  }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();*/

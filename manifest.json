@@ -11,7 +11,7 @@
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
       "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex/master/releases/updates.json",
-      "strict_min_version": "54.0"
+      "strict_min_version": "57.0"
     }
   },
 
@@ -41,8 +41,6 @@
 
   "background": {
       "scripts": [
-        "background/browser-polyfill.js",
-        "background/jquery-3.3.1.min.js",
         "background/main.js",
         "background/defaultPrefs.js"
       ]
@@ -54,7 +52,6 @@
         "*://*.bibliovation.com/*"
       ],
       "js": [
-        "background/browser-polyfill.js",
         "content/scripts/standardFormat.js"
       ],
       "all_frames": true
