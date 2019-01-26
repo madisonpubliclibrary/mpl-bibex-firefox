@@ -1,4 +1,15 @@
-﻿var PSTATS = function() {
+/**
+ * The PSTATS opject contains all of the PSTAT codes for
+ * every county subdivision in Wisconsin except for Middleton,
+ * Sun Prairie, and Verona, which will be queried via
+ * https://mpl-bibex.lrschneider.com
+ *
+ * @constructor
+ * @author Lucas Schneider
+ * @this {PSTATS}
+ * @return {PSTATS} The new PSTATS object
+ */
+const PSTATS = function() {
   this.data = {
     "Adams": {
       "Adams city": "A-ADM-C",
@@ -95,7 +106,7 @@
       "Menasha city": "CA-LIB",
       "New Holstein city": "CA-LIB",
       "__default__": "CA-NOLIB"
-      
+
     },
     "Chippewa": {
       "Bloomer city": "CH-LIB",
@@ -1226,12 +1237,27 @@
       "Wood town": "W-WOD-T"
     }
   };
-  
+
+  /**
+   * Passes the county and county subdivision arguments to PSTATS.find()
+   * with an empty string for the census tractNotice
+   *
+   * @param {String} county The name of the county
+   * @param {String} countySub The name of the county subdivision
+   */
   this.find = (county, countySub) => {this.find(county, countySub, "")};
-  
+
+  /**
+   *
+   * @param {String} county The name of the county
+   * @param {String} countySub The name of the county subdivision
+   * @param {String} censusTract The census tract number
+   * @return {String} The SCLS PSTAT code corresponding to the provided county,
+   * sounty subdivision, and, if needed, census tract number
+   */
   this.find = (county, countySub, censusTract) => {
     if (county === "Dane" && countySub === "Madison city") {
-      return "D" + censusTract;
+      return censusTract ? "D" + censusTract : "D-X-MAD";
     } else if (county === "Dane" && countySub === "Middleton city") {
       console.log("Special lookup");
     } else if (county === "Dane" && countySub === "Sun Prairie city") {
@@ -1239,7 +1265,45 @@
     } else if (county === "Dane" && countySub === "Verona city") {
       console.log("Special lookup");
     } else {
-      return this.data[county][countySub] || this.data[county].__default__;
+      return this.data[county][countySub] || this.data[county].__default__ || "X-UND";
     }
   };
+};
+
+/**
+ * Processes the given address to make it more accurately interpreted by
+ * the Census Geocoder API
+ *
+ * @param {HTMLElement} addrElt The address element to be processed
+ * @return {String} The processed addess
+ */
+const function cleanAddr(addrElt) {
+  var addr = "", addrParts;
+  if (addrElt) {
+    addr = addrElt.value.trim().toLowerCase()
+      .replace(/\/./, '')
+      .replace(/ c(ou)?n?ty /, ' co ')
+      .replace(/ n /, ' north ')
+      .replace(/ s /, ' south ')
+      .replace(/ e /, ' east ')
+      .replace(/ w /, ' west ');
+
+    addrParts = addr.split(" ");
+
+    if (/^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length - 1])) {
+      addrParts.pop();
+    } else if (addrParts.length > 2 &&
+      /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
+      /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
+      addrParts.pop();
+      addrParts.pop();
+    }
+
+    addr = "";
+    for (var i = 0; i < addrPars.length; i++) {
+      addrParts = i === 0 ? addrParts[i] : "20%" + addrParts[i];
+    }
+  }
+
+  return addr.replace(/\#/,'');
 };
