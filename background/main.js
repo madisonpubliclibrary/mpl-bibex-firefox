@@ -60,16 +60,48 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         file: "/browserAction/scripts/addLostCardNote.js"
       });
       break;
-    case "getPstatException":
-      var pstatURL = "https://mpl-bibex.lrschneider.com/pstats/" + request.lib + "?val=all&regex=true";
+    case "queryGeocoder":
+      /**
+       * Query the Census website for data simultaneously in two different ways:
+       *
+       * 1) A JSON request is made using the Census Geocoder API.
+       * 2) An American FactFinder tab is silently opened, a search is performed
+       *    based on the address, and the results table is scrapped for data.
+       *
+       * The data from whichever method returns (positively) first, is used.
+       */
+      var matchAddr, county, countySub, censusTract, zip;
 
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+      // Method 1: Census geocoder
+      var baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
+        countyURL = baseURL + request.addressURI + "&city=" + request.city
+            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties&format=json",
+        countySubdivisionURL = baseURL + request.addressURI + "&city=" + request.city
+            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=County+Subdivisions&format=json",
+        censusTractURL = baseURL + request.addressURI + "&city=" + request.city
+            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Census Tracts&format=json",
+        xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log(this.responseText);
+        }
+      };
+      xhr.open("GET", countyURL, true);
+      xhr.send();
+      break;
+    case "getPstatException":
+      var pstatURL = "https://mpl-bibex.lrschneider.com/pstats/" + request.lib
+          + "?val=all&regex=true",
+        xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
           console.log(this.responseText)
         }
       };
-      xmlhttp.open("GET", url, true);
-      xmlhttp.send();
+      xhr.open("GET", pstatURL, true);
+      xhr.send();
       break;
     case "alternatePSTAT":
       break;

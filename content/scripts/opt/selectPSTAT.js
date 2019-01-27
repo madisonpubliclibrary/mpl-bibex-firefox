@@ -31,7 +31,8 @@ const PSTATS = function() {
       "Rome town": "A-ROM-T",
       "Springville town": "A-SPV-T",
       "Strongs Prairie town": "A-STP-T",
-      "Wisconsin Dells city": "A-WID-C"
+      "Wisconsin Dells city": "A-WID-C",
+      "__default__": "X-UND"
     },
     "Ashland": { // Default to AS-LIB to include tribal land
       "Agenda town": "AS-NOLIB",
@@ -163,7 +164,8 @@ const PSTATS = function() {
       "Withee town": "CL-WIT-T",
       "Withee village": "CL-WIT-V",
       "Worden town": "CL-WOR-T",
-      "York town": "CL-YOR-T"
+      "York town": "CL-YOR-T",
+      "__default__": "X-UND"
     },
     "Columbia": {
       "Arlington town": "C-ARL-T",
@@ -200,7 +202,8 @@ const PSTATS = function() {
       "Wisconsin Dells city": "C-WD-CC",
       "West Point town": "C-WP-T",
       "Wyocena town": "C-WYO-T",
-      "Wyocena village": "C-WYO-V"
+      "Wyocena village": "C-WYO-V",
+      "__default__": "X-UND"
     },
     "Crawford": {
       "De Soto village": "CR-LIB",
@@ -270,7 +273,8 @@ const PSTATS = function() {
       "Waunakee village": "D-WAU-V",
       "Westport town": "D-WESP-T",
       "Windsor village": "D-WIN-T",
-      "York town": "D-YOR-TD"
+      "York town": "D-YOR-TD",
+      "__default__": "X-UND"
     },
     "Dodge": {
       "Ashippun town": "DG-ASH-T",
@@ -316,7 +320,8 @@ const PSTATS = function() {
       "Watertown city": "DG-WAT-C",
       "Waupun city": "DG-WAU-C",
       "Westford town": "DG-WES-T",
-      "Williamstown town": "DG-WIL-T"
+      "Williamstown town": "DG-WIL-T",
+      "__default__": "X-UND"
     },
     "Door": {
       "__default__": "DO-LIB"
@@ -402,7 +407,8 @@ const PSTATS = function() {
       "Spring Grove town": "G-SGO-T",
       "Sylvester town": "G-SYL-T",
       "Washington town": "G-WAS-TG",
-      "York town": "G-YOR-TG"
+      "York town": "G-YOR-TG",
+      "__default__": "X-UND"
     },
     "Green Lake": {
       "Berlin city": "GL-BER-C",
@@ -420,7 +426,8 @@ const PSTATS = function() {
       "Princeton city": "GL-PRI-C",
       "Princeton town": "GL-PRI-T",
       "Seneca town": "GL-SEN-T",
-      "St. Marie town": "GL-STM-T"
+      "St. Marie town": "GL-STM-T",
+      "__default__": "X-UND"
     },
     "Iowa": {
       "Arena town": "IO-ARE-T",
@@ -451,7 +458,8 @@ const PSTATS = function() {
       "Ridgeway town": "IO-RDG-T",
       "Ridgeway village": "IO-RDG-V",
       "Waldwick town": "IO-WAL-T",
-      "Wyoming town": "IO-WYO-T"
+      "Wyoming town": "IO-WYO-T",
+      "__default__": "X-UND"
     },
     "Iron": {
       "Hurley city": "IR-LIB",
@@ -486,7 +494,8 @@ const PSTATS = function() {
       "North Bend town": "JK-NBD-T",
       "Northfield town": "JK-NOR-T",
       "Springfield town": "JK-SPR-T",
-      "Taylor village": "JK-TAY-V"
+      "Taylor village": "JK-TAY-V",
+      "__default__": "X-UND"
     },
     "Jefferson": {
       "Aztalan town": "JF-AZT-T",
@@ -515,7 +524,8 @@ const PSTATS = function() {
       "Waterloo town": "JF-WTL-T",
       "Watertown city": "JF-WAT-C",
       "Watertown town": "JF-WAT-T",
-      "Whitewater city": "JF-WHI-C"
+      "Whitewater city": "JF-WHI-C",
+      "__default__": "X-UND"
     },
     "Juneau": {
       "Armenia town": "JU-ARM-T",
@@ -546,7 +556,8 @@ const PSTATS = function() {
       "Union Center village": "JU-UNC-V",
       "Wisconsin Dells city": "JU-WID-C",
       "Wonewoc town": "JU-WON-T",
-      "Wonewoc village": "JU-WON-V"
+      "Wonewoc village": "JU-WON-V",
+      "__default__": "X-UND"
     },
     "Kenosha": {
       "__default__": "KE-LIB"
@@ -587,7 +598,8 @@ const PSTATS = function() {
       "Wiota town": "LF-WIO-T",
       "White Oak Springs town": "LF-WOS-T",
       "Willow Springs town": "LF-WSP-T",
-      "Wayne town": "LF-WYN-T"
+      "Wayne town": "LF-WYN-T",
+      "__default__": "X-UND"
     },
     "Langlade": {
       "Antigo city": "LN-LIB",
@@ -668,7 +680,8 @@ const PSTATS = function() {
       "Wausau town": "MN-WAU-T",
       "Weston town": "MN-WES-T",
       "Weston village": "MN-WES-V",
-      "Wien town": "MN-WIE-T"
+      "Wien town": "MN-WIE-T",
+      "__default__": "X-UND"
     },
     "Marinette": {
       "__default__": "MT-LIB"
@@ -692,7 +705,8 @@ const PSTATS = function() {
       "Shields town": "MQ-SHI-T",
       "Springfield town": "MQ-SPR-T",
       "Westfield town": "MQ-WST-T",
-      "Westfield village": "MQ-WST-V"
+      "Westfield village": "MQ-WST-V",
+      "__default__": "X-UND"
     },
     "Menominee": {
       "__default__": "ME-LIB"
@@ -809,7 +823,8 @@ const PSTATS = function() {
       "Sharon town": "P-SHA-T",
       "Stockton town": "P-STO-T",
       "Stevens Point city": "P-STP-C",
-      "Whiting village": "P-WHI-V"
+      "Whiting village": "P-WHI-V",
+      "__default__": "X-UND"
     },
     "Price": {
       "Ogema town": "PR-LIB",
@@ -847,7 +862,8 @@ const PSTATS = function() {
       "Viola village": "RI-VIO-V",
       "Westford town": "RI-WES-T",
       "Willow town": "RI-WIL-T",
-      "Yuba village": "RI-YUB-V"
+      "Yuba village": "RI-YUB-V",
+      "__default__": "X-UND"
     },
     "Rock": {
       "Avon town": "RO-AVO-T",
@@ -878,7 +894,8 @@ const PSTATS = function() {
       "Rock town": "RO-ROC-T",
       "Spring Valley town": "RO-SPV-T",
       "Turtle town": "RO-TUR-T",
-      "Union town": "RO-UNI-T"
+      "Union town": "RO-UNI-T",
+      "__default__": "X-UND"
     },
     "Rusk": {
       "Bruce village": "RU-LIB",
@@ -926,7 +943,8 @@ const PSTATS = function() {
       "Wisconsin Dells city": "S-WD-CS",
       "Westfield town": "S-WESF-T",
       "Winfield town": "S-WIN-T2",
-      "Woodland town": "S-WOO-T"
+      "Woodland town": "S-WOO-T",
+      "__default__": "X-UND"
     },
     "Sawyer": { // Default to SA-NOLIB to include tribal land
       "Bass Lake town": "SA-NOLIB",
@@ -987,7 +1005,8 @@ const PSTATS = function() {
       "Wittenberg town": "SH-WIT-T",
       "Wittenberg village": "SH-WIT-V",
       "Waukechon town": "SH-WKN-T",
-      "Washington town": "SH-WSH-T"
+      "Washington town": "SH-WSH-T",
+      "__default__": "X-UND"
     },
     "Sheboygan": {
       "Adell village": "SB-LIB",
@@ -1070,7 +1089,8 @@ const PSTATS = function() {
       "Webster town": "VE-WEB-T",
       "Westby city": "VE-WES-C",
       "Wheatland town": "VE-WHE-T",
-      "Whitetown town": "VE-WHI-T"
+      "Whitetown town": "VE-WHI-T",
+      "__default__": "X-UND"
     },
     "Vilas": {
       "Arbor Vitae town": "VI-NOLIB",
@@ -1161,7 +1181,8 @@ const PSTATS = function() {
       "Waupaca town": "WP-WAU-T",
       "Weyauwega city": "WP-WEY-C",
       "Weyauwega town": "WP-WEY-T",
-      "Wyoming town": "WP-WYO-T"
+      "Wyoming town": "WP-WYO-T",
+      "__default__": "X-UND"
     },
     "Waushara": {
       "Aurora town": "WS-AUR-T",
@@ -1189,7 +1210,8 @@ const PSTATS = function() {
       "Warren town": "WS-WAR-T",
       "Wautoma city": "WS-WAU-C",
       "Wautoma town": "WS-WAU-T",
-      "Wild Rose village": "WS-WRO-V"
+      "Wild Rose village": "WS-WRO-V",
+      "__default__": "X-UND"
     },
     "Winnebago": {
       "Appleton city": "WI-LIB",
@@ -1234,25 +1256,27 @@ const PSTATS = function() {
       "Sigel town": "W-SIG-T",
       "Vesper village": "W-VESP-V",
       "Wisconsin Rapids city": "W-WSRP-C",
-      "Wood town": "W-WOD-T"
-    }
+      "Wood town": "W-WOD-T",
+      "__default__": "X-UND"
+    },
+    "__default__": "X-UND"
   };
 
   /**
    * Passes the county and county subdivision arguments to PSTATS.find()
    * with an empty string for the census tractNotice
    *
-   * @param {String} county The name of the county
-   * @param {String} countySub The name of the county subdivision
+   * @param {string} county The name of the county
+   * @param {string} countySub The name of the county subdivision
    */
   this.find = (county, countySub) => {this.find(county, countySub, "")};
 
   /**
    *
-   * @param {String} county The name of the county
-   * @param {String} countySub The name of the county subdivision
-   * @param {String} censusTract The census tract number
-   * @return {String} The SCLS PSTAT code corresponding to the provided county,
+   * @param {string} county The name of the county
+   * @param {string} countySub The name of the county subdivision
+   * @param {string} censusTract The census tract number
+   * @return {string} The SCLS PSTAT code corresponding to the provided county,
    * sounty subdivision, and, if needed, census tract number
    */
   this.find = (county, countySub, censusTract) => {
@@ -1265,7 +1289,8 @@ const PSTATS = function() {
     } else if (county === "Dane" && countySub === "Verona city") {
       console.log("Special lookup");
     } else {
-      return this.data[county][countySub] || this.data[county].__default__ || "X-UND";
+      return this.data[county][countySub] || this.data[county].__default__ ||
+          this.data.__default__;
     }
   };
 };
@@ -1275,7 +1300,7 @@ const PSTATS = function() {
  * the Census Geocoder API
  *
  * @param {HTMLElement} addrElt The address element to be processed
- * @return {String} The processed addess
+ * @return {string} The cleaned, URI encoded address
  */
 const function cleanAddr(addrElt) {
   var addr = "", addrParts;
@@ -1290,10 +1315,10 @@ const function cleanAddr(addrElt) {
 
     addrParts = addr.split(" ");
 
-    if (/^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length - 1])) {
+    if (/^(\#|apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length - 1])) {
       addrParts.pop();
     } else if (addrParts.length > 2 &&
-      /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
+      /^(\#|apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
       /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
       addrParts.pop();
       addrParts.pop();
@@ -1301,9 +1326,64 @@ const function cleanAddr(addrElt) {
 
     addr = "";
     for (var i = 0; i < addrPars.length; i++) {
-      addrParts = i === 0 ? addrParts[i] : "20%" + addrParts[i];
+      addrParts = i === 0 ? addrParts[i] : " " + addrParts[i];
     }
   }
 
-  return addr.replace(/\#/,'');
+  return encodeURI(addr);
 };
+
+/**
+ * Extracts the city from the city/state input element
+ *
+ * @param {HTMLElement} cityElt The city/state input HTMLElement
+ * @return {string} The city
+ */
+const function getCity(cityElt) {
+  var cityArr;
+
+  if (cityElt && cityElt.value) {
+    cityArr = cityElt.value.replace(/[^a-zA-Z0-9 \-]+/g,'').toLowerCase().split(' ');
+    cityArr.pop();
+    return cityArr.join(' ');
+  }
+
+  console.error("Error: city element is null or value is empty")
+  return "";
+}
+
+// Only execute script in the patron edit page
+if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
+  // Variables for PSTAT selection
+  var pstats = new PSTATS(),
+    addrElt = document.getElementById('address'),
+    addrEltAlt = document.getElementById('B_address'),
+    targetAddr,
+    cityElt = document.getElementById('city'),
+    cityEltAlt = document.getElementById('B_city'),
+    targetCity,
+    zipElt = document.getElementById('zipcode'),
+    zipEltAlt = document.getElementById('B_zipcode'),
+    targetZip;
+
+  /**
+   * Queries the US Census Geocoder, American Fact Finder, and a database of
+   * PSTAT exceptions and aldermanic districts to determine the proper "sort 1"
+   * code for a patron's record.
+   *
+   * @param {boolean} findAltPSTAT Whether the the query should use the patron's
+   *   primary or alternate address
+   */
+  const function queryPSTAT(findAltPSTAT) {
+    targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
+    targetCity = findAltPSTAT ? cityEltAlt : cityElt;
+    targetZip = findAltPSTAT ? zipeltAlt : zipElt;
+
+    browser.runtime.sendMessage({
+      key: "queryGeocoder",
+      address = targetAddress.value,
+      addressURI: cleanAddr(targetAddr),
+      city: getCity(targetCity.value)
+    });
+  }
+}
