@@ -60,19 +60,18 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         file: "/browserAction/scripts/addLostCardNote.js"
       });
       break;
+    case "getPstatException":
+      var pstatURL = "https://mpl-bibex.lrschneider.com/pstats/" + request.lib + "?val=all&regex=true";
+
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText)
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+      break;
     case "alternatePSTAT":
       break;
   }
 });
-
-//JSON Request w/out jquery
-/*var xmlhttp = new XMLHttpRequest();
-var url = "https://mpl-bibex.lrschneider.com/pstats/ver/?val=all&regex=true";
-
-xmlhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    console.log(this.responseText)
-  }
-};
-xmlhttp.open("GET", url, true);
-xmlhttp.send();*/
