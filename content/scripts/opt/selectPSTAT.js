@@ -9,7 +9,7 @@
  * @this {PSTATS}
  * @return {PSTATS} The new PSTATS object
  */
-const PSTATS = function() {
+var PSTATS = function() {
   this.data = {
     "Adams": {
       "Adams city": "A-ADM-C",
@@ -1302,7 +1302,7 @@ const PSTATS = function() {
  * @param {HTMLElement} addrElt The address element to be processed
  * @return {string} The cleaned, URI encoded address
  */
-const function cleanAddr(addrElt) {
+var cleanAddr = function(addrElt) {
   var addr = "", addrParts;
   if (addrElt) {
     addr = addrElt.value.trim().toLowerCase()
@@ -1323,14 +1323,9 @@ const function cleanAddr(addrElt) {
       addrParts.pop();
       addrParts.pop();
     }
-
-    addr = "";
-    for (var i = 0; i < addrPars.length; i++) {
-      addrParts = i === 0 ? addrParts[i] : " " + addrParts[i];
-    }
   }
 
-  return encodeURI(addr);
+  return encodeURI(addrParts.join(" "));
 };
 
 /**
@@ -1339,7 +1334,7 @@ const function cleanAddr(addrElt) {
  * @param {HTMLElement} cityElt The city/state input HTMLElement
  * @return {string} The city
  */
-const function getCity(cityElt) {
+var getCity = function(cityElt) {
   var cityArr;
 
   if (cityElt && cityElt.value) {
@@ -1354,7 +1349,6 @@ const function getCity(cityElt) {
 
 // Only execute script in the patron edit page
 if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-  console.log("success");
   // Variables for PSTAT selection
   var pstats = new PSTATS(),
     addrElt = document.getElementById('address'),
@@ -1368,7 +1362,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     targetZip;
 
   // Add event listeners to the primary address and city fields
-  addrElt.addEventListener('blur', functionn() {
+  addrElt.addEventListener('blur', function() {
     if (addrElt.value && cityElt.value) {
       queryPSTAT(false);
     }
@@ -1388,16 +1382,19 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
    * @param {boolean} findAltPSTAT Whether the the query should use the patron's
    *   primary or alternate address
    */
-  const function = queryPSTAT(findAltPSTAT) {
+  var queryPSTAT = function(findAltPSTAT) {
+
     targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
     targetCity = findAltPSTAT ? cityEltAlt : cityElt;
     targetZip = findAltPSTAT ? zipeltAlt : zipElt;
 
     browser.runtime.sendMessage({
-      key: "queryGeocoder",
-      address = targetAddress.value,
-      addressURI: cleanAddr(targetAddr),
-      city: getCity(targetCity.value)
+      "key": "queryGeocoder",
+      "address": targetAddr.value,
+      "addressURI": cleanAddr(targetAddr),
+      "city": getCity(targetCity)
+    }).then(response => {
+      console.log(response);
     });
   }
 }

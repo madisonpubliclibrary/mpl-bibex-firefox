@@ -55,7 +55,8 @@ browser.webNavigation.onCompleted.addListener(details => {
   browser.storage.sync.get().then(res => {
     if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
       browser.tabs.executeScript(details.tabId, {
-        file: "/content/scripts/opt/selectPSTAT.js"
+        file: "/content/scripts/opt/selectPSTAT.js",
+        allFrames: true
       });
     }
   });
@@ -84,35 +85,84 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       var matchAddr, county, countySub, censusTract, zip;
 
       // Method 1: Census geocoder
-      var baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
+      const baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
         countyURL = baseURL + request.addressURI + "&city=" + request.city
             + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties&format=json",
         countySubdivisionURL = baseURL + request.addressURI + "&city=" + request.city
             + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=County+Subdivisions&format=json",
         censusTractURL = baseURL + request.addressURI + "&city=" + request.city
-            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Census Tracts&format=json",
-        xhr = new XMLHttpRequest();
+            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Census Tracts&format=json";
 
-      xhr.onreadystatechange = () => {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-          console.log(this.responseText);
+      const getCounty = fetch(countyURL, {"method": "GET"}).then(response => {
+        if(!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
         }
-      };
-      xhr.open("GET", countyURL, true);
-      xhr.send();
+        return response.json();
+      });
+
+      const getCountySub = fetch(countySubdivisionURL, {"method": "GET"}).then(response => {
+        if(!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
+      });
+
+      const getCensusTract = fetch(censusTractURL, {"method": "GET"}).then(response => {
+        if(!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
+      });
+
+      Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
+        var countyData = vals[0], countySubData = vals[1],
+            censusTractData = vals[2];
+
+        if (countyData && countyData.result && countyData.result.addressMatches.length > 0 &&
+            countySubData && countySubData.result && censusTractData &&
+            censusTractData.result) {
+          const lastIdx = countyData.result.addressMatches.length - 1;
+
+          countyData = countyData.result.addressMatches[lastIdx];
+          countySubData = countySubData.result.addressMatches[lastIdx];
+          censusTractData = censusTractData.result.addressMatches[lastIdx];
+
+          matchAddr = countyData.matchedAddress.split(',')[0].toUpperCase();
+          county = countyData.geographies.Counties[0].BASENAME;
+          countySub = countySubData.geographies['County Subdivisions'][0].NAME;
+          zip = countyData.addressComponents.zip;
+          censusTract = censusTractData.geographies['Census Tracts'];
+          if (censusTract) censusTract = censusTract[0].BASENAME;
+
+          if (matchAddr && county && countySub && censusTract && zip) {
+            console.log(matchAddr +"|"+ county +"|"+ countySub +"|"+ censusTract +"|"+ zip);
+
+          }
+        } else {
+          //TODO: Handle error
+        }
+      });return Promise.resolve({
+        key: returnCensusData,
+        "matchAddr": matchAddr,
+        "county": county,
+        "countySub": countySub,
+        "censusTract": censusTract,
+        "zip": zip
+      });
       break;
     case "getPstatException":
-      var pstatURL = "https://mpl-bibex.lrschneider.com/pstats/" + request.lib
-          + "?val=all&regex=true",
-        xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = () => {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-          console.log(this.responseText)
+      const pstatURL = "https://mpl-bibex.lrschneider.com/pstats/" + request.lib
+          + "?val=all&regex=true";
+      const getPSTAT = fetch(pstatURL, {"method": "GET"}).then(response => {
+        if(!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
         }
-      };
-      xhr.open("GET", pstatURL, true);
-      xhr.send();
+        return response.json();
+      });
+
+      getPSTAT.then(json => {
+        console.log(json);
+      });
       break;
     case "alternatePSTAT":
       break;
