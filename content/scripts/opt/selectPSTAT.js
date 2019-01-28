@@ -1269,7 +1269,7 @@ var PSTATS = function() {
    * @param {string} county The name of the county
    * @param {string} countySub The name of the county subdivision
    */
-  this.find = (county, countySub) => {this.find(county, countySub, "")};
+  this.find = function(county, countySub) {this.find(county, countySub, "")};
 
   /**
    *
@@ -1279,7 +1279,7 @@ var PSTATS = function() {
    * @return {string} The SCLS PSTAT code corresponding to the provided county,
    * sounty subdivision, and, if needed, census tract number
    */
-  this.find = (county, countySub, censusTract) => {
+  this.find = function(county, countySub, censusTract) {
     if (county === "Dane" && countySub === "Madison city") {
       return censusTract ? "D" + censusTract : "D-X-MAD";
     } else if (county === "Dane" && countySub === "Middleton city") {

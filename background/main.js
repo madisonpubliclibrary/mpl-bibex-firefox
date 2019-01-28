@@ -136,18 +136,18 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (matchAddr && county && countySub && censusTract && zip) {
             console.log(matchAddr +"|"+ county +"|"+ countySub +"|"+ censusTract +"|"+ zip);
-
+            return Promise.resolve({
+              "key": returnCensusData,
+              "matchAddr": matchAddr,
+              "county": county,
+              "countySub": countySub,
+              "censusTract": censusTract,
+              "zip": zip
+            });
           }
         } else {
           //TODO: Handle error
         }
-      });return Promise.resolve({
-        key: returnCensusData,
-        "matchAddr": matchAddr,
-        "county": county,
-        "countySub": countySub,
-        "censusTract": censusTract,
-        "zip": zip
       });
       break;
     case "getPstatException":
