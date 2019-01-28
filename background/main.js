@@ -48,7 +48,18 @@
         });
     }
   });
-}
+};
+
+// Load preference-selected function files
+browser.webNavigation.onCompleted.addListener(details => {
+  browser.storage.sync.get().then(res => {
+    if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "/content/scripts/opt/selectPSTAT.js"
+      });
+    }
+  });
+});
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {

@@ -1354,6 +1354,7 @@ const function getCity(cityElt) {
 
 // Only execute script in the patron edit page
 if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
+  console.log("success");
   // Variables for PSTAT selection
   var pstats = new PSTATS(),
     addrElt = document.getElementById('address'),
@@ -1366,6 +1367,19 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     zipEltAlt = document.getElementById('B_zipcode'),
     targetZip;
 
+  // Add event listeners to the primary address and city fields
+  addrElt.addEventListener('blur', functionn() {
+    if (addrElt.value && cityElt.value) {
+      queryPSTAT(false);
+    }
+  });
+
+  cityElt.addEventListener('blur', function() {
+    if (addrElt.value && cityElt.value) {
+      queryPSTAT(false);
+    }
+  });
+
   /**
    * Queries the US Census Geocoder, American Fact Finder, and a database of
    * PSTAT exceptions and aldermanic districts to determine the proper "sort 1"
@@ -1374,7 +1388,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
    * @param {boolean} findAltPSTAT Whether the the query should use the patron's
    *   primary or alternate address
    */
-  const function queryPSTAT(findAltPSTAT) {
+  const function = queryPSTAT(findAltPSTAT) {
     targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
     targetCity = findAltPSTAT ? cityEltAlt : cityElt;
     targetZip = findAltPSTAT ? zipeltAlt : zipElt;
