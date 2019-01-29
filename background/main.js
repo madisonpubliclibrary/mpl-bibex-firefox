@@ -63,6 +63,9 @@ browser.webNavigation.onCompleted.addListener(details => {
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  var responseData = {},
+    response = new Promise(resolve, reject)
+
   switch (request.key) {
     case "updateExtensionIcon":
       setIcon();
@@ -114,7 +117,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return response.json();
       });
 
-      Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
+      return Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
         var countyData = vals[0], countySubData = vals[1],
             censusTractData = vals[2];
 
