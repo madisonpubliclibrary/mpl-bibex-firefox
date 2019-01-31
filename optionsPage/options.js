@@ -1,11 +1,7 @@
 var skin = document.getElementById("skin"),
   patronMsg = document.getElementById("patronMsg"),
   validAddr = document.getElementById("validAddr"),
-  autoBarcode = document.getElementById("autoBarcode"),
-  lookupPSTAT = document.getElementById("lookupPSTAT"),
-  digestOnly = document.getElementById("digestOnly"),
-  dueDateToggle = document.getElementById("dueDateToggle"),
-  middleInitials = document.getElementById("middleInitials"),
+  restrictPatronFields = document.getElementById("restrictPatronFields"),
   updateAccountType = document.getElementById("updateAccountType"),
   cdams = document.getElementById("cdams"),
   cdamsid = document.getElementById("cdamsid"),
@@ -61,11 +57,8 @@ var skin = document.getElementById("skin"),
     "skin": "MAD",
     "patronMsg": true,
     "validAddr": true,
-    "autoBarcode": true,
-    "lookupPSTAT": true,
-    "digestOnly": true,
+    "restrictPatronFields": true,
     "dueDateToggle": true,
-    "middleInitials": true,
     "updateAccountType": true,
     "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
     "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
@@ -88,7 +81,7 @@ var skin = document.getElementById("skin"),
     "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
   };
 
-function setDefaultOptions() {    
+function setDefaultOptions() {
   browser.storage.sync.set(defaultOptions);
   browser.runtime.sendMessage({key: "updateExtensionIcon"});
   restoreOptions();
@@ -99,11 +92,7 @@ function restoreOptions() {
     skin.value = res.skin;
     patronMsg.checked = res.patronMsg;
     validAddr.checked = res.validAddr;
-    autoBarcode.checked = res.autoBarcode;
-    lookupPSTAT.checked = res.lookupPSTAT;
-    digestOnly.checked = res.digestOnly;
-    dueDateToggle.checked = res.dueDateToggle;
-    middleInitials.checked = res.middleInitials;
+    restrictPatronFields.checked = res.restrictPatronFields;
     updateAccountType.checked = res.updateAccountType;
     cdams.checked = res.cdams;
     cdamsid.checked = res.cdamsid;
@@ -161,33 +150,33 @@ document.addEventListener('DOMContentLoaded', function() {
 // Functions to check whether the class-level switches should be triggered
 function checkAllCD() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < cdCodes.length; i++) {
     if (document.getElementById(cdCodes[i]).checked) numChecked++;
   }
-  
+
   sepAllCD.checked = numChecked === cdCodes.length;
   browser.storage.sync.set({sepAllCD: numChecked === cdCodes.length});
 }
 
 function checkAllDVD() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < dvdCodes.length; i++) {
     if (document.getElementById(dvdCodes[i]).checked) numChecked++;
   }
-  
+
   sepAllDVD.checked = numChecked === dvdCodes.length;
   browser.storage.sync.set({sepAllDVD: numChecked === dvdCodes.length});
 }
 
 function checkOther() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < otherCodes.length; i++) {
     if (document.getElementById(otherCodes[i]).checked) numChecked++;
   }
-  
+
   sepOther.checked = numChecked === otherCodes.length;
   browser.storage.sync.set({sepOther: numChecked === otherCodes.length});
 }
@@ -229,20 +218,8 @@ document.getElementById("patronMsgSwitch").addEventListener('click', function() 
 document.getElementById("validAddrSwitch").addEventListener('click', function() {
   browser.storage.sync.set({validAddr: validAddr.checked});
 });
-document.getElementById("autoBarcodeSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({autoBarcode: autoBarcode.checked});
-});
-document.getElementById("lookupPSTATSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({lookupPSTAT: lookupPSTAT.checked});
-});
-document.getElementById("digestOnlySwitch").addEventListener('click', function() {
-  browser.storage.sync.set({digestOnly: digestOnly.checked});
-});
-document.getElementById("dueDateToggleSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({dueDateToggle: dueDateToggle.checked});
-});
-document.getElementById("middleInitialsSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({middleInitials: middleInitials.checked});
+document.getElementById("restrictPatronFieldsSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({restrictPatronFields: restrictPatronFields.checked});
 });
 document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
   browser.storage.sync.set({updateAccountType: updateAccountType.checked});

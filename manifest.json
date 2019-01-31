@@ -52,7 +52,9 @@
         "*://*.bibliovation.com/*"
       ],
       "js": [
-        "content/scripts/standardFormat.js"
+        "content/scripts/formatPatronRecord.js",
+        "content/scripts/patronQuickSave.js",
+        "content/scripts/selectPSTAT.js"
       ],
       "all_frames": true
     }

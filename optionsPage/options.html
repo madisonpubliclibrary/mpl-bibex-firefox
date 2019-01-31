@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="options.css" />
-    <script type="text/javascript" src="../background/browser-polyfill.min.js"></script>
     <title>MPL BibEx Options</title>
   </head>
 
@@ -48,73 +47,18 @@
           </tr>
         </table>
       </div>
+
       <div class="option">
-        <h1>Autofill OPAC Login Number</h1>
+        <h1>Restrict Patron Fields</h1>
         <table>
           <tr>
             <td>
-              <label class="switch" id="autoBarcodeSwitch">
-                <input type="checkbox" id="autoBarcode">
+              <label class="switch" id="restrictPatronFieldsSwitch">
+                <input type="checkbox" id="restrictPatronFields">
                 <span class="slider"></span>
               </label>
             </td>
-            <td><label for="autoBarcode">Autofill a patron's OPAC username to the value of their library card</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>Lookup PSTAT</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="lookupPSTATSwitch">
-                <input type="checkbox" id="lookupPSTAT">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="lookupPSTAT">Automatically lookup PSTAT value for all libraries in the SCLS that sort by county subdivision or census tract number. If the PSTAT is able to be determined, a button will appear allowing staff to automatically select the geographically closest MPL location for the patron's home library</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>Autoselect "Digests Only"</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="digestOnlySwitch">
-                <input type="checkbox" id="digestOnly">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="digestOnly">Automatically selects the "Digests Only" option (when available) while selecting patron notification options</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>Due Date/Advanced Notice Toggle</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="dueDateToggleSwitch">
-                <input type="checkbox" id="dueDateToggle">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="dueDateToggle">Forces library staff to select either "Due Date" or "Advanced Notice" notification options, but not both</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>Generate Middle Initials</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="middleInitialsSwitch">
-                <input type="checkbox" id="middleInitials">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="middleInitials">Automatically generates a patron's middle initial from the first name field</label></td>
+            <td><label for="restrictPatronFields">TODO: description</label></td>
           </tr>
         </table>
       </div>
@@ -128,7 +72,7 @@
                 <span class="slider"></span>
               </label>
             </td>
-            <td><label for="updateAccountType">Update JU -> AD and LUJ -> LU when saving a patron record if the patron is 18 years or older</label></td>
+            <td><label for="updateAccountType">Update JU ➞ AD and LUJ ➞ LU when saving a patron record if the patron is 18 years or older</label></td>
           </tr>
         </table>
       </div>
@@ -380,7 +324,7 @@
         </fieldset>
       </div>
       <div class="option">
-        <h1>Receipt Font</h1>
+        <h1>Receipt Font Size</h1>
         <select id="receiptFont">
           <option value="MPL">MPL (36px)</option>
           <option value="MOO">MOO (28px)</option>
@@ -388,7 +332,7 @@
         <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
       </div>
       <div class="option">
-        <h1>Sunday Dropbox</h1>
+        <h1>Sunday Dropbox Mode</h1>
         <table>
           <tr>
             <td>

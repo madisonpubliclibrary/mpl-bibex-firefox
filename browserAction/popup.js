@@ -1,6 +1,6 @@
 ﻿var paymentPlan = document.getElementById('paymentPlan'),
   lostcard = document.getElementById('lostCard'),
-  PSTAT2 = document.getElementById('PSTAT2'),
+  altPSTAT = document.getElementById('PSTAT2'),
   problemItem = document.getElementById('problemItem'),
   shortcut1 = document.getElementById('shortcut1'),
   shortcut2 = document.getElementById('shortcut2'),
@@ -11,14 +11,14 @@
   prefs = document.getElementById('prefs');
 
 if (paymentPlan) paymentPlan.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addNote"});
+  browser.runtime.sendMessage({key: "addPaymentPlanNote"});
 });
 
 if (lostcard) lostcard.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addLostCardNote"});
 });
 
-if (PSTAT2) PSTAT2.addEventListener('click', function() {
+if (altPSTAT) altPSTAT.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "alternatePSTAT"});
 });
 
@@ -49,7 +49,7 @@ browser.storage.sync.get(['shortcutText1','shortcutLink1','shortcutText2','short
   } else {
     shortcut1.style.display = "none";
   }
-  
+
   if (res.shortcutLink2) {
     shortcut2.href = res.shortcutLink2;
     if (shortcut2.textContent == "") {
@@ -58,7 +58,7 @@ browser.storage.sync.get(['shortcutText1','shortcutLink1','shortcutText2','short
   } else {
     shortcut2.style.display = "none";
   }
-  
+
   if (res.shortcutLink3) {
     shortcut3.href = res.shortcutLink3;
     if (shortcut3.textContent == "") {
@@ -67,7 +67,7 @@ browser.storage.sync.get(['shortcutText1','shortcutLink1','shortcutText2','short
   } else {
     shortcut3.style.display = "none";
   }
-  
+
   if (res.shortcutLink4) {
     shortcut4.href = res.shortcutLink4;
     if (shortcut4.textContent == "") {
@@ -76,7 +76,7 @@ browser.storage.sync.get(['shortcutText1','shortcutLink1','shortcutText2','short
   } else {
     shortcut4.style.display = "none";
   }
-  
+
   if (res.shortcutLink5) {
     shortcut5.href = res.shortcutLink5;
     if (shortcut5.textContent == "") {
@@ -85,7 +85,7 @@ browser.storage.sync.get(['shortcutText1','shortcutLink1','shortcutText2','short
   } else {
     shortcut5.style.display = "none";
   }
-  
+
   if (res.shortcutLink6) {
     shortcut6.href = res.shortcutLink6;
 	if (shortcut6.textContent == "") {

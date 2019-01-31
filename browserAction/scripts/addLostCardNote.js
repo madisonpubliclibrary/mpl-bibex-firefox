@@ -1,21 +1,16 @@
-﻿var contentDoc = document.getElementsByTagName('iframe'),
-  opacNote,
-  circNote,
-  date,
-  month,
-  day,
-  currDate = '',
-  library;
-  
-contentDoc = contentDoc.length > 0 ? contentDoc[0].contentWindow.document : document
+// Only execute script in the patron edit page
+if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
+  var opacNote = document.getElementById('opacnote'),
+    circNote = document.getElementById('borrowernotes'),
+    date,
+    month,
+    day,
+    currDate = '',
+    library;
 
-if (contentDoc) {
-  opacNote = contentDoc.getElementById('opacnote');
-  circNote = contentDoc.getElementById('borrowernotes');
-  
   if (opacNote && circNote) {
     library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
-    
+
     if (library) {
       date = new Date();
       month = date.getUTCMonth();
@@ -30,7 +25,7 @@ if (contentDoc) {
         day = '0' + day;
       }
       currDate += day + '/' + date.getUTCFullYear();
-      
+
       if (opacNote.value && opacNote.value !== '') {
         opacNote.value += "\n\n";
       }

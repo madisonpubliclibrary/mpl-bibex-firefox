@@ -8,20 +8,8 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('validAddr')) {
     browser.storage.sync.set({validAddr: true});
   }
-  if (!res.hasOwnProperty('autoBarcode')) {
-    browser.storage.sync.set({autoBarcode: true});
-  }
-  if (!res.hasOwnProperty('lookupPSTAT')) {
-    browser.storage.sync.set({lookupPSTAT: true});
-  }
-  if (!res.hasOwnProperty('digestOnly')) {
-    browser.storage.sync.set({digestOnly: true});
-  }
-  if (!res.hasOwnProperty('dueDateToggle')) {
-    browser.storage.sync.set({dueDateToggle: true});
-  }
-  if (!res.hasOwnProperty('middleInitials')) {
-    browser.storage.sync.set({middleInitials: true});
+  if (!res.hasOwnProperty('restrictPatronFields')) {
+    browser.storage.sync.set({restrictPatronFields: true});
   }
   if (!res.hasOwnProperty('updateAccountType')) {
     browser.storage.sync.set({updateAccountType: true});

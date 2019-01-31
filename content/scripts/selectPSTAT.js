@@ -9,6 +9,7 @@
  * @this {PSTATS}
  * @return {PSTATS} The new PSTATS object
  */
+
 var PSTATS = function() {
   this.data = {
     "Adams": {
@@ -1281,13 +1282,7 @@ var PSTATS = function() {
    */
   this.find = function(county, countySub, censusTract) {
     if (county === "Dane" && countySub === "Madison city") {
-      return censusTract ? "D" + censusTract : "D-X-MAD";
-    } else if (county === "Dane" && countySub === "Middleton city") {
-      console.log("Special lookup");
-    } else if (county === "Dane" && countySub === "Sun Prairie city") {
-      console.log("Special lookup");
-    } else if (county === "Dane" && countySub === "Verona city") {
-      console.log("Special lookup");
+      return censusTract ? "D-" + censusTract : "D-X-MAD";
     } else {
       return this.data[county][countySub] || this.data[county].__default__ ||
           this.data.__default__;
@@ -1295,15 +1290,38 @@ var PSTATS = function() {
   };
 };
 
+var Messenger = function() {
+  this.SEARCHING = "#4A90D9";
+  this.SUCCESS = "#00c000";
+  this.ERROR = "#c00c00";
+
+  this.send = function(type, message, altPSTAT) {
+    var pstatNotice = document.getElementById('pstatNotice'),
+      pstatNoticeAlt = document.getElementById('pstatNoticeAlt'),
+      targetNotice,
+      otherNotice;
+
+    targetNotice = altPSTAT ? pstatNoticeAlt : pstatNotice;
+    otherNotice = !altPSTAT ? pstatNoticeAlt : pstatNotice;
+
+    targetNotice.style.display = "block";
+    otherNotice.style.display = "none";
+
+    targetNotice.style.color = type;
+    targetNotice.textContent = message;
+  }
+};
+
 /**
  * Processes the given address to make it more accurately interpreted by
  * the Census Geocoder API
  *
  * @param {HTMLElement} addrElt The address element to be processed
+ * @param {boolean} encodeForURI Whether the returned string should be URI encoded
  * @return {string} The cleaned, URI encoded address
  */
-var cleanAddr = function(addrElt) {
-  var addr = "", addrParts;
+var cleanAddr = function(addrElt, encodeForURI) {
+  var addr = "", addrParts = [];
   if (addrElt) {
     addr = addrElt.value.trim().toLowerCase()
       .replace(/\/./, '')
@@ -1325,25 +1343,25 @@ var cleanAddr = function(addrElt) {
     }
   }
 
-  return encodeURI(addrParts.join(" "));
+  return encodeForURI ? encodeURI(addrParts.join(" ")) : addrParts.join(" ");
 };
 
 /**
  * Extracts the city from the city/state input element
  *
  * @param {HTMLElement} cityElt The city/state input HTMLElement
- * @return {string} The city
+ * @param {boolean} encodeForURI Whether the returned string should be URI encoded
+ * @return {string} The URI encoded city
  */
-var getCity = function(cityElt) {
+var getCity = function(cityElt, encodeForURI) {
   var cityArr;
 
   if (cityElt && cityElt.value) {
     cityArr = cityElt.value.replace(/[^a-zA-Z0-9 \-]+/g,'').toLowerCase().split(' ');
     cityArr.pop();
-    return cityArr.join(' ');
+    return encodeForURI ? encodeURI(cityArr.join(' ')) : cityArr.join(' ');
   }
 
-  console.error("Error: city element is null or value is empty")
   return "";
 }
 
@@ -1351,6 +1369,7 @@ var getCity = function(cityElt) {
 if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
   // Variables for PSTAT selection
   var pstats = new PSTATS(),
+    pstatMsg = new Messenger(),
     addrElt = document.getElementById('address'),
     addrEltAlt = document.getElementById('B_address'),
     targetAddr,
@@ -1359,20 +1378,49 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     targetCity,
     zipElt = document.getElementById('zipcode'),
     zipEltAlt = document.getElementById('B_zipcode'),
-    targetZip;
+    targetZip,
+    selectList = document.getElementsByName('sort1'),
+    pstatNotice = document.createElement('div'),
+    pstatNoticeAlt = document.createElement('div'),
+    openFactFinder = document.createElement('div');
 
   // Add event listeners to the primary address and city fields
-  addrElt.addEventListener('blur', function() {
-    if (addrElt.value && cityElt.value) {
-      queryPSTAT(false);
-    }
-  });
+  if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
+    addrElt.addEventListener('blur', function() {
+      if (addrElt.value && cityElt.value) {
+        queryPSTAT(false);
+      }
+    });
 
-  cityElt.addEventListener('blur', function() {
-    if (addrElt.value && cityElt.value) {
-      queryPSTAT(false);
-    }
-  });
+    cityElt.addEventListener('blur', function() {
+      if (addrElt.value && cityElt.value) {
+        queryPSTAT(false);
+      }
+    });
+
+    // Style the notification elements
+    pstatNotice.id = "pstatNotice";
+    pstatNoticeAlt.id = "pstatNoticeAlt";
+    openFactFinder.id = "openFactFinder";
+    openFactFinder.textContent = "Click to search American Fact Finder";
+    pstatNotice.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
+    pstatNoticeAlt.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
+    openFactFinder.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;color:' +
+        pstatMsg.SEARCHING + ';cursor:pointer;display:none;');
+
+    openFactFinder.addEventListener('click', function() {
+      browser.runtime.sendMessage({
+        "key": "openFactFinder",
+        "address": cleanAddr(targetAddr, false),
+        "city": getCity(targetCity, true)
+      });
+    });
+
+    // Append notification elements to their respective address fields
+    addrElt.parentElement.appendChild(pstatNotice);
+    addrEltAlt.parentElement.appendChild(pstatNoticeAlt);
+  }
+
 
   /**
    * Queries the US Census Geocoder, American Fact Finder, and a database of
@@ -1383,18 +1431,73 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
    *   primary or alternate address
    */
   var queryPSTAT = function(findAltPSTAT) {
+    var initialRejectMsg = "Unknown error occured.";
 
     targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
     targetCity = findAltPSTAT ? cityEltAlt : cityElt;
-    targetZip = findAltPSTAT ? zipeltAlt : zipElt;
+    targetZip = findAltPSTAT ? zipEltAlt : zipElt;
+
+    openFactFinder.style.display = "none";
+    pstatMsg.send(pstatMsg.SEARCHING, "Finding PSTAT...", findAltPSTAT);
 
     browser.runtime.sendMessage({
       "key": "queryGeocoder",
       "address": targetAddr.value,
-      "addressURI": cleanAddr(targetAddr),
-      "city": getCity(targetCity)
-    }).then(response => {
-      console.log(response);
+      "addressURI": cleanAddr(targetAddr, true),
+      "city": getCity(targetCity, true)
+    }).then(result => {
+      if (result.key === "returnCensusData") {
+        targetZip.value = result.zip;
+
+        if (result.value) {
+          selectList[0].value = result.value;
+        } else {
+          selectList[0].value = pstats.find(result.county,result.countySub,result.censusTract);
+        }
+
+        pstatMsg.send(pstatMsg.SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
+      }
+    }, reject => {
+      selectList[0].value = "X-UND";
+      initialRejectMsg = reject.message;
+    }).then(() => {
+      if (selectList[0].value === "X-UND") {
+        browser.runtime.sendMessage({
+          "key": "queryAlderDists",
+          "address": targetAddr.value,
+          "code": targetCity.value.toLowerCase().substring(0,3)
+        }).then(result => {
+          if (result.value) {
+            selectList[0].value = result.value;
+          }
+
+          if (result.zip) {
+            targetZip.value = result.zip;
+          }
+
+          pstatMsg.send(pstatMsg.SUCCESS,
+              "PSTAT Matched with: " + decodeURI(targetAddr.value).toUpperCase(),
+              findAltPSTAT);
+        }, reject => {
+          pstatMsg.send(pstatMsg.ERROR, "PSTAT Error: " + initialRejectMsg, findAltPSTAT);
+        }).then(() => {
+          if (selectList[0].value === "X-UND") {
+            openFactFinder.style.display = 'block';
+            if (findAltPSTAT) {
+              addrEltAlt.parentElement.appendChild(openFactFinder);
+            } else {
+              addrElt.parentElement.appendChild(openFactFinder);
+            }
+          }
+        });
+      }
     });
-  }
+  };
+
+  // Listen for alternate address PSTAT request
+  browser.runtime.onMessage.addListener(message => {
+    if (message.key === "findAlternatePSTAT") {
+      queryPSTAT(true);
+    }
+  })
 }
