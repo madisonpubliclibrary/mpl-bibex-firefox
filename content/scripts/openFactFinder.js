@@ -19,8 +19,8 @@ browser.runtime.onMessage.addListener(message => {
             state.value = "Wisconsin";
             submit.click();
           }
-        }, 350);
+        }, 500);
       }
-    }, 200);
+    }, 300);
   }
 });
