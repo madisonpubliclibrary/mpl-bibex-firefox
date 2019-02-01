@@ -1291,10 +1291,6 @@ var PSTATS = function() {
 };
 
 var Messenger = function() {
-  this.SEARCHING = "#4A90D9";
-  this.SUCCESS = "#00c000";
-  this.ERROR = "#c00c00";
-
   this.send = function(type, message, altPSTAT) {
     var pstatNotice = document.getElementById('pstatNotice'),
       pstatNoticeAlt = document.getElementById('pstatNoticeAlt'),
@@ -1365,6 +1361,11 @@ var getCity = function(cityElt, encodeForURI) {
   return "";
 }
 
+// Message colors
+const MSG_SEARCHING = "#337AB7",
+  MSG_SUCCESS = "#00c000",
+  MSG_ERROR = "#c00c00";
+
 // Only execute script in the patron edit page
 if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
   // Variables for PSTAT selection
@@ -1382,7 +1383,10 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     selectList = document.getElementsByName('sort1'),
     pstatNotice = document.createElement('div'),
     pstatNoticeAlt = document.createElement('div'),
-    openFactFinder = document.createElement('div');
+    openFactFinder = document.createElement('div'),
+    nearestLib = document.createElement('div'),
+    mapRegionList = document.createElement('select'),
+    gmapResponse = document.createElement('div');
 
   // Add event listeners to the primary address and city fields
   if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
@@ -1406,7 +1410,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     pstatNotice.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
     pstatNoticeAlt.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
     openFactFinder.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;color:' +
-        pstatMsg.SEARCHING + ';cursor:pointer;display:none;');
+        MSG_SEARCHING + ';cursor:pointer;display:none;');
 
     openFactFinder.addEventListener('click', function() {
       browser.runtime.sendMessage({
@@ -1421,7 +1425,6 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     addrEltAlt.parentElement.appendChild(pstatNoticeAlt);
   }
 
-
   /**
    * Queries the US Census Geocoder, American Fact Finder, and a database of
    * PSTAT exceptions and aldermanic districts to determine the proper "sort 1"
@@ -1431,14 +1434,27 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
    *   primary or alternate address
    */
   var queryPSTAT = function(findAltPSTAT) {
-    var initialRejectMsg = "Unknown error occured.";
+    var initialRejectMsg = "Unknown error occured.",
+      branchList = document.getElementById('branchcode'),
+      madison = madison = document.createElement('option'),
+      counties = counties = document.createElement('optgroup'),
+      adams = document.createElement('option'),
+      columbia = document.createElement('option'),
+      dane = document.createElement('option'),
+      green = document.createElement('option'),
+      portage = document.createElement('option'),
+      sauk = document.createElement('option'),
+      wood = document.createElement('option'),
+      scls = document.createElement('option');
 
     targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
     targetCity = findAltPSTAT ? cityEltAlt : cityElt;
     targetZip = findAltPSTAT ? zipEltAlt : zipElt;
 
     openFactFinder.style.display = "none";
-    pstatMsg.send(pstatMsg.SEARCHING, "Finding PSTAT...", findAltPSTAT);
+    gmapResponse.style.display = "none";
+    toggleGMapSearch(false);
+    pstatMsg.send(MSG_SEARCHING, "Finding PSTAT...", findAltPSTAT);
 
     browser.runtime.sendMessage({
       "key": "queryGeocoder",
@@ -1455,7 +1471,8 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
           selectList[0].value = pstats.find(result.county,result.countySub,result.censusTract);
         }
 
-        pstatMsg.send(pstatMsg.SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
+        pstatMsg.send(MSG_SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
+        toggleGMapSearch(true);
       }
     }, reject => {
       selectList[0].value = "X-UND";
@@ -1475,11 +1492,12 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
             targetZip.value = result.zip;
           }
 
-          pstatMsg.send(pstatMsg.SUCCESS,
+          pstatMsg.send(MSG_SUCCESS,
               "PSTAT Matched with: " + decodeURI(targetAddr.value).toUpperCase(),
               findAltPSTAT);
+          toggleGMapSearch(true);
         }, reject => {
-          pstatMsg.send(pstatMsg.ERROR, "PSTAT Error: " + initialRejectMsg, findAltPSTAT);
+          pstatMsg.send(MSG_ERROR, "PSTAT Error: " + initialRejectMsg, findAltPSTAT);
         }).then(() => {
           if (selectList[0].value === "X-UND") {
             openFactFinder.style.display = 'block';
@@ -1492,6 +1510,105 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
         });
       }
     });
+
+    // Build Google Map elements
+    nearestLib.id = "nearestLib";
+    nearestLib.textContent = "Click to find closest location within...";
+    nearestLib.style = "margin-top:1em;margin-left:118px;cursor:pointer;color:#337AB7;"+
+        "font-size:1.25em;font-weight:bold;font-style:italic;display:none";
+    nearestLib.onmouseover = function() {
+      document.getElementById('nearestLib').style.color = "#4A90D9";
+    };
+    nearestLib.onmouseout = function() {
+      document.getElementById('nearestLib').style.color = "#337AB7";
+    };
+
+    mapRegionList.id = "mapRegionList";
+    mapRegionList.style = "margin-left:25px;cursor:pointer;display:none;";
+
+    gmapResponse.id = "gmapResponse";
+    gmapResponse.style = "margin-top:1em;margin-left:118px;font-size:1.25em;" +
+        "font-weight:bold;font-style:italic;display:none";
+
+    madison.textContent = "Madison";
+    madison.value = "MPL";
+    madison.selected = true;
+    mapRegionList.appendChild(madison);
+
+    counties.label = "Counties";
+
+    adams.textContent = "Adams County";
+    adams.value = "Adams";
+    counties.appendChild(adams);
+
+    columbia.textContent = "Columbia County";
+    columbia.value = "Columbia";
+    counties.appendChild(columbia);
+
+    dane.textContent = "Dane County";
+    dane.value = "Dane";
+    counties.appendChild(dane);
+
+    green.textContent = "Green County";
+    green.value = "Green";
+    counties.appendChild(green);
+
+    portage.textContent = "Portage County";
+    portage.value = "Portage";
+    counties.appendChild(portage);
+
+    sauk.textContent = "Sauk County";
+    sauk.value = "Sauk";
+    counties.appendChild(sauk);
+
+    wood.textContent = "Wood County";
+    wood.value = "Wood";
+    counties.appendChild(wood);
+
+    mapRegionList.appendChild(counties);
+
+    scls.textContent = "SCLS";
+    scls.value = "SCLS";
+    mapRegionList.appendChild(scls);
+
+    nearestLib.onclick = function() {
+      var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
+
+      browser.runtime.sendMessage({
+        "key": "findNearestLib",
+        "address": encodeURI(cleanAddr(targetAddr, false) + ", " +
+            targetCity.value.toLowerCase()),
+        "selected": selected
+      }).then(result => {
+        branchList.value = result[0];
+        showGMapResponse("Closest Library: " + result[0], MSG_SUCCESS);
+      }, reject => {
+        showGMapResponse(reject.message, MSG_ERROR);
+      });
+    };
+
+    branchList.parentElement.appendChild(gmapResponse);
+    branchList.parentElement.appendChild(nearestLib);
+    branchList.parentElement.appendChild(mapRegionList);
+  };
+
+  const toggleGMapSearch = function(display) {
+    if (display) {
+      nearestLib.style.display = 'inline-block';
+      mapRegionList.style.display = 'inline-block';
+    } else {
+      nearestLib.style.display = 'none';
+      mapRegionList.style.display = 'none';
+    }
+  };
+
+  const showGMapResponse = function(msg, msgColor) {
+    if (msg) {
+      gmapResponse.textContent = msg;
+      gmapResponse.style.color = msgColor;
+      gmapResponse.style.display = "block";
+      toggleGMapSearch(false);
+    }
   };
 
   // Listen for alternate address PSTAT request
