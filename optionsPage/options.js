@@ -1,6 +1,5 @@
 var skin = document.getElementById("skin"),
-  patronMsg = document.getElementById("patronMsg"),
-  validAddr = document.getElementById("validAddr"),
+  parseAddr = document.getElementById("parseAddr"),
   restrictPatronFields = document.getElementById("restrictPatronFields"),
   updateAccountType = document.getElementById("updateAccountType"),
   cdams = document.getElementById("cdams"),
@@ -55,8 +54,7 @@ var skin = document.getElementById("skin"),
   otherCodes = ["vga", "vgj", "vgy", "soa", "soawl", "soj"],
   defaultOptions = {
     "skin": "MAD",
-    "patronMsg": true,
-    "validAddr": true,
+    "parseAddr": true,
     "restrictPatronFields": true,
     "dueDateToggle": true,
     "updateAccountType": true,
@@ -90,8 +88,7 @@ function setDefaultOptions() {
 function restoreOptions() {
   browser.storage.sync.get().then((res) => {
     skin.value = res.skin;
-    patronMsg.checked = res.patronMsg;
-    validAddr.checked = res.validAddr;
+    parseAddr.checked = res.parseAddr;
     restrictPatronFields.checked = res.restrictPatronFields;
     updateAccountType.checked = res.updateAccountType;
     cdams.checked = res.cdams;
@@ -212,11 +209,8 @@ document.getElementById("skin").addEventListener('change', function() {
     browser.runtime.sendMessage({key: "updateExtensionIcon"});
   });
 });
-document.getElementById("patronMsgSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({patronMsg: patronMsg.checked});
-});
-document.getElementById("validAddrSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({validAddr: validAddr.checked});
+document.getElementById("parseAddrSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({parseAddr: parseAddr.checked});
 });
 document.getElementById("restrictPatronFieldsSwitch").addEventListener('click', function() {
   browser.storage.sync.set({restrictPatronFields: restrictPatronFields.checked});

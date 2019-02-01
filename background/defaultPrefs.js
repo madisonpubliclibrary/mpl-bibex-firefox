@@ -2,11 +2,8 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('skin')) {
     browser.storage.sync.set({skin: "MAD"});
   }
-  if (!res.hasOwnProperty('patronMsg')) {
-    browser.storage.sync.set({patronMsg: true});
-  }
-  if (!res.hasOwnProperty('validAddr')) {
-    browser.storage.sync.set({validAddr: true});
+  if (!res.hasOwnProperty('parseAddr')) {
+    browser.storage.sync.set({parseAddr: true});
   }
   if (!res.hasOwnProperty('restrictPatronFields')) {
     browser.storage.sync.set({restrictPatronFields: true});
