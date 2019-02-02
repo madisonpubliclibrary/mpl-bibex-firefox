@@ -63,6 +63,28 @@
         </table>
       </div>
       <div class="option">
+        <h1>Receipt Font Size</h1>
+        <select id="receiptFont">
+          <option value="MPL">MPL (36px)</option>
+          <option value="MOO">MOO (28px)</option>
+        </select>
+        <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
+      </div>
+      <div class="option">
+        <h1>Sunday Dropbox Mode</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="sundayDropboxSwitch">
+                <input type="checkbox" id="sundayDropbox">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="sundayDropbox">Automatically checks "Dropbox Mode" on Sundays. If enabled, unchecking the box for dropbox mode on Sundays will disable it for 3 minutes (unless manually enabled).</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
         <h1>Separate Hold Shelf Action List</h1>
         <p>On the Hold Shelf Action List, you can select from the list of collection codes below to filter those materials into a separate alphabetical list below the standard list of lapsed holds. This is useful for libraries who shelve their CDs or other AV materials separate from their other holds.</p>
         <fieldset>
@@ -308,28 +330,6 @@
             </tr>
           </table>
         </fieldset>
-      </div>
-      <div class="option">
-        <h1>Receipt Font Size</h1>
-        <select id="receiptFont">
-          <option value="MPL">MPL (36px)</option>
-          <option value="MOO">MOO (28px)</option>
-        </select>
-        <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
-      </div>
-      <div class="option">
-        <h1>Sunday Dropbox Mode</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="sundayDropboxSwitch">
-                <input type="checkbox" id="sundayDropbox">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="sundayDropbox">Automatically checks "Dropbox Mode" on Sundays. If enabled, unchecking the box for dropbox mode on Sundays will disable it for 3 minutes (unless manually enabled).</label></td>
-          </tr>
-        </table>
       </div>
       <div class="option">
         <h1>Customize Action Button Shortcut Links</h1>
