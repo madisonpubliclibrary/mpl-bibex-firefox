@@ -170,6 +170,50 @@ var SCLSLibs = function() {
   };
 };
 
+// Create and handle context menu item for printing barcodes
+// and for the problem item form
+browser.contextMenus.create({
+  "id": "print-barcode",
+  "title": "Print Barcode",
+  "contexts": ["link","selection"]
+});
+
+/*browser.contextMenus.create({
+  "id": "problem-item-form",
+  "title": "Use Barcode in Problem Item Form",
+  "contexts": ["link","selection"]
+});*/
+
+browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "print-barcode") {
+    var barcode = info.selectionText ? info.selectionText :
+        info.linkText ? info.linkText : null;
+
+    if (barcode && barcode.match(/[0-9]{14}/g) &&
+        barcode.match(/[0-9]{14}/g).length === 1) {
+      barcode = /[0-9]{14}/.exec(barcode)[0];
+
+      browser.storage.sync.get('receiptFont').then(res => {
+        if (!res.hasOwnProperty('receiptFont')) {
+          res.receiptFont = "36px";
+        }
+
+console.log("made it here");
+        browser.tabs.create({
+          "url": browser.runtime.getURL("/printBarcode/printBarcode.html?barcode=" + barcode + "&fontSize=" + res.receiptFont),
+          "active": false
+        }).then(tab => {
+          setTimeout(() => {
+            browser.tabs.remove(tab.id);
+          });
+        });
+      });
+    }
+  } else if (info.menuItemId === "problem-item-form") {
+
+  }
+});
+
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
   browser.storage.sync.get().then(res => {
@@ -198,6 +242,16 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser.tabs.executeScript({
         file: "/browserAction/scripts/addPaymentPlanNote.js",
         allFrames: true
+      });
+      break;
+    case "printBarcode":
+      browser.storage.sync.get('receiptFont').then(res => {
+        var fontSize = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36";
+
+        browser.tabs.create({
+          "url": "/printBarcode/printBarcode.html",
+          "active": false
+        });
       });
       break;
     case "queryGeocoder":

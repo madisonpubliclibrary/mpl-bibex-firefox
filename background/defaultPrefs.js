@@ -108,7 +108,7 @@ browser.storage.sync.get().then((res) => {
     browser.storage.sync.set({sepOther: false});
   }
   if (!res.hasOwnProperty('receiptFont')) {
-    browser.storage.sync.set({receiptFont: "MPL"});
+    browser.storage.sync.set({receiptFont: "36px"});
   }
   if (!res.hasOwnProperty('sundayDropbox')) {
     browser.storage.sync.set({sundayDropbox: true});
