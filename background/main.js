@@ -172,19 +172,19 @@ var SCLSLibs = function() {
 
 // Create and handle context menu item for printing barcodes
 // and for the problem item form
-browser.contextMenus.create({
+browser.menus.create({
   "id": "print-barcode",
   "title": "Print Barcode",
   "contexts": ["link","selection"]
 });
 
-/*browser.contextMenus.create({
+browser.menus.create({
   "id": "problem-item-form",
   "title": "Use Barcode in Problem Item Form",
   "contexts": ["link","selection"]
-});*/
+});
 
-browser.contextMenus.onClicked.addListener((info, tab) => {
+browser.menus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "print-barcode") {
     var barcode = info.selectionText ? info.selectionText :
         info.linkText ? info.linkText : null;
@@ -198,14 +198,13 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
           res.receiptFont = "36px";
         }
 
-console.log("made it here");
         browser.tabs.create({
-          "url": browser.runtime.getURL("/printBarcode/printBarcode.html?barcode=" + barcode + "&fontSize=" + res.receiptFont),
+          "url": "/printBarcode/printBarcode.html?barcode=" + barcode + "&fontSize=" + res.receiptFont,
           "active": false
         }).then(tab => {
           setTimeout(() => {
             browser.tabs.remove(tab.id);
-          });
+          }, 1000);
         });
       });
     }
