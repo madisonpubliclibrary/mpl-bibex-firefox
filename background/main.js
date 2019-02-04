@@ -170,14 +170,7 @@ var SCLSLibs = function() {
   };
 };
 
-// Create and handle context menu item for printing barcodes
-// and for the problem item form
-browser.menus.create({
-  "id": "print-barcode",
-  "title": "Print Barcode",
-  "contexts": ["link","selection"]
-});
-
+// Create and handle context menu item for the problem item form
 browser.menus.create({
   "id": "problem-item-form",
   "title": "Use Barcode in Problem Item Form",
@@ -185,30 +178,7 @@ browser.menus.create({
 });
 
 browser.menus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "print-barcode") {
-    var barcode = info.selectionText ? info.selectionText :
-        info.linkText ? info.linkText : null;
-
-    if (barcode && barcode.match(/[0-9]{14}/g) &&
-        barcode.match(/[0-9]{14}/g).length === 1) {
-      barcode = /[0-9]{14}/.exec(barcode)[0];
-
-      browser.storage.sync.get('receiptFont').then(res => {
-        if (!res.hasOwnProperty('receiptFont')) {
-          res.receiptFont = "36px";
-        }
-
-        browser.tabs.create({
-          "url": "/printBarcode/printBarcode.html?barcode=" + barcode + "&fontSize=" + res.receiptFont,
-          "active": false
-        }).then(tab => {
-          setTimeout(() => {
-            browser.tabs.remove(tab.id);
-          }, 1000);
-        });
-      });
-    }
-  } else if (info.menuItemId === "problem-item-form") {
+  if (info.menuItemId === "problem-item-form") {
 
   }
 });
@@ -219,10 +189,14 @@ browser.webNavigation.onCompleted.addListener(details => {
     if (!res.hasOwnProperty('restrictPatronFields') ||
         (res.hasOwnProperty('restrictPatronFields') && res.restrictPatronFields)) {
       browser.tabs.executeScript(details.tabId, {
-        file: "/content/scripts/opt/restrictPatronFields.js",
-        allFrames: true
+        "file": "/content/scripts/opt/restrictPatronFields.js",
+        "allFrames": true
       });
     }
+  });
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/printPatronBarcode.js"
   });
 });
 
@@ -233,23 +207,27 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({
-        file: "/browserAction/scripts/addLostCardNote.js",
-        allFrames: true
+        "file": "/browserAction/scripts/addLostCardNote.js",
+        "allFrames": true
       });
       break;
     case "addPaymentPlanNote":
       browser.tabs.executeScript({
-        file: "/browserAction/scripts/addPaymentPlanNote.js",
-        allFrames: true
+        "file": "/browserAction/scripts/addPaymentPlanNote.js",
+        "allFrames": true
       });
       break;
     case "printBarcode":
       browser.storage.sync.get('receiptFont').then(res => {
-        var fontSize = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36";
+        var receiptFont = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36px";
 
         browser.tabs.create({
-          "url": "/printBarcode/printBarcode.html",
+          "url": "/printBarcode/printBarcode.html?barcode=" + request.barcode + "&fontSize=" + receiptFont,
           "active": false
+        }).then(tab => {
+          setTimeout(() => {
+            browser.tabs.remove(tab.id);
+          }, 1000);
         });
       });
       break;
@@ -364,8 +342,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "alternatePSTAT":
       browser.tabs.query({
-        currentWindow: true,
-        active: true
+        "currentWindow": true,
+        "active": true
       }).then(tabs => {
         for (let tab of tabs) {
           browser.tabs.sendMessage(tab.id, {
