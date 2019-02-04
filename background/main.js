@@ -193,6 +193,13 @@ browser.webNavigation.onCompleted.addListener(details => {
         "allFrames": true
       });
     }
+    if (!res.hasOwnProperty('parseAddr') ||
+        res.hasOwnProperty('parseAddr') && res.parseAddr) {
+      browser.tabs.executeScript(details.tabId, {
+        "file": "/content/scripts/opt/parsePatronAddr",
+        "allFrames": true
+      });
+    }
   });
 
   browser.tabs.executeScript(details.tabId, {

@@ -1386,7 +1386,8 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     openFactFinder = document.createElement('div'),
     nearestLib = document.createElement('div'),
     mapRegionList = document.createElement('select'),
-    gmapResponse = document.createElement('div');
+    gmapResponse = document.createElement('div'),
+    lnBrk = document.createElement('br');
 
   // Add event listeners to the primary address and city fields
   if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
@@ -1451,8 +1452,9 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     targetCity = findAltPSTAT ? cityEltAlt : cityElt;
     targetZip = findAltPSTAT ? zipEltAlt : zipElt;
 
-    openFactFinder.style.display = "none";
-    gmapResponse.style.display = "none";
+    lnBrk.style.display = 'none';
+    openFactFinder.style.display = 'none';
+    gmapResponse.style.display = 'none';
     toggleGMapSearch(false);
     pstatMsg.send(MSG_SEARCHING, "Finding PSTAT...", findAltPSTAT);
 
@@ -1514,7 +1516,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     // Build Google Map elements
     nearestLib.id = "nearestLib";
     nearestLib.textContent = "Click to find closest location within...";
-    nearestLib.style = "margin-top:1em;margin-left:118px;cursor:pointer;color:#337AB7;"+
+    nearestLib.style = "margin-top:0.8em;margin-left:118px;cursor:pointer;color:#337AB7;"+
         "font-size:1.25em;font-weight:bold;font-style:italic;display:none";
     nearestLib.onmouseover = function() {
       document.getElementById('nearestLib').style.color = "#4A90D9";
@@ -1527,7 +1529,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     mapRegionList.style = "margin-left:25px;cursor:pointer;display:none;";
 
     gmapResponse.id = "gmapResponse";
-    gmapResponse.style = "margin-top:1em;margin-left:118px;font-size:1.25em;" +
+    gmapResponse.style = "margin-top:0.8em;margin-left:118px;font-size:1.25em;" +
         "font-weight:bold;font-style:italic;display:none";
 
     madison.textContent = "Madison";
@@ -1587,6 +1589,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
       });
     };
 
+    branchList.parentElement.appendChild(lnBrk);
     branchList.parentElement.appendChild(gmapResponse);
     branchList.parentElement.appendChild(nearestLib);
     branchList.parentElement.appendChild(mapRegionList);
@@ -1594,9 +1597,11 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
 
   const toggleGMapSearch = function(display) {
     if (display) {
+      lnBrk.style.display = 'block';
       nearestLib.style.display = 'inline-block';
       mapRegionList.style.display = 'inline-block';
     } else {
+      lnBrk.style.display = 'none';
       nearestLib.style.display = 'none';
       mapRegionList.style.display = 'none';
     }
@@ -1604,6 +1609,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
 
   const showGMapResponse = function(msg, msgColor) {
     if (msg) {
+      lnBrk.style.display = 'block';
       gmapResponse.textContent = msg;
       gmapResponse.style.color = msgColor;
       gmapResponse.style.display = "block";
