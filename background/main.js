@@ -196,7 +196,7 @@ browser.webNavigation.onCompleted.addListener(details => {
     if (!res.hasOwnProperty('parseAddr') ||
         res.hasOwnProperty('parseAddr') && res.parseAddr) {
       browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/parsePatronAddr",
+        "file": "/content/scripts/opt/parsePatronAddr.js",
         "allFrames": true
       });
     }
@@ -419,7 +419,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           request.address + "&destinations=" + scls.getURI(request.selected);
 
       return fetch(mapURL, {"method": "GET"}).then(response => {
-        if(!response.ok) {
+        if (!response.ok) {
           throw new Error('[maps.googleapis.com] HTTP error, status = ' + response.status);
         }
         return response.json();
@@ -441,6 +441,16 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           else if (a[1] > b[1]) return 1;
           else return 0;
         })[0]);
+      });
+      break;
+    case "parsePatronAddr":
+      const madAddrURL = "https://mpl-bibex.lrschneider.com/madAddr";
+
+      return fetch(madAddrURL, {"method": "GET"}).then(response => {
+        if (!response.ok) {
+          throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
+        }
+        return response.json();
       });
       break;
     case "getPatronData":
