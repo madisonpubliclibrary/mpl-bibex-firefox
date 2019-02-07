@@ -1,6 +1,11 @@
 // If this is the patron edit frame
 if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
   var inputs = document.querySelectorAll('input[type=text]'),
+    patronForm = document.getElementById('entryform'),
+    enableOpts = document.createElement('input'),
+    enableOptsLabel = document.createElement('label'),
+    enableOptsWrapper = document.createElement('div'),
+    patronType = document.getElementById('categorycode'),
     unusedFields = [
       'address2',
       'select_city',
@@ -41,4 +46,73 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
       'altcontactzipcode',
       'altcontactphone'
     ];
+
+  function toggleUnusedFields(fieldIdArr, enable) {
+    if (enable) {
+      for (let id of fieldIdArr) {
+        let elt = document.getElementById(id);
+        if (elt) {
+          elt.disabled = false;
+          elt.style.backgroundColor = '';
+        }
+      }
+    } else {
+      for (let id of fieldIdArr) {
+        let elt = document.getElementById(id);
+        if (elt) {
+          elt.disabled = true;
+          elt.style.backgroundColor = "#cecece";
+        }
+      }
+    }
+  };
+
+  if (patronForm) {
+    enableOptsLabel.setAttribute("for", "enableOpts");
+    enableOptsLabel.style.display = "inline-block";
+    enableOptsLabel.style.fontWeight = "bold";
+    enableOptsLabel.textContent = "Enable rarely used input fields:";
+
+    enableOpts.id = "enableOpts";
+    enableOpts.type = "checkbox";
+    enableOpts.checked = true;
+    enableOpts.style.marginLeft = "20px";
+    enableOpts.style.display = "inline-block";
+    enableOpts.addEventListener("click", function() {
+      var patronType = document.getElementById('categorycode');
+
+      if (this.checked) {
+        // Enable rarely used fields
+        toggleUnusedFields(unusedFields, true);
+
+        // Enable rarely used WEB-USE fields
+        toggleUnusedFields(unusedForWebUse, true);
+      } else {
+        // Disable rarely used fields
+        toggleUnusedFields(unusedFields, false);
+
+        // Disable rarely used WEB-USE fields
+        if (patronType && patronType.value === "WEB") {
+          toggleUnusedFields(unusedForWebUse, false);
+        }
+      }
+    });
+
+    enableOptsWrapper.appendChild(enableOptsLabel);
+    enableOptsWrapper.appendChild(enableOpts);
+    enableOptsWrapper.style.marginLeft = "40px";
+    patronForm.insertBefore(enableOptsWrapper, patronForm.children[0]);
+
+    patronType.addEventListener("change", function() {
+      if (!enableOpts.checked && patronType.value === "WEB") {
+        toggleUnusedFields(unusedForWebUse, false);
+      } else if (!enableOpts.checked) {
+        toggleUnusedFields(unusedForWebUse, true);
+      }
+    });
+
+    // Trigger event; disable fields
+    enableOpts.click();
+  }
 }
+undefined;
