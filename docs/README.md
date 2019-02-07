@@ -2,7 +2,7 @@
 
 | Current Version | Supported Browsers<br>(Click to Install)    | Author          |
 | :-------------: | :-----------------------------------------: | :-------------: |
-| 0.0.1           | Firefox | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| <br>0.0.1           | <br>Firefox | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to PTFS's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of the South Central Library System, and, while not supported by SCLS, it is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
 
