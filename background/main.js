@@ -200,6 +200,15 @@ browser.webNavigation.onCompleted.addListener(details => {
         "file": "/content/scripts/opt/parsePatronAddr.js",
         "allFrames": true
       });
+
+      if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getUTCDay() === 0) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/sundayDropbox.js",
+          "allFrames": true
+        });
+      } else {
+        browser.storage.sync.set({"sundayDropboxPaused": false});
+      }
     }
   });
 

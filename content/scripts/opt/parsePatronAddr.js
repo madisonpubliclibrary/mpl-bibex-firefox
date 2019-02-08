@@ -81,8 +81,12 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     }
   }
 
-  function deleteMsgNotice() {
+  function deleteLUNotice() {
     alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
+  }
+
+  function deleteDormNotice() {
+    alert('Please delete the circulation note regarding the patron\'s previous dorm address')
   }
 
   var parseAddr = function() {
@@ -160,7 +164,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
               }
 
               if (bn.value.match(/Patron's account is Limited Use due to temporary residence/g).length > 1) {
-                deleteMsgNotice();
+                deleteLUNotice();
               }
               return;
             }
@@ -173,7 +177,9 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
         }
 
         if (bn.value.includes("Patron's account is Limited Use due to temporary residence")) {
-          deleteMsgNotice();
+          deleteLUNotice();
+        } else if (bn.value.includes("Special expiration date of 05/15/")) {
+          deleteDormNotice();
         }
 
         if (cc.value === "LU") {

@@ -19,8 +19,8 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [ ] Sort item CKO history
 
 ## Task List (Optional Features)
-- [ ] Parse addresses for dorm/restricted/unacceptable
+- [x] Parse addresses for dorm/restricted/unacceptable
 - [x] Disable rarely used patron fields
 - [x] Separate AV from HSA list
 - [ ] Update account type (JU/LJU -> AD/LU)
-- [ ] Sunday dropbox mode
+- [x] Sunday dropbox mode
