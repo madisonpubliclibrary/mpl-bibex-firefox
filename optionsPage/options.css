@@ -95,8 +95,8 @@ fieldset {
 legend {
   border: 2px solid #444;
   background: #444;
-  color: #ffffff;
-  text-shadow: 1px 1px #000000;
+  color: #fefefe;
+  font-size: 1.25em;
   font-weight: bold;
   border-radius: 5px;
   padding: 3px;

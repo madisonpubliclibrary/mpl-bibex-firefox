@@ -185,6 +185,7 @@ browser.menus.onClicked.addListener((info, tab) => {
 
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
+  // Optional scripts
   browser.storage.sync.get().then(res => {
     if (!res.hasOwnProperty('restrictPatronFields') ||
         (res.hasOwnProperty('restrictPatronFields') && res.restrictPatronFields)) {
@@ -202,8 +203,14 @@ browser.webNavigation.onCompleted.addListener(details => {
     }
   });
 
+  // Inherent scripts
   browser.tabs.executeScript(details.tabId, {
     "file": "/content/scripts/printPatronBarcode.js"
+  });
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/separateHSA.js",
+    "allFrames": true
   });
 });
 

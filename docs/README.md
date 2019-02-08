@@ -15,12 +15,12 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [ ] Problem item form
 - [ ] Fast-add warning
 - [ ] Modify patron messages (card at next CKO & returned (e)mail)
-- [ ] Sort holds by rank (if necessary)
+- [ ] Sort holds by rank (is this necessary in Bibliovation?)
 - [ ] Sort item CKO history
 
 ## Task List (Optional Features)
 - [ ] Parse addresses for dorm/restricted/unacceptable
 - [x] Disable rarely used patron fields
-- [ ] Separate AV from HSA list
+- [x] Separate AV from HSA list
 - [ ] Update account type (JU/LJU -> AD/LU)
 - [ ] Sunday dropbox mode
