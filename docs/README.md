@@ -14,13 +14,13 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [x] GMaps search for closest SCLS location
 - [ ] Problem item form
 - [ ] Fast-add warning
-- [ ] Modify patron messages (card at next CKO & returned (e)mail)
 - [ ] Sort holds by rank (is this necessary in Bibliovation?)
 - [ ] Sort item CKO history
 
 ## Task List (Optional Features)
 - [x] Parse addresses for dorm/restricted/unacceptable
+- [x] Modify patron messages (card at next CKO & returned (e)mail)
 - [x] Disable rarely used patron fields
 - [x] Separate AV from HSA list
-- [ ] Update account type (JU/LJU -> AD/LU)
+- [x] Update account type (JU/LJU -> AD/LU)
 - [x] Sunday dropbox mode

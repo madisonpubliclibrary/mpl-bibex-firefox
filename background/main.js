@@ -194,21 +194,38 @@ browser.webNavigation.onCompleted.addListener(details => {
         "allFrames": true
       });
     }
+
     if (!res.hasOwnProperty('parseAddr') ||
-        res.hasOwnProperty('parseAddr') && res.parseAddr) {
+        (res.hasOwnProperty('parseAddr') && res.parseAddr)) {
       browser.tabs.executeScript(details.tabId, {
         "file": "/content/scripts/opt/parsePatronAddr.js",
         "allFrames": true
       });
+    }
 
-      if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getUTCDay() === 0) {
-        browser.tabs.executeScript(details.tabId, {
-          "file": "/content/scripts/opt/sundayDropbox.js",
-          "allFrames": true
-        });
-      } else {
-        browser.storage.sync.set({"sundayDropboxPaused": false});
-      }
+    if (!res.hasOwnProperty('updateAccountType') ||
+        (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
+      browser.tabs.executeScript(details.tabId, {
+        "file": "/content/scripts/opt/updateAccountType.js",
+        "allFrames": true
+      });
+    }
+
+    if (!res.hasOwnProperty('addPatronNotes') ||
+        (res.hasOwnProperty('addPatronNotes') && res.addPatronNotes)) {
+      browser.tabs.executeScript(details.tabId, {
+        "file": "/content/scripts/opt/patronMessages.js",
+        "allFrames": true
+      });
+    }
+
+    if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getUTCDay() === 0) {
+      browser.tabs.executeScript(details.tabId, {
+        "file": "/content/scripts/opt/sundayDropbox.js",
+        "allFrames": true
+      });
+    } else {
+      browser.storage.sync.set({"sundayDropboxPaused": false});
     }
   });
 

@@ -1,4 +1,4 @@
-if (/bibliovation\.com\/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location.toString())) {
+if (window.location.toString().includes("/cgi-bin/koha/members/memberentry.pl")) {
   // Control-space to save patron record
   document.addEventListener("keydown", function (e) {
     if (e.keyCode === 32 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {

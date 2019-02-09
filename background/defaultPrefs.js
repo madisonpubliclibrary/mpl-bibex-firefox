@@ -11,6 +11,9 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('updateAccountType')) {
     browser.storage.sync.set({"updateAccountType": true});
   }
+  if (!res.hasOwnProperty('addPatronNotes')) {
+    browser.storage.sync.set({"addPatronNotes": true});
+  }
   if (!res.hasOwnProperty("sepAllAV")) {
     browser.storage.sync.set({"sepAllAV": false});
   }

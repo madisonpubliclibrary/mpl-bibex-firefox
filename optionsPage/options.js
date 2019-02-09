@@ -1,6 +1,7 @@
 var skin = document.getElementById("skin"),
   parseAddr = document.getElementById("parseAddr"),
   restrictPatronFields = document.getElementById("restrictPatronFields"),
+  addPatronNotes = document.getElementById("addPatronNotes"),
   updateAccountType = document.getElementById("updateAccountType"),
   avAndOther = document.getElementById("avAndOther"),
   cassette = document.getElementById("cassette"),
@@ -35,6 +36,7 @@ function restoreOptions() {
     parseAddr.checked = res.parseAddr;
     restrictPatronFields.checked = res.restrictPatronFields;
     updateAccountType.checked = res.updateAccountType;
+    addPatronNotes.checked = res.addPatronNotes;
     sepAllAV.checked = res.sepAllAV;
     avAndOther.checked = res.avAndOther;
     cassette.checked = res.cassette;
@@ -86,6 +88,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "restrictPatronFields": true,
     "dueDateToggle": true,
     "updateAccountType": true,
+    "addPatronNotes": true,
     "sepAllAV": false,
     "avAndOther": false,
     "cassette": false,
@@ -118,7 +121,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
 });
 
 // Option update listeners
-document.getElementById("skin").addEventListener('change', function() {
+skin.addEventListener('change', function() {
   browser.storage.sync.set({"skin": skin.value}).then((res) => {
     browser.runtime.sendMessage({"key": "updateExtensionIcon"});
   });
@@ -131,6 +134,9 @@ document.getElementById("restrictPatronFieldsSwitch").addEventListener('click', 
 });
 document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"updateAccountType": updateAccountType.checked});
+});
+document.getElementById("addPatronNotesSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"addPatronNotes": addPatronNotes.checked});
 });
 document.getElementById("sepAllAV").addEventListener('change', function() {
   for (let id of avCodes) {
@@ -174,7 +180,7 @@ document.getElementById("videoSwitch").addEventListener('click', function() {
   checkAllAV();
   browser.storage.sync.set({"video": video.checked});
 });
-document.getElementById("receiptFont").addEventListener('change', function() {
+receiptFont.addEventListener('change', function() {
   browser.storage.sync.set({"receiptFont": receiptFont.value});
 });
 document.getElementById("sundayDropboxSwitch").addEventListener('click', function() {
