@@ -50,6 +50,20 @@
   });
 };
 
+var updatePopup = function() {
+  browser.storage.sync.get(["laptopForm","laptopFormChecked"]).then(res => {
+    if (res.laptopForm) {
+      if (res.laptopFormChecked) {
+        browser.browserAction.setPopup({"popup": "/laptopData/laptopForm.html"});
+      } else {
+        browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
+      }
+    } else {
+      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
+    }
+  });
+};
+
 var SCLSLibs = function() {
   this.data = {
     "MPL": {
@@ -170,6 +184,10 @@ var SCLSLibs = function() {
   };
 };
 
+browser.storage.sync.get(["laptopForm","laptopFormChecked"]).then(res => {
+  updatePopup();
+});
+
 // Create and handle context menu item for the problem item form
 browser.menus.create({
   "id": "problem-item-form",
@@ -178,9 +196,6 @@ browser.menus.create({
 });
 
 browser.menus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "problem-item-form") {
-
-  }
 });
 
 // Load preference-selected function files
@@ -244,6 +259,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "updateExtensionIcon":
       setIcon();
+      break;
+    case "updatePopup":
+      updatePopup();
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({

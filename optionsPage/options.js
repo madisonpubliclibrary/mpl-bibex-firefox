@@ -3,6 +3,7 @@ var skin = document.getElementById("skin"),
   restrictPatronFields = document.getElementById("restrictPatronFields"),
   addPatronNotes = document.getElementById("addPatronNotes"),
   updateAccountType = document.getElementById("updateAccountType"),
+  laptopForm = document.getElementById("laptopForm"),
   avAndOther = document.getElementById("avAndOther"),
   cassette = document.getElementById("cassette"),
   cd = document.getElementById("cd"),
@@ -36,6 +37,7 @@ function restoreOptions() {
     parseAddr.checked = res.parseAddr;
     restrictPatronFields.checked = res.restrictPatronFields;
     updateAccountType.checked = res.updateAccountType;
+    laptopForm.checked = res.laptopForm;
     addPatronNotes.checked = res.addPatronNotes;
     sepAllAV.checked = res.sepAllAV;
     avAndOther.checked = res.avAndOther;
@@ -77,7 +79,7 @@ function checkAllAV() {
   }
 
   sepAllAV.checked = numChecked === avCodes.length;
-  browser.storage.sync.set({sepAllAV: numChecked === avCodes.length});
+  browser.storage.sync.set({"sepAllAV": numChecked === avCodes.length});
 }
 
 // Listener for Set Default Options Button
@@ -89,6 +91,8 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "dueDateToggle": true,
     "updateAccountType": true,
     "addPatronNotes": true,
+    "laptopForm": false,
+    "laptopFormChecked": false,
     "sepAllAV": false,
     "avAndOther": false,
     "cassette": false,
@@ -122,7 +126,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
 
 // Option update listeners
 skin.addEventListener('change', function() {
-  browser.storage.sync.set({"skin": skin.value}).then((res) => {
+  browser.storage.sync.set({"skin": skin.value}).then(() => {
     browser.runtime.sendMessage({"key": "updateExtensionIcon"});
   });
 });
@@ -137,6 +141,14 @@ document.getElementById("updateAccountTypeSwitch").addEventListener('click', fun
 });
 document.getElementById("addPatronNotesSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"addPatronNotes": addPatronNotes.checked});
+});
+document.getElementById("laptopFormSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"laptopForm": laptopForm.checked}).then(() => {
+    browser.runtime.sendMessage({
+      "key": "updatePopup",
+      "laptopForm": laptopForm.checked
+    });
+  });
 });
 document.getElementById("sepAllAV").addEventListener('change', function() {
   for (let id of avCodes) {

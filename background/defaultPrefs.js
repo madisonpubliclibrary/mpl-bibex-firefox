@@ -11,6 +11,12 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('updateAccountType')) {
     browser.storage.sync.set({"updateAccountType": true});
   }
+  if (!res.hasOwnProperty('laptopForm')) {
+    browser.storage.sync.set({"laptopForm": false});
+  }
+  if (!res.hasOwnProperty('laptopFormChecked')) {
+    browser.storage.sync.set({"laptopFormChecked": false});
+  }
   if (!res.hasOwnProperty('addPatronNotes')) {
     browser.storage.sync.set({"addPatronNotes": true});
   }
@@ -49,6 +55,9 @@ browser.storage.sync.get().then((res) => {
   }
   if (!res.hasOwnProperty('sundayDropbox')) {
     browser.storage.sync.set({"sundayDropbox": true});
+  }
+  if(!res.hasOwnProperty('popupWithLaptopCKO')) {
+    browser.storage.sync.set({"popupWithLaptopCKO": false});
   }
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1')) {
     browser.storage.sync.set({

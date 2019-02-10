@@ -1,6 +1,8 @@
 ﻿var paymentPlan = document.getElementById('paymentPlan'),
   lostcard = document.getElementById('lostCard'),
   altPSTAT = document.getElementById('PSTAT2'),
+  laptopForm = document.getElementById("laptopForm"),
+  laptopFormSwitch = document.getElementById("laptopFormSwitch"),
   problemItem = document.getElementById('problemItem'),
   shortcut1 = document.getElementById('shortcut1'),
   shortcut2 = document.getElementById('shortcut2'),
@@ -9,6 +11,12 @@
   shortcut5 = document.getElementById('shortcut5'),
   shortcut6 = document.getElementById('shortcut6'),
   prefs = document.getElementById('prefs');
+
+if (laptopFormSwitch) laptopFormSwitch.addEventListener('click', function() {
+  browser.storage.sync.set({"laptopFormChecked": laptopForm.checked}).then(() => {
+    browser.runtime.sendMessage("updatePopup");
+  });
+});
 
 if (paymentPlan) paymentPlan.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addPaymentPlanNote"});
