@@ -6,18 +6,18 @@
     <link rel="stylesheet" type="text/css" href="popup.css" />
   </head>
   <body>
-    <div id="mainWrapper">
-      <table>
-        <tr>
-          <td>
-            <label class="switch" id="laptopFormSwitch">
-              <input type="checkbox" id="laptopForm">
-              <span class="slider"></span>
-            </label>
-          </td>
-          <td style="padding-bottom:7px;"><label for="laptopForm" style="font-weight:bold;">Laptop Checkout Form</label></td>
-        </tr>
-      </table>
+    <table id="laptopButton">
+      <tr>
+        <td>
+          <label class="switch" id="laptopFormOnSwitch">
+            <input type="checkbox" id="laptopFormOn">
+            <span class="slider"></span>
+          </label>
+        </td>
+        <td style="padding-bottom:7px;"><label for="laptopFormOn" style="font-weight:bold;">Laptop Checkout Form</label></td>
+      </tr>
+    </table>
+    <div id="defaultMenu" class="mainWrapper">
       <h1>Tools</h1>
       <div id="problemItem">SCLS Problem Item Form</div>
       <div id="lostCard">Add Lost Library Card Note</div>
@@ -32,7 +32,13 @@
       <div><a id="shortcut6" href="" target="_blank"></a></div>
     </div>
 
+    <div id="laptopMenu" class="mainWrapper">
+      <h1>Laptop Checkout</h1>
+    </div>
+
     <div id="prefWrapper"><a id="prefs">Extension Preferences</a></div>
+
     <script type="text/javascript" src="popup.js"></script>
+    <script type="text/javascript" src="popupLaptops.js"></script>
   </body>
 </html>

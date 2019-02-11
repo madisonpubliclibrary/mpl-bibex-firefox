@@ -53,11 +53,7 @@
 var updatePopup = function() {
   browser.storage.sync.get(["laptopForm","laptopFormChecked"]).then(res => {
     if (res.laptopForm) {
-      if (res.laptopFormChecked) {
-        browser.browserAction.setPopup({"popup": "/laptopData/laptopForm.html"});
-      } else {
-        browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
-      }
+      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
     } else {
       browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
     }
@@ -184,9 +180,7 @@ var SCLSLibs = function() {
   };
 };
 
-browser.storage.sync.get(["laptopForm","laptopFormChecked"]).then(res => {
-  updatePopup();
-});
+updatePopup();
 
 // Create and handle context menu item for the problem item form
 browser.menus.create({

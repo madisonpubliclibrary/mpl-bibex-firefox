@@ -1,8 +1,6 @@
 ﻿var paymentPlan = document.getElementById('paymentPlan'),
   lostcard = document.getElementById('lostCard'),
   altPSTAT = document.getElementById('PSTAT2'),
-  laptopForm = document.getElementById("laptopForm"),
-  laptopFormSwitch = document.getElementById("laptopFormSwitch"),
   problemItem = document.getElementById('problemItem'),
   shortcut1 = document.getElementById('shortcut1'),
   shortcut2 = document.getElementById('shortcut2'),
@@ -12,31 +10,25 @@
   shortcut6 = document.getElementById('shortcut6'),
   prefs = document.getElementById('prefs');
 
-if (laptopFormSwitch) laptopFormSwitch.addEventListener('click', function() {
-  browser.storage.sync.set({"laptopFormChecked": laptopForm.checked}).then(() => {
-    browser.runtime.sendMessage("updatePopup");
-  });
+paymentPlan.addEventListener('click', function() {
+  browser.runtime.sendMessage({"key": "addPaymentPlanNote"});
 });
 
-if (paymentPlan) paymentPlan.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addPaymentPlanNote"});
+lostcard.addEventListener('click', function() {
+  browser.runtime.sendMessage({"key": "addLostCardNote"});
 });
 
-if (lostcard) lostcard.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addLostCardNote"});
+altPSTAT.addEventListener('click', function() {
+  browser.runtime.sendMessage({"key": "alternatePSTAT"});
 });
 
-if (altPSTAT) altPSTAT.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "alternatePSTAT"});
-});
-
-if (problemItem) problemItem.addEventListener('click', function() {
+problemItem.addEventListener('click', function() {
   browser.tabs.create({
-    url: browser.runtime.getURL("../problemItemForm/problemItemForm.html")
+    "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html")
   });
 });
 
-if (prefs) prefs.addEventListener('click', function() {
+prefs.addEventListener('click', function() {
   browser.runtime.openOptionsPage();
 });
 

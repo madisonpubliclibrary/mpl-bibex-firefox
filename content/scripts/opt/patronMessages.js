@@ -26,7 +26,7 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl") &&
     bnMsg.value = this.options[this.selectedIndex].value;
     if (this.selectedOptions[0].value.includes("Patron has signed Laptop/iPad")) {
       var staffInit = prompt("Enter your initials and library location (e.g. LS/MAD)");
-      bnMsg.value += "(" + staffInit + ")";
+      if (staffInit) bnMsg.value += "(" + staffInit + ")";
     }
   });
 
