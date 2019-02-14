@@ -1,6 +1,8 @@
 if (window.location.toString().includes("cgi-bin/koha/catalogue/issuehistory.pl")) {
   var itemTable = document.getElementById('checkouthistt'),
-    itemRows = [];
+    libCode = window.parent.document.getElementsByClassName('loggedin'),
+    searchResults = document.getElementsByClassName('searchresults')[0].children[0].children[0];
+    itemRows = [],
     h1Elts = document.getElementsByTagName('h1'),
     sortSelect = document.createElement('select'),
     orderSelect = document.createElement('select'),
@@ -17,19 +19,28 @@ if (window.location.toString().includes("cgi-bin/koha/catalogue/issuehistory.pl"
     span2 = document.createElement('span'),
     span3 = document.createElement('span'),
     span4 = document.createElement('span'),
-    span5 = document.createElement('span');
+    span5 = document.createElement('span'),
+    resetTable = false;
 
   var ItemRow = function(htmlTR) {
     this.html = htmlTR;
-    this.ckoDate = new Date(htmlTR.children[0].textContent);
+    this.ckoDate = new Date(htmlTR.children[0].textContent.trim());
     this.name = htmlTR.children[1].textContent.trim();
     this.barcode = htmlTR.children[2].textContent.trim();
     this.owningLibrary = htmlTR.children[3].textContent.trim();
-    this.dueDate = new Date(htmlTR.children[6].textContent);
-    this.returnDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent) : new Date();
+    this.dueDate = new Date(htmlTR.children[6].textContent.trim());
+    this.returnDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent.trim()) : new Date();
   }
 
-  if (itemTable && h1Elts && h1Elts.length > 1) {
+  if (libCode && libCode.length > 0) {
+    libCode = libCode[0].textContent.substr(0,3).toUpperCase();
+    console.log(libCode);
+  }
+
+  if (itemTable && libCode && h1Elts && h1Elts.length > 0) {
+    sortSelect.style.cursor = 'pointer';
+    orderSelect.style.cursor = 'pointer';
+
     ckoDate.value = "ckoDate";
     ckoDate.textContent = "checkout date";
     dueDate.value = "dueDate";
@@ -80,16 +91,31 @@ if (window.location.toString().includes("cgi-bin/koha/catalogue/issuehistory.pl"
     h1Elts[0].parentElement.insertBefore(div2,h1Elts[0].parentElement.children[2]);
 
     function sortItemRows(a,b) {
+      if (groupBC.checked) {
+        if (a.owningLibrary < b.owningLibrary) return -1;
+        else if (a.owningLibrary > b.owningLibrary) return 1;
+        else if (a.barcode < b.barcode) return -1;
+        else if (a.barcode > b.barcode) return 1;
+      }
+
       if (sortSelect.value === "ckoDate") {
-        if (a.returnDate < b.returnDate) return -1 * orderSelect.value;
-        else if (a.returnDate > b.returnDate) return 1 * orderSelect.value;
+        if (a.ckoDate < b.ckoDate) return -1 * orderSelect.value;
+        else if (a.ckoDate > b.ckoDate) return 1 * orderSelect.value;
         else if (a.name < b.name) return -1 * orderSelect.value;
         else if (a.name > b.name) return 1 * orderSelect.value;
         else return 0;
       } else if (sortSelect.value === "dueDate") {
-
+        if (a.dueDate < b.dueDate) return -1 * orderSelect.value;
+        else if (a.dueDate > b.dueDate) return 1 * orderSelect.value;
+        else if (a.name < b.name) return -1 * orderSelect.value;
+        else if (a.name > b.name) return 1 * orderSelect.value;
+        else return 0;
       } else if (sortSelect.value === "retDate") {
-
+        if (a.retDate < b.retDate) return -1 * orderSelect.value;
+        else if (a.retDate > b.retDate) return 1 * orderSelect.value;
+        else if (a.name < b.name) return -1 * orderSelect.value;
+        else if (a.name > b.name) return 1 * orderSelect.value;
+        else return 0;
       }
     }
 
@@ -97,13 +123,56 @@ if (window.location.toString().includes("cgi-bin/koha/catalogue/issuehistory.pl"
       var newBody = document.createElement('tbody');
       itemRows.sort(sortItemRows);
 
-      // TODO: Make new table
+      // Float rows of items owned by the logged in library to the top if grouping barcodes
+      if (groupBC.checked && restrictBC.length !== 14) {
+        itemRows.sort(function(a,b) {
+          if (a.owningLibrary === libCode && b.owningLibrary !== libCode) return -1;
+          else if (a.owningLibrary !== libCode && b.owningLibrary === libCode) return 1;
+          else return 0;
+        });
+      }
 
-      itemTable.tBodies[0] = newBody;
+      for (let row of itemRows) {
+        if (restrictBC.value.length === 14) {
+          if (restrictBC.value === row.barcode) {
+            newBody.appendChild(row.html);
+          }
+        } else {
+          newBody.appendChild(row.html);
+        }
+      }
+
+      // Replace table body
+      itemTable.children[1].remove();
+      itemTable.appendChild(newBody);
+
+      // Update item count
+      var numRows = itemTable.children[1].children.length;
+      if (restrictBC.value.length === 14) {
+        searchResults.textContent = "Item with barcode " + restrictBC.value +
+            " has been checked out " + numRows + " times";
+      } else {
+        searchResults.textContent = "Has been checked out " + numRows + " times";
+      }
     }
 
     for (var tr of itemTable.children[1].children) {
       itemRows.push(new ItemRow(tr));
     }
+
+    sortSelect.addEventListener('change', reloadTable);
+    orderSelect.addEventListener('change', reloadTable);
+    groupBC.addEventListener('change', reloadTable);
+    restrictBC.addEventListener('input', function() {
+      if (this.value.length === 14) {
+        resetTable = true;
+        reloadTable();
+      } else if (resetTable) {
+        resetTable = false;
+        reloadTable();
+      }
+    });
+
+    reloadTable();
   }
 }

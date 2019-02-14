@@ -247,6 +247,11 @@ browser.webNavigation.onCompleted.addListener(details => {
     "file": "/content/scripts/separateHSA.js",
     "allFrames": true
   });
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/sortItemCheckoutHistory.js",
+    "allFrames": true
+  })
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {

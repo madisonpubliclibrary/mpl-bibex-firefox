@@ -14,8 +14,8 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [x] GMaps search for closest SCLS location
 - [ ] Problem item form
 - [ ] Fast-add warning
-- [ ] Sort holds by rank (is this necessary in Bibliovation?)
-- [ ] Sort item CKO history
+- [ ] Sort holds by rank (currently broken in Bibliovation)
+- [x] Sort item CKO history
 
 ## Task List (Optional Features)
 - [x] Parse addresses for dorm/restricted/unacceptable
