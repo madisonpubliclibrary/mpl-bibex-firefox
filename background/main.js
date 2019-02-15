@@ -439,7 +439,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             "zip": zip
           })
         } else if (value) {
-          return Promise.resolve({"value": "value"});
+          return Promise.resolve({"value": value});
         } else {
           throw new Error("");
         }
