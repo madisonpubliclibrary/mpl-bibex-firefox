@@ -95,7 +95,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
         "key": "parsePatronAddr"
       }).then(result => {
         for (let item of result) {
-          var fullAddr = (addr.value + ' ' + addr2.value).trim();
+          var fullAddr = (addr.value + ' ' + addr2.value).trim().replace(/[^\w\s]|_/g, "");
           var regex = new RegExp(item.regex, 'i');
 
           if (regex.test(fullAddr)) {

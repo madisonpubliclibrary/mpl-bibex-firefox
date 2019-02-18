@@ -85,6 +85,10 @@ a:focus {
  border-radius: 50%;
 }
 
+input {
+  display: block; 
+}
+
 input:checked + .slider {
  background-color: #1c6677;
 }

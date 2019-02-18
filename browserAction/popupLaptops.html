@@ -33,15 +33,41 @@
     </div>
 
     <div id="laptopMenu" class="mainWrapper">
-      <h1>Laptop Checkout</h1>
-      <p>Patron Barcode: </p> 
-        <input type-"text" id="barcode" value=" ">
-      <p>Laptop ID: </p>
-        <input type="text" id="laptopId" value=" ">
-      <p>Num of Accessories: </p>
-        <input type="number" id="accessories" min=0 max=4>
-        
-      <input type="submit" value="Submit">
+      <form action="action_page.php" method="GET">
+        <h1>Laptop Checkout</h1>
+          
+        <table>
+          <label for="Barcode">Patron Barcode: </label>
+          <input type-"text" id="anyNumber" name="barcode" maxlength="14" placeholder="29078012345678" required>
+                  
+                    <br>
+            
+          <label for="LaptopId">Laptop/iPad ID: </label>
+          <input type="text" id="laptopId" name="laptopId" list="l1" placeholder="PC1-A1" maxlength="6" required>
+                  <datalist id="l1">
+                    <option>PC1-A1</option>
+                    <option>PC1-A2</option>
+                    <option>PC1-A3</option>
+                    <option>PC1-A4</option>
+                    <option>PC1-A5</option>
+                    <option>PC1-B1</option>
+                    <option>PC1-B2</option>
+                    <option>PC1-B3</option>
+                    <option>PC2-A1</option>
+                    <option>PC2-A2</option>
+                    <option>PC2-A3</option>
+                    <option>PC2-A4</option>
+                    <option>PC2-A5</option>
+                    <option>PC2-B1</option>
+                    <option>PC2-B2</option>
+                  </datalist>
+                 <br>
+          <label for="Accessories">Num of Accessories: </label>
+          <input type="number" id="accessories" name="accessories" min="0" max="4" placeholder="1-4" required>
+        </table>
+            <br>
+          <input type="submit" value="Submit" onClick=alert()>
+       </form>
     </div>
 
     <div id="prefWrapper"><a id="prefs">Extension Preferences</a></div>
