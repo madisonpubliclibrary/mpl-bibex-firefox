@@ -4,7 +4,7 @@ var defaultMenu = document.getElementById('defaultMenu'),
   laptopMenu = document.getElementById('laptopMenu'),
   laptopFormOn = document.getElementById("laptopFormOn"),
   laptopFormOnSwitch = document.getElementById("laptopFormOnSwitch");
-    
+
 
 function updateContent() {
   browser.storage.sync.get("laptopFormChecked").then(res => {
@@ -35,14 +35,12 @@ function setInputFilter(textbox, inputFilter) {
   });
 }
 
-
 updateContent();
 
 laptopFormOnSwitch.addEventListener('click', function() {
   browser.storage.sync.set({"laptopFormChecked": laptopFormOn.checked}).then(updateContent);
 });
 
-
 setInputFilter(document.getElementById("anyNumber"), function(value) {
   return /^\d*$/.test(value); });
-
+});
