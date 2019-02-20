@@ -42,5 +42,5 @@ laptopFormOnSwitch.addEventListener('click', function() {
 });
 
 setInputFilter(document.getElementById("anyNumber"), function(value) {
-  return /^\d*$/.test(value); });
+  return /^\d*$/.test(value);
 });

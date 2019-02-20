@@ -144,10 +144,7 @@ document.getElementById("addPatronNotesSwitch").addEventListener('click', functi
 });
 document.getElementById("laptopFormSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"laptopForm": laptopForm.checked}).then(() => {
-    browser.runtime.sendMessage({
-      "key": "updatePopup",
-      "laptopForm": laptopForm.checked
-    });
+    browser.runtime.sendMessage({"key": "updatePopup"});
   });
 });
 document.getElementById("sepAllAV").addEventListener('change', function() {
