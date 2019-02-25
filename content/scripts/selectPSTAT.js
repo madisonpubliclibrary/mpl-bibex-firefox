@@ -1316,34 +1316,36 @@ var Messenger = function() {
  * @param {boolean} encodeForURI Whether the returned string should be URI encoded
  * @return {string} The cleaned, URI encoded address
  */
-var cleanAddr = function(addrElt, encodeForURI) {
-  var addr = "", addrParts = [];
-  if (addrElt) {
-    addr = addrElt.value.trim().toLowerCase()
-      .replace(/\/./, '')
-      .replace(/ c(ou)?n?ty /, ' co ')
-      .replace(/ n /, ' north ')
-      .replace(/ s /, ' south ')
-      .replace(/ e /, ' east ')
-      .replace(/ w /, ' west ');
+ var cleanAddr = function(addrElt, encodeForURI) {
+   var addr = "", addrElts, stopIdx;
 
-    if (addr.includes("#")) {
-      return addr.split("#")[0];
-    } else {
-      addrParts = addr.split(" ");
-      if (/^ [0-9]+$/.test(addrParts[addrParts.length - 1])) {
-        addrParts.pop();
-      } else if (addrParts.length > 2 &&
-        /^(apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
-        /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
-        addrParts.pop();
-        addrParts.pop();
-      }
-    }
-  }
+   addr = addrElt.value.trim().toUpperCase()
+     .replace(/\/./, '')
+     .replace(/ C(OU)?N?TY /, ' CO ')
+     .replace(/ N /, ' NORTH ')
+     .replace(/ S /, ' SOUTH ')
+     .replace(/ E /, ' EAST ')
+     .replace(/ W /, ' WEST ');
 
-  return encodeForURI ? encodeURI(addrParts.join(" ")) : addrParts.join(" ");
-};
+   addrElts = addr.split(' ');
+
+   for (let i = addrElts.length - 1; i > -1; i--) {
+     if (streetTypes.includes(addrElts[i])) {
+       stopIdx = i;
+       break;
+     }
+   }
+
+   if (stopIdx !== undefined) {
+     addr = "";
+     for (let i = 0; i < stopIdx+1; i++) {
+       addr += addrElts[i] + " ";
+     }
+     addr = addr.slice(0,-1);
+   }
+
+   return encodeForURI ? encodeURI(addr) : addr;
+ };
 
 /**
  * Extracts the city from the city/state input element
