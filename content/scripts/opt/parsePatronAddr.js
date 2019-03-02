@@ -178,7 +178,8 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
 
         if (bn.value.includes("Patron's account is Limited Use due to temporary residence")) {
           deleteLUNotice();
-        } else if (bn.value.includes("Special expiration date of 05/15/")) {
+        }
+        if (bn.value.includes("Special expiration date of 05/15/")) {
           deleteDormNotice();
         }
 
