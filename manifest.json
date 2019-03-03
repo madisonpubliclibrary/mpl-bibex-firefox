@@ -76,5 +76,9 @@
     "*://*.census.gov/*",
     "*://*.googleapis.com/*",
     "*://mpl-bibex.lrschneider.com/*"
+  ],
+
+  "web_accessible_resources": [
+    "/content/img/BibliovationLogo.png"
   ]
 }

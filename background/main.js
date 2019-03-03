@@ -5,45 +5,45 @@
     switch (skin) {
       case "MID":
         browser.browserAction.setIcon({
-          path: {
-            16: "content/img/mid-icon-16.png",
-            32: "content/img/mid-icon-32.png",
-            48: "content/img/mid-icon-48.png",
-            64: "content/img/mid-icon-64.png",
-            128: "content/img/mid-icon-128.png"
+          "path": {
+            "16": "content/img/mid-icon-16.png",
+            "32": "content/img/mid-icon-32.png",
+            "48": "content/img/mid-icon-48.png",
+            "64": "content/img/mid-icon-64.png",
+            "128": "content/img/mid-icon-128.png"
           }
         });
         break;
       case "SCLS":
         browser.browserAction.setIcon({
-          path: {
-            16: "content/img/scls-icon-16.png",
-            32: "content/img/scls-icon-32.png",
-            48: "content/img/scls-icon-48.png",
-            64: "content/img/scls-icon-64.png",
-            128: "content/img/scls-icon-128.png"
+          "path": {
+            "16": "content/img/scls-icon-16.png",
+            "32": "content/img/scls-icon-32.png",
+            "48": "content/img/scls-icon-48.png",
+            "64": "content/img/scls-icon-64.png",
+            "128": "content/img/scls-icon-128.png"
           }
         });
         break;
       case "SUN":
         browser.browserAction.setIcon({
-          path: {
-            16: "content/img/sun-icon-16.png",
-            32: "content/img/sun-icon-32.png",
-            48: "content/img/sun-icon-48.png",
-            64: "content/img/sun-icon-64.png",
-            128: "content/img/sun-icon-128.png"
+          "path": {
+            "16": "content/img/sun-icon-16.png",
+            "32": "content/img/sun-icon-32.png",
+            "48": "content/img/sun-icon-48.png",
+            "64": "content/img/sun-icon-64.png",
+            "128": "content/img/sun-icon-128.png"
           }
         });
         break;
       default:
         browser.browserAction.setIcon({
-          path: {
-            16: "content/img/mpl-icon-16.png",
-            32: "content/img/mpl-icon-32.png",
-            48: "content/img/mpl-icon-48.png",
-            64: "content/img/mpl-icon-64.png",
-            128: "content/img/mpl-icon-128.png"
+          "path": {
+            "16": "content/img/mpl-icon-16.png",
+            "32": "content/img/mpl-icon-32.png",
+            "48": "content/img/mpl-icon-48.png",
+            "64": "content/img/mpl-icon-64.png",
+            "128": "content/img/mpl-icon-128.png"
           }
         });
     }
@@ -251,7 +251,12 @@ browser.webNavigation.onCompleted.addListener(details => {
   browser.tabs.executeScript(details.tabId, {
     "file": "/content/scripts/sortItemCheckoutHistory.js",
     "allFrames": true
-  })
+  });
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/betterLogo.js",
+    "allFrames": true
+  });
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -261,6 +266,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "updatePopup":
       updatePopup();
+      break;
+    case "getLogoURL":
+      return Promise.resolve({"URL": browser.runtime.getURL("/content/img/BibliovationLogo.png")});
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({
