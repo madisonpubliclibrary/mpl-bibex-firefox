@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "author": "Lucas Schneider",
   "description": "PTFS Bibliovation modifications to benefit Wisconsin's South Central Library System",
-  "homepage_url": "http://lrschneider.com/mpl-bibex",
+  "homepage_url": "http://lrschneider.com/mpl-bibex-firefox",
 
   "browser_specific_settings": {
     "gecko": {

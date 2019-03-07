@@ -1,6 +1,6 @@
-﻿var setIcon = function() {
+﻿function setIcon() {
   browser.storage.sync.get('skin').then((res) => {
-    var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD'
+    var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD';
 
     switch (skin) {
       case "MID":
@@ -46,16 +46,6 @@
             "128": "content/img/mpl-icon-128.png"
           }
         });
-    }
-  });
-};
-
-var updatePopup = function() {
-  browser.storage.sync.get(["laptopForm","laptopFormChecked"]).then(res => {
-    if (res.laptopForm) {
-      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
-    } else {
-      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
     }
   });
 };
@@ -180,8 +170,6 @@ var SCLSLibs = function() {
   };
 };
 
-updatePopup();
-
 // Create and handle context menu item for the problem item form
 browser.menus.create({
   "id": "problem-item-form",
@@ -263,9 +251,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "updateExtensionIcon":
       setIcon();
-      break;
-    case "updatePopup":
-      updatePopup();
       break;
     case "getLogoURL":
       return Promise.resolve({"URL": browser.runtime.getURL("/content/img/BibliovationLogo.png")});
