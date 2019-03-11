@@ -66,11 +66,9 @@
   },
 
   "permissions": [
-    "activeTab",
     "menus",
     "storage",
     "tabs",
-    "webRequest",
     "webNavigation",
     "*://*.bibliovation.com/*",
     "*://*.census.gov/*",

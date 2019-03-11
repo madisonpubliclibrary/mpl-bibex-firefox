@@ -95,7 +95,7 @@ button {
 }
 
 .invalidInput {
-  padding: 6px;
+  padding: 3px;
   border: 2px solid #d02323;
   border-radius: 3px;
 }
@@ -106,10 +106,6 @@ button {
 
 #to, #from, #staffInit {
   text-transform: uppercase;
-}
-
-#date {
-  padding: 7px;
 }
 
 #ckiBySorterLabel {

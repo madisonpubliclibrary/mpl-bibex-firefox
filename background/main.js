@@ -178,6 +178,53 @@ browser.menus.create({
 });
 
 browser.menus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "problem-item-form") {
+    var barcode;
+
+    function sendErrorMsg(msg) {
+      browser.tabs.executeScript(tab.id, {
+        "code": "alert('" + msg + "');"
+      });
+    }
+
+    // Populate barcode based on the particular context type
+    if (info.selectionText) {
+      barcode = info.selectionText;
+    } else if (info.linkText) { // Only works in Firefox 58.*
+      barcode = info.linkText;
+    } else {
+      sendErrorMsg("ERROR: Failed to extract text data.");
+      return;
+    }
+
+    if (barcode.match(/[0-9]{14}/g)) {
+      if (barcode.match(/[0-9]{14}/g).length === 1) {
+        barcode = /[0-9]{14}/.exec(barcode);
+
+        if (barcode) barcode = barcode[0];
+
+        switch (barcode.substr(0, 1)) {
+          case "2":
+            browser.tabs.create({
+              "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
+            });
+            break;
+          case "3":
+            browser.tabs.create({
+              "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
+            });
+            break;
+          default:
+            sendErrorMsg("ERROR: Unable to determine barcode type.");
+            break;
+        }
+      } else {
+        sendErrorMsg("ERROR: Multiple barcodes found in selection.");
+      }
+    } else {
+      sendErrorMsg("ERROR: Barcode not found in selection or link.");
+    }
+  }
 });
 
 // Load preference-selected function files
@@ -216,7 +263,11 @@ browser.webNavigation.onCompleted.addListener(details => {
       });
     }
 
-    if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getUTCDay() === 0) {
+    // Convert date UTC -> CST
+    let date = new Date();
+    date.setHours(date.getHours() - 6);
+
+    if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && date.getUTCDay() === 0) {
       browser.tabs.executeScript(details.tabId, {
         "file": "/content/scripts/opt/sundayDropbox.js",
         "allFrames": true
@@ -228,6 +279,16 @@ browser.webNavigation.onCompleted.addListener(details => {
 
   // Inherent scripts
   browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/betterLogo.js",
+    "allFrames": true
+  });
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/fastaddWarning.js",
+    "allFrames": true
+  });
+
+  browser.tabs.executeScript(details.tabId, {
     "file": "/content/scripts/printPatronBarcode.js"
   });
 
@@ -238,11 +299,6 @@ browser.webNavigation.onCompleted.addListener(details => {
 
   browser.tabs.executeScript(details.tabId, {
     "file": "/content/scripts/sortItemCheckoutHistory.js",
-    "allFrames": true
-  });
-
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/betterLogo.js",
     "allFrames": true
   });
 });
