@@ -13,7 +13,7 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [x] Automatic PSTAT lookup
 - [x] GMaps search for closest SCLS location
 - [ ] Problem item form
-- [ ] Fast-add warning
+- [x] Fast-add warning
 - [x] Sort item CKO history
 
 ## Task List (Optional Features)
