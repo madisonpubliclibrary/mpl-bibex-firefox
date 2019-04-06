@@ -308,9 +308,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "updateExtensionIcon":
       setIcon();
       break;
-    case "getLogoURL":
-      return Promise.resolve({"URL": browser.runtime.getURL("/content/img/BibliovationLogo.png")});
-      break;
     case "addLostCardNote":
       browser.tabs.executeScript({
         "file": "/browserAction/scripts/addLostCardNote.js",

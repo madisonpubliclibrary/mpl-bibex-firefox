@@ -11,11 +11,9 @@
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
       "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex/master/releases/updates.json",
-      "strict_min_version": "57.0"
+      "strict_min_version": "58.0"
     }
   },
-
-  "incognito": "spanning",
 
   "icons": {
     "16": "/content/img/mpl-icon-16.png",
