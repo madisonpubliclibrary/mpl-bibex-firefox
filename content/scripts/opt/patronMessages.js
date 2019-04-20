@@ -2,21 +2,21 @@
   'use strict';
   if (/\/cgi-bin\/koha\/circ\/circulation\.pl/.test(window.location) &&
       !document.getElementById('bibexNotes')) {
-    var bn = document.getElementById('borrower_notes'),
-      bnMsg = document.getElementById('borrower_note'),
-      bibNotes = document.getElementById('type'),
-      wrapper = document.createElement('p'),
-      msgLabel = document.createElement('label'),
-      msgSelect = document.createElement('select'),
-      defaultOpt  = document.createElement('option'),
-      cardAtNxtCko = document.createElement('option'),
-      laptopAgreement = document.createElement('option'),
-      rtdMailGroup = document.createElement('optgroup'),
-      poRtd = document.createElement('option'),
-      cardRtd = document.createElement('option'),
-      badEmailGroup = document.createElement('optgroup'),
-      badEmail = document.createElement('option'),
-      fullEmail = document.createElement('option');
+    const bn = document.getElementById('borrower_notes');
+    const bnMsg = document.getElementById('borrower_note');
+    const bibNotes = document.getElementById('type');
+    const wrapper = document.createElement('p');
+    const msgLabel = document.createElement('label');
+    const msgSelect = document.createElement('select');
+    const defaultOpt  = document.createElement('option');
+    const cardAtNxtCko = document.createElement('option');
+    const laptopAgreement = document.createElement('option');
+    const rtdMailGroup = document.createElement('optgroup');
+    const poRtd = document.createElement('option');
+    const cardRtd = document.createElement('option');
+    const badEmailGroup = document.createElement('optgroup');
+    const badEmail = document.createElement('option');
+    const fullEmail = document.createElement('option');
 
     msgSelect.id = "bibexNotes";
     msgLabel.setAttribute('for', 'bibexNotes');

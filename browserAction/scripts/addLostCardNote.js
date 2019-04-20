@@ -2,32 +2,30 @@
   'use strict';
   // Only execute script in the patron edit page
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-    var opacNote = document.getElementById('opacnote'),
-      circNote = document.getElementById('borrowernotes'),
-      month,
-      day,
-      currDate = '',
-      library;
+    const opacNote = document.getElementById('opacnote');
+    const circNote = document.getElementById('borrowernotes');
+    const date = new Date();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let currDate = '';
 
     if (opacNote && circNote) {
-      library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
+      let library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
 
       if (library) {
         date = new Date();
-        // Convert date UTC -> CST
-        date.setHours(date.getHours() - 6);
-        month = date.getUTCMonth();
+        month = date.getMonth();
 
         if (month+1 < 10) {
           currDate += '0' + (month+1) + '/';
         } else {
           currDate += (month+1) + '/';
         }
-        day = date.getUTCDate();
+        day = date.getDate();
         if (day < 10) {
           day = '0' + day;
         }
-        currDate += day + '/' + date.getUTCFullYear();
+        currDate += day + '/' + date.getFullYear();
 
         if (opacNote.value && opacNote.value !== '') {
           opacNote.value += "\n\n";

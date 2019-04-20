@@ -1,6 +1,5 @@
 (function(){
   'use strict';
-  console.log('betterLogo.js');
   var img = document.querySelector('.koha-logo img');
 
   if (img && !img.classList.contains('bibex-hires')) {

@@ -1,21 +1,19 @@
 (function(){
   'use strict';
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-    var addr = document.getElementById('address'),
-      addr2 = document.getElementById('address2'),
-      city = document.getElementById('city'),
-      expDate = document.getElementById('dateexpiry'),
-      bn = document.getElementById('borrowernotes'),
-      cc = document.getElementById('categorycode'),
-      patronActions = document.getElementsByClassName('action'),
-      dob = document.getElementById('dateofbirth'),
-      date = new Date(),
-      year,
-      month = parseInt(date.getUTCMonth(), 10),
-      staffInit;
+    const addr = document.getElementById('address');
+    const addr2 = document.getElementById('address2');
+    const city = document.getElementById('city');
+    const expDate = document.getElementById('dateexpiry');
+    const bn = document.getElementById('borrowernotes');
+    const cc = document.getElementById('categorycode');
+    const dob = document.getElementById('dateofbirth');
+    const date = new Date();
+    let patronActions = document.getElementsByClassName('action');
 
-    // Convert date UTC -> CST
-    date.setHours(date.getHours() - 6);
+    let year;
+    let month = date.getMonth();
+    let staffInit;
 
     // Set Adult as defualt patorn type
     if (window.location.toString().includes("op=add") && cc) {
@@ -23,24 +21,25 @@
     }
 
     if (month < 4) {
-      year = date.getUTCFullYear();
+      year = date.getFullYear();
     } else if (month > 4) {
-      year = (parseInt(date.getUTCFullYear(), 10) + 1).toString();
+      year = date.getFullYear() + 1;
     } else {
-      if (parseInt(date.getUTCDate(), 10) < 15) {
-        year = date.getUTCFullYear();
+      if (date.getDate() < 15) {
+        year = date.getFullYear();
       } else {
-        year = (parseInt(date.getUTCFullYear(), 10) + 1).toString();
+        year = date.getFullYear() + 1;
       }
     }
 
     function currDate() {
-      var year = date.getFullYear(),
-        month = (1 + date.getMonth()).toString(),
-        day;
-      month = month.length > 1 ? month : '0' + month;
-      day = date.getDate().toString();
-      day = day.length > 1 ? day : '0' + day;
+      const year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString();
+      let day = date.getDate().toString();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
       return month + '/' + day + '/' + year;
     }
 
@@ -48,7 +47,7 @@
      * Restore the save button and remove the override button
      */
     function restoreSave() {
-      var patronActions = document.getElementsByClassName('action');
+      let patronActions = document.getElementsByClassName('action');
 
       if (patronActions.length > 0) {
         patronActions = patronActions[0];
@@ -67,8 +66,8 @@
      * override button
      */
     function blockSubmit() {
-      var patronActions = document.getElementsByClassName('action'),
-        button = document.createElement('input');
+      let patronActions = document.getElementsByClassName('action');
+      const button = document.createElement('input');
 
       if (patronActions.length > 0) {
         patronActions = patronActions[0];

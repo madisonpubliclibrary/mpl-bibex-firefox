@@ -15,6 +15,7 @@
       button.style.marginBottom = "1em";
 
       button.addEventListener('click', function() {
+        console.log('print bc');
         browser.runtime.sendMessage({
           "key": "printBarcode",
           "barcode": patronInfo[0].children[0].textContent.substr(-15,14)

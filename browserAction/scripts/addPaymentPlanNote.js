@@ -2,24 +2,20 @@
   'use strict';
   // Only execute script in the patron edit page
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-    var circNote = document.getElementById('borrowernotes'),
-      categoryCode = document.getElementsByClassName('categorycode'),
-      startingBalance,
-      date,
-      month,
-      day,
-      incrementYear = false,
-      year,
-      expiryDate = '',
-      currDate = '';
+    const circNote = document.getElementById('borrowernotes');
+    const categoryCode = document.getElementsByClassName('categorycode');
+    const date = new Date();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let incrementYear = false;
+    let year;
+    let expiryDate = '';
+    let currDate = '';
+    
     if (circNote) {
-      startingBalance = prompt('What is the patron\'s starting balance for this payment plan?')
+      let startingBalance = prompt('What is the patron\'s starting balance for this payment plan?')
         .replace(/^\$/,'');
       if (startingBalance && startingBalance !== '') {
-        date = new Date();
-        // Convert date UTC -> CST
-        date.setHours(date.getHours() - 6);
-        month = date.getUTCMonth();
         if (month+1 < 10) {
           currDate += '0' + (month+1) + '/';
         } else {
@@ -33,12 +29,12 @@
         if (month < 10) {
           month = '0' + month;
         }
-        day = date.getUTCDate();
+
         if (day < 10) {
           day = '0' + day;
         }
-        currDate += day + '/' + date.getUTCFullYear();
-        year = incrementYear ? date.getUTCFullYear() + 1 : date.getUTCFullYear();
+        currDate += day + '/' + date.getFullYear();
+        year = incrementYear ? date.getFullYear() + 1 : date.getFullYear();
         expiryDate += month + '/' + day + '/' + year;
         if (circNote.value !== null && circNote.value !== '') {
           circNote.value += "\n\n";

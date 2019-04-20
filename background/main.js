@@ -1,4 +1,4 @@
-﻿function setIcon() {
+function setIcon() {
   browser.storage.sync.get('skin').then((res) => {
     var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD';
 
@@ -28,11 +28,11 @@
       case "SUN":
         browser.browserAction.setIcon({
           "path": {
-            "16": "content/img/sun-icon-16.png",
-            "32": "content/img/sun-icon-32.png",
-            "48": "content/img/sun-icon-48.png",
-            "64": "content/img/sun-icon-64.png",
-            "128": "content/img/sun-icon-128.png"
+            "16": "content/img/sun-icon2-16.png",
+            "32": "content/img/sun-icon2-32.png",
+            "48": "content/img/sun-icon2-48.png",
+            "64": "content/img/sun-icon2-64.png",
+            "128": "content/img/sun-icon2-128.png"
           }
         });
         break;
@@ -49,6 +49,8 @@
     }
   });
 };
+
+setIcon();
 
 var SCLSLibs = function() {
   this.data = {
@@ -170,15 +172,15 @@ var SCLSLibs = function() {
   };
 };
 
-// Create and handle context menu item for the problem item form
+// Create and handle context menu item for problem item form
 browser.menus.create({
-  "id": "problem-item-form",
+  "id": "start-pi-form",
   "title": "Use Barcode in Problem Item Form",
-  "contexts": ["link","selection"]
+  "contexts": ["link", "selection"]
 });
 
 browser.menus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "problem-item-form") {
+  if (info.menuItemId === "start-pi-form") {
     var barcode;
 
     function sendErrorMsg(msg) {
@@ -197,9 +199,9 @@ browser.menus.onClicked.addListener((info, tab) => {
       return;
     }
 
-    if (barcode.match(/[0-9]{14}/g)) {
-      if (barcode.match(/[0-9]{14}/g).length === 1) {
-        barcode = /[0-9]{14}/.exec(barcode);
+    if (barcode.match(/[23]\d{13}/g)) {
+      if (barcode.match(/[23]\d{13}/g).length === 1) {
+        barcode = /[23]\d{13}/.exec(barcode);
 
         if (barcode) barcode = barcode[0];
 
@@ -229,111 +231,98 @@ browser.menus.onClicked.addListener((info, tab) => {
 
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
-  // Optional scripts
-  browser.storage.sync.get().then(res => {
-    if (!res.hasOwnProperty('restrictPatronFields') ||
-        (res.hasOwnProperty('restrictPatronFields') && res.restrictPatronFields)) {
-      browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/restrictPatronFields.js",
-        "allFrames": true
-      });
-    }
+  if (details.parentFrameId === 0) {
+    // Optional scripts
+    browser.storage.sync.get().then(res => {
+      if (!res.hasOwnProperty('restrictPatronFields') ||
+          (res.hasOwnProperty('restrictPatronFields') && res.restrictPatronFields)) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/restrictPatronFields.js",
+          "allFrames": true
+        });
+      }
 
-    if (!res.hasOwnProperty('parseAddr') ||
-        (res.hasOwnProperty('parseAddr') && res.parseAddr)) {
-      browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/parsePatronAddr.js",
-        "allFrames": true
-      });
-    }
+      if (!res.hasOwnProperty('parseAddr') ||
+          (res.hasOwnProperty('parseAddr') && res.parseAddr)) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/parsePatronAddr.js",
+          "allFrames": true
+        });
+      }
 
-    if (!res.hasOwnProperty('updateAccountType') ||
-        (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
-      browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/updateAccountType.js",
-        "allFrames": true
-      });
-    }
+      if (!res.hasOwnProperty('updateAccountType') ||
+          (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/updateAccountType.js",
+          "allFrames": true
+        });
+      }
 
-    if (!res.hasOwnProperty('addPatronNotes') ||
-        (res.hasOwnProperty('addPatronNotes') && res.addPatronNotes)) {
-      browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/patronMessages.js",
-        "allFrames": true
-      });
-    }
+      if (!res.hasOwnProperty('addPatronNotes') ||
+          (res.hasOwnProperty('addPatronNotes') && res.addPatronNotes)) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/patronMessages.js",
+          "allFrames": true
+        });
+      }
 
-    // Convert date UTC -> CST
-    let date = new Date();
-    date.setHours(date.getHours() - 6);
 
-    if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && date.getUTCDay() === 0) {
-      browser.tabs.executeScript(details.tabId, {
-        "file": "/content/scripts/opt/sundayDropbox.js",
-        "allFrames": true
-      });
-    } else {
-      browser.storage.sync.set({"sundayDropboxPaused": false});
-    }
-  });
+      if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getDay() === 0) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/sundayDropbox.js",
+          "allFrames": true
+        });
+      } else {
+        browser.storage.sync.set({"sundayDropboxPaused": false});
+      }
+    });
 
-  // Inherent scripts
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/betterLogo.js",
-    "allFrames": true
-  });
+    // Inherent scripts
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/betterLogo.js",
+      "allFrames": true
+    });
 
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/fastaddWarning.js",
-    "allFrames": true
-  });
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/fastaddWarning.js",
+      "allFrames": true
+    });
 
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/printPatronBarcode.js"
-  });
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/formatPatronRecord.js",
+      "allFrames": true
+    });
 
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/separateHSA.js",
-    "allFrames": true
-  });
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/patronQuickSave.js",
+      "allFrames": true
+    });
 
-  browser.tabs.executeScript(details.tabId, {
-    "file": "/content/scripts/sortItemCheckoutHistory.js",
-    "allFrames": true
-  });
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/printPatronBarcode.js",
+      "allFrames": true
+    });
+
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/selectPSTAT.js",
+      "allFrames": true
+    });
+
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/separateHSA.js",
+      "allFrames": true
+    });
+
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/sortItemCheckoutHistory.js",
+      "allFrames": true
+    });
+  }
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log(request);
   switch (request.key) {
-    case "updateExtensionIcon":
-      setIcon();
-      break;
-    case "addLostCardNote":
-      browser.tabs.executeScript({
-        "file": "/browserAction/scripts/addLostCardNote.js",
-        "allFrames": true
-      });
-      break;
-    case "addPaymentPlanNote":
-      browser.tabs.executeScript({
-        "file": "/browserAction/scripts/addPaymentPlanNote.js",
-        "allFrames": true
-      });
-      break;
-    case "printBarcode":
-      browser.storage.sync.get('receiptFont').then(res => {
-        var receiptFont = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36px";
-
-        browser.tabs.create({
-          "url": "/printBarcode/printBarcode.html?barcode=" + request.barcode + "&fontSize=" + receiptFont,
-          "active": false
-        }).then(tab => {
-          setTimeout(() => {
-            browser.tabs.remove(tab.id);
-          }, 1000);
-        });
-      });
-      break;
     case "queryGeocoder":
       var matchAddr, county, countySub, censusTract, zip;
 
@@ -383,14 +372,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
           throw new Error("No census tract data matched given address.");
         } else {
-          // Select the last match if multiple are found
-          // I'm not sure if this works for all cases of multiple addresses,
-          // But it does for a particular address in Monona
-          const lastIdx = countyData.result.addressMatches.length - 1;
-
-          countyData = countyData.result.addressMatches[lastIdx];
-          countySubData = countySubData.result.addressMatches[lastIdx];
-          censusTractData = censusTractData.result.addressMatches[lastIdx];
+          countyData = countyData.result.addressMatches[0];
+          countySubData = countySubData.result.addressMatches[0];
+          censusTractData = censusTractData.result.addressMatches[0];
 
           matchAddr = countyData.matchedAddress.split(',')[0].toUpperCase();
           county = countyData.geographies.Counties[0].BASENAME;
@@ -402,10 +386,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           if (matchAddr && county && countySub && censusTract && zip) {
             if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
               const libCode = countySub.substring(0,3).toLowerCase(),
-                alderURL = "https://mpl-koha-patch.lrschneider.com/pstats/" + libCode +
+                alderURL = "https://mpl-bibex.lrschneider.com/pstats/" + libCode +
                   "?val=all&regex=true";
 
-              return resolve(fetch(alderURL, {"method": "GET"}).then(response => {
+              return fetch(alderURL, {"method": "GET"}).then(response => {
                 return response.json();
               }).then(json => {
                 var value = "";
@@ -426,7 +410,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                   "zip": zip,
                   "value": value
                 });
-              }));
+              });
             } else {
               return Promise.resolve({
                 "key": "returnCensusData",
@@ -454,7 +438,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "queryAlderDists":
-      const alderURL = "https://mpl-koha-patch.lrschneider.com/pstats?library="
+      const alderURL = "https://mpl-bibex.lrschneider.com/pstats?library="
           + request.code;
 
       return fetch(alderURL, {"method": "GET"}).then(response => {
@@ -482,12 +466,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (value) {
           return Promise.resolve({"value": value});
         } else {
-          throw new Error("");
+          throw new Error("Address not found in database of aldermanic districts.");
         }
       });
       break;
     case "openFactFinder":
-      let ffTab = browser.tabs.create({
+      browser.tabs.create({
         "url": "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml",
         "active": true
       }).then(tab => {
@@ -534,6 +518,21 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         })[0]);
       });
       break;
+    case "printBarcode":
+      console.log('trying to print');
+      browser.storage.sync.get('receiptFont').then(res => {
+        var receiptFont = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36px";
+
+        browser.tabs.create({
+          "url": "/printBarcode/printBarcode.html?barcode=" + request.barcode + "&fontSize=" + receiptFont,
+          "active": false
+        }).then(tab => {
+          setTimeout(() => {
+            browser.tabs.remove(tab.id);
+          }, 1000);
+        });
+      });
+      break;
     case "parsePatronAddr":
       const madAddrURL = "https://mpl-bibex.lrschneider.com/madAddr";
 
@@ -542,6 +541,21 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
         }
         return response.json();
+      });
+      break;
+    case "updateExtensionIcon":
+      setIcon();
+      break;
+    case "addLostCardNote":
+      browser.tabs.executeScript({
+        "file": "/browserAction/scripts/addLostCardNote.js",
+        "allFrames": true
+      });
+      break;
+    case "addPaymentPlanNote":
+      browser.tabs.executeScript({
+        "file": "/browserAction/scripts/addPaymentPlanNote.js",
+        "allFrames": true
       });
       break;
     case "getPatronData":

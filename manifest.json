@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "MPL Bibliovation Extension",
   "short_name": "MPL BibEx",
-  "version": "0.0.1",
+  "version": "0.1",
   "author": "Lucas Schneider",
   "description": "PTFS Bibliovation modifications to benefit Wisconsin's South Central Library System",
   "homepage_url": "http://lrschneider.com/mpl-bibex-firefox",
@@ -10,7 +10,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
-      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex/master/releases/updates.json",
+      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/updates.json",
       "strict_min_version": "58.0"
     }
   },
@@ -43,20 +43,6 @@
         "/background/defaultPrefs.js"
       ]
   },
-
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*.bibliovation.com/*"
-      ],
-      "js": [
-        "/content/scripts/formatPatronRecord.js",
-        "/content/scripts/patronQuickSave.js",
-        "/content/scripts/selectPSTAT.js"
-      ],
-      "all_frames": true
-    }
-  ],
 
   "options_ui": {
       "page": "/optionsPage/options.html",

@@ -2,15 +2,15 @@
   'use strict';
   // If this is the patron edit frame
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-    var inputs = document.querySelectorAll('input[type=text]'),
-      cities = [document.getElementById('city'), document.getElementById('B_city'),
-          document.getElementById('altcontactaddress3')],
-      firstName = document.getElementById('firstname'),
-      cardNum = document.getElementById('cardnumber'),
-      userId = document.getElementById('userid');
+    let inputs = document.querySelectorAll('input[type=text]');
+    let cities = [document.getElementById('city'), document.getElementById('B_city'),
+          document.getElementById('altcontactaddress3')];
+    const firstName = document.getElementById('firstname');
+    const cardNum = document.getElementById('cardnumber');
+    const userId = document.getElementById('userid');
 
     /**
-     * Makes all text inout fields upper case except email fileds which are made
+     * Makes all text input fields upper case except email fileds which are made
      * lower case
      */
     HTMLInputElement.prototype.correctTextCase = function () {
@@ -47,15 +47,15 @@
      *
      */
     HTMLInputElement.prototype.parseName = function () {
-      var surname = document.getElementById('surname'),
-        initials = document.getElementById('initials'),
-        names,
-        len;
+      const surname = document.getElementById('surname');
+      const initials = document.getElementById('initials');
+      let names;
+      let len;
       // Strip commas from string
       this.value = this.value.replace(/,/g, '');
       // Move suffix "JR" or "SR" to end of last name
       if (/ (S|J)R$/i.test(this.value)) {
-        var suffix = this.value.substr(this.value.length-3, this.value.length);
+        let suffix = this.value.substr(this.value.length-3, this.value.length);
         this.value = this.value.substr(0, this.value.length-3);
         surname.value += "," + suffix.toUpperCase();
       }
