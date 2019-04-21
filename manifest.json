@@ -39,8 +39,8 @@
 
   "background": {
       "scripts": [
-        "/background/main.js",
-        "/background/defaultPrefs.js"
+        "/background/defaultPrefs.js",
+        "/background/main.js"
       ]
   },
 

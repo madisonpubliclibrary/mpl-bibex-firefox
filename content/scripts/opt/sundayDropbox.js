@@ -1,5 +1,6 @@
 (function(){
   'use strict';
+  console.log('sundayDropbox');
   var t = setInterval(function() {
     if (/\/app\/staff\/circ\/checkin\//.test(window.location)) {
       browser.storage.sync.get("sundayDropboxPaused").then(res => {
@@ -15,14 +16,13 @@
           if (!dropbox.getAttribute('onclick')) {
             dropbox.onclick = function() {
               if (this.classList.contains("dropbox-active")) {
-                browser.storage.sync.set({"sundayDropboxPaused": true});
-                setTimeout(() => {
-                  browser.storage.sync.set({"sundayDropboxPaused": false});
-                }, 180000); // 3min
+                browser.runtime.sendMessage({"key": "pauseSundayDropbox"});
               } else {
-                browser.storage.sync.set({"sundayDropboxPaused": false});
+                browser.runtime.sendMessage({"key": "resumeSundayDropbox"});
               }
             };
+
+            clearInterval(t);
           }
         }
       });

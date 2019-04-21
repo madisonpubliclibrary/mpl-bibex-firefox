@@ -1,190 +1,170 @@
-let d = new Date();
-// Convert date UTC -> CST
-d.setHours(d.getHours() - 6);
+(function() {
+  'use strict';
 
-let month = (d.getMonth()+1).toString(),
-  day = d.getDate().toString();
+  const to = document.getElementById("to");
+  const date = document.getElementById("date");
+  const from = document.getElementById("from");
+  const staffName = document.getElementById("staffInit");
+  const type = document.getElementById("problem");
+  const idBy = document.getElementById("idBy");
+  const receivedVia = document.getElementById("receivedBy");
+  const ckiBySorter = document.getElementById("ckiBySorter");
+  const details = document.getElementById("details");
+  const itemTitle = document.getElementById("itemTitle");
+  const itemBarcode = document.getElementById("itemBarcode");
+  const cCode = document.getElementById("cCode");
+  const holds = document.getElementById("holds");
+  const copies = document.getElementById("copies");
+  const use = document.getElementById("use");
+  const patron = document.getElementById("name");
+  const patronBarcode = document.getElementById("patronBarcode");
+  const patronPhone = document.getElementById("phone");
+  const patronEmail = document.getElementById("email");
+  const notified = document.getElementById("dateNotified");
+  const staffInit = document.getElementById("notifiedBy");
+  const contactedVia = document.getElementById("contactedVia");
+  const instructions = document.getElementById("instructions");
+  const nonDefectNonHold = document.getElementById("nonDefectNonHold");
+  const nonDefectHold = document.getElementById("nonDefectHold");
+  const defect = document.getElementById("defect");
 
-if (month.length == 1) {
-   month = "0" + month;
-}
+  const prepareItemData = document.getElementById("prepareItemData");
+  const getPatronData = document.getElementById("getPatronData");
+  const printForm = document.getElementById("printForm");
 
-if (day.length == 1) {
-  day = "0" + day;
-}
+  let getCurrDate = function() {
+    const d = new Date();
 
-document.getElementById('date').value = d.getFullYear() + "-" + month + "-" + day;
+    let month = (d.getMonth()+1).toString();
+    let day = d.getDate().toString();
 
-var prepareItemData = document.getElementById("prepareItemData"),
-  itemBarcode = document.getElementById("itemBarcode"),
-  patronBarcode = document.getElementById("patronBarcode"),
-  getPatronData = document.getElementById("getPatronData"),
-  printForm = document.getElementById("printForm");
-
-// Trigger prepareItemData() when enter is pressed in itemBarcode input
-itemBarcode.addEventListener("keyup", event => {
-  if (event.key !== "Enter") return;
-  document.getElementById("prepareItemData").click();
-  event.preventDefault();
-});
-
-if (prepareItemData) prepareItemData.addEventListener("click", function () {
-  var itemTitle = document.getElementById("itemTitle"),
-    cCode = document.getElementById("cCode"),
-    holds = document.getElementById("holds"),
-    copies = document.getElementById("copies"),
-    use = document.getElementById("use");
-
-  itemTitle.value = "";
-  cCode.value = "";
-  holds.value = "";
-  copies.value = "";
-  use.value = "";
-
-  if (itemBarcode.value.length === 8) {
-    itemBarcode.value = "390780" + itemBarcode.value;
-  }
-
-  if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
-    if (itemBarcode.classList.contains("invalidInput")) {
-      itemBarcode.classList.remove("invalidInput");
+    if (month.length == 1) {
+       month = "0" + month;
     }
-    browser.runtime.sendMessage({
-      "key": "prepareItemData",
-      "itemBarcode": itemBarcode.value
-    });
-  } else {
-    if (!itemBarcode.classList.contains("invalidInput")) {
-      itemBarcode.classList.add("invalidInput");
+
+    if (day.length == 1) {
+      day = "0" + day;
     }
-  }
-});
 
-// Trigger getPatronData() when enter is pressed in patronBarcode input
-patronBarcode.addEventListener("keyup", event => {
-  if (event.key !== "Enter") return;
-  document.getElementById("getPatronData").click();
-  event.preventDefault();
-});
+    return d.getFullYear() + "-" + month + "-" + day;
+  };
 
-if (getPatronData) getPatronData.addEventListener("click", function() {
-  var name = document.getElementById("name"),
-    phone = document.getElementById("phone"),
-    email = document.getElementById("email");
-
-  name.value = "";
-  phone.value = "";
-  email.value = "";
-
-  if (patronBarcode.value.length === 8) {
-    patronBarcode.value = "290780" + patronBarcode.value;
-  }
-
-  if (/^2[0-9]{13}$/.test(patronBarcode.value)) {
-    if (patronBarcode.classList.contains("invalidInput")) {
-      patronBarcode.classList.remove("invalidInput");
+  let formatDateForDisplay = function(date) {
+    if (date && date !== "") {
+      const d = new Date(date);
+      return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+    } else {
+      return "";
     }
-    browser.runtime.sendMessage({
-      "key": "getPatronData",
-      "patronBarcode": patronBarcode.value
-    });
-  } else {
-    if (!patronBarcode.classList.contains("invalidInput")) {
-      patronBarcode.classList.add("invalidInput");
-    }
-  }
-});
+  };
 
-browser.runtime.onMessage.addListener(message => {
-  switch (message.key) {
-    case "returnItemData":
-      document.getElementById("itemDataErrMsg").style.display = "none";
-      document.getElementById("itemTitle").value = message.itemTitle;
-      document.getElementById("cCode").value = message.cCode;
-      document.getElementById("copies").value = message.copies;
-      break;
-    case "failedItemData":
-      document.getElementById("itemDataErrMsg").style.display = "";
-      document.getElementById("itemTitle").value = "";
-      document.getElementById("cCode").value = "";
-      document.getElementById("copies").value = "";
-      break;
-    case "returnItemHolds":
-      document.getElementById("holds").value = message.holds;
-      if (message.itemTitle) {
-        document.getElementById("itemTitle").value = message.itemTitle;
+  date.value = getCurrDate();
+
+  // Trigger getPatronData() when enter is pressed in patronBarcode input
+  patronBarcode.addEventListener("keyup", evt => {
+    if (evt.key !== "Enter") return;
+    getPatronData.click();
+    evt.preventDefault();
+  });
+
+  getPatronData.addEventListener("click", function() {
+    patron.value = "";
+    patronPhone.value = "";
+    patronEmail.value = "";
+
+    if (patronBarcode.value.length === 8) {
+      patronBarcode.value = "290780" + patronBarcode.value;
+    }
+
+    if (/^2\d{13}$/.test(patronBarcode.value)) {
+      if (patronBarcode.classList.contains("invalidInput")) {
+        patronBarcode.classList.remove("invalidInput");
       }
-      break;
-    case "failedItemHolds":
-      document.getElementById("holds").value = "";
-      break;
-    case "returnPatronData":
-      document.getElementById("patronDataErrMsg").style.display = "none";
-      document.getElementById("name").value = message.patronName;
-      document.getElementById("patronBarcode").value = message.patronBarcode;
-      document.getElementById("phone").value = !!message.patronPhone ? message.patronPhone : "";
-      document.getElementById("email").value = !!message.patronEmail ? message.patronEmail : "";
-      break;
-    case "failedPatronData":
-      document.getElementById("patronDataErrMsg").style.display = "";
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-      document.getElementById("email").value = "";
-      break;
-  }
-});
+      browser.runtime.sendMessage({
+        "key": "getPatronData",
+        "patronBarcode": patronBarcode.value
+      }).then(resArr => {
+        if (resArr.length > 0) {
+          let res = resArr[0];
 
-function formatDateForDisplay(date) {
-  if (date && date !== "") {
-    var d = new Date(date);
-    return (d.getUTCMonth()+1) + "/" + d.getUTCDate() + "/" + d.getUTCFullYear();
-  } else {
-    return "";
-  }
-}
+          patron.value = res.patronName;
+          patronBarcode.value = res.patronBarcode;
+          patronPhone.value = res.patronPhone;
+          patronEmail.value = res.patronEmail;
+        }
+      });
+    } else {
+      if (!patronBarcode.classList.contains("invalidInput")) {
+        patronBarcode.classList.add("invalidInput");
+      }
+    }
+  });
 
-if (printForm) printForm.addEventListener("click", function() {
-  var to = document.getElementById("to"),
-    date = document.getElementById("date"),
-    from = document.getElementById("from"),
-    staffName = document.getElementById("staffInit"),
-    type = document.getElementById("problem"),
-    idBy = document.getElementById("idBy"),
-    receivedVia = document.getElementById("receivedBy"),
-    ckiBySorter = document.getElementById("ckiBySorter"),
-    details = document.getElementById("details"),
-    itemTitle = document.getElementById("itemTitle"),
-    itemBarcode = document.getElementById("itemBarcode"),
-    cCode = document.getElementById("cCode"),
-    holds = document.getElementById("holds"),
-    copies = document.getElementById("copies"),
-    use = document.getElementById("use"),
-    patron = document.getElementById("name"),
-    patronBarcode = document.getElementById("patronBarcode"),
-    patronPhone = document.getElementById("phone"),
-    patronEmail = document.getElementById("email"),
-    notified = document.getElementById("dateNotified"),
-    staffInit = document.getElementById("notifiedBy"),
-    contactedVia = document.getElementById("contactedVia"),
-    instructions = document.getElementById("instructions"),
-    nonDefectNonHold = document.getElementById("nonDefectNonHold"),
-    nonDefectHold = document.getElementById("nonDefectHold"),
-    defect = document.getElementById("defect");
+  // Trigger prepareItemData() when enter is pressed in itemBarcode input
+  itemBarcode.addEventListener("keyup", evt => {
+    if (evt.key !== "Enter") return;
+    prepareItemData.click();
+    evt.preventDefault();
+  });
 
-  var emailParts = patronEmail
+  prepareItemData.addEventListener("click", function () {
+    // Clear patorn data
+    patron.value = "";
+    patronBarcode.value = "";
+    patronPhone.value = "";
+    patronEmail.value = "";
 
-  if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "") {
-    alert("Please check that all required fields have been filled in.");
-  } else {
-    instructions.style.display = "";
+    // Clear item data
+    itemTitle.value = "";
+    cCode.value = "";
+    holds.value = "";
+    copies.value = "";
+    use.value = "";
 
-    switch(type.value) {
-      case "Defect Reported":
+    if (itemBarcode.value.length === 8) {
+      itemBarcode.value = "390780" + itemBarcode.value;
+    } else if (itemBarcode.value.length === 9) {
+      itemBarcode.value = "39078" + itemBarcode.value;
+    }
+
+    if (/^3\d{13}$/.test(itemBarcode.value)) {
+      if (itemBarcode.classList.contains("invalidInput")) {
+        itemBarcode.classList.remove("invalidInput");
+      }
+      browser.runtime.sendMessage({
+        "key": "getItemData",
+        "itemBarcode": itemBarcode.value
+      }).then(res => {
+        itemTitle.value = res.title;
+        cCode.value = res.cCode;
+        holds.value = res.holds;
+        copies.value = res.copies;
+
+        if (!isNaN(res.totalUse)) {
+          use.value = res.totalUse;
+        }
+      });
+    } else {
+      if (!itemBarcode.classList.contains("invalidInput")) {
+        itemBarcode.classList.add("invalidInput");
+      }
+    }
+  });
+
+  printForm.addEventListener("click", function() {
+
+    var emailParts = patronEmail
+
+    if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "") {
+      alert("Please check that all required fields have been filled in.");
+    } else {
+      instructions.style.display = "";
+
+      if (type.value === "Defect Reported") {
           nonDefectNonHold.style.display = "none";
           nonDefectHold.style.display = "none";
           defect.style.display = "";
-        break;
-      default:
+      } else {
         if (receivedVia.value === "Transit Hold") {
           nonDefectNonHold.style.display = "none";
           nonDefectHold.style.display = "";
@@ -194,52 +174,61 @@ if (printForm) printForm.addEventListener("click", function() {
           nonDefectHold.style.display = "none";
           defect.style.display = "none";
         }
-        break;
+      }
+
+      window.location.hash = "instructions";
+
+      browser.runtime.sendMessage({
+        "key": "printProblemForm",
+        "data": [
+          ["to", to.value.toUpperCase()],
+          ["date", formatDateForDisplay(date.value)],
+          ["from", from.value.toUpperCase()],
+          ["staffName", staffName.value.toUpperCase()],
+          ["type", type.value],
+          ["idBy", idBy.value],
+          ["receivedVia", receivedVia.value],
+          ["ckiBySorter", ckiBySorter.checked.toString()],
+          ["details", details.value],
+          ["itemTitle", itemTitle.value],
+          ["itemBarcode", itemBarcode.value],
+          ["cCode", cCode.value],
+          ["holds", holds.value],
+          ["copies", copies.value],
+          ["use", use.value],
+          ["patron", patron.value],
+          ["patronBarcode", patronBarcode.value],
+          ["patronPhone", patronPhone.value],
+          ["patronEmail", patronEmail.value],
+          ["notified", formatDateForDisplay(notified.value)],
+          ["staffInit", staffInit.value],
+          ["contactedVia", contactedVia.value]
+        ]
+      });
     }
+  });
 
-    window.location.hash = "instructions";
+  // Handle cases when we're loading the problem form with barcode data
+  if (location.search.length > 0) {
+    const data = location.search.substr(1).split("=");
 
-    browser.runtime.sendMessage({
-      "key": "printProblemForm",
-      "data": [
-        ["to", to.value.toUpperCase()],
-        ["date", formatDateForDisplay(date.value)],
-        ["from", from.value.toUpperCase()],
-        ["staffName", staffName.value.toUpperCase()],
-        ["type", type.value],
-        ["idBy", idBy.value],
-        ["receivedVia", receivedVia.value],
-        ["ckiBySorter", ckiBySorter.checked.toString()],
-        ["details", details.value],
-        ["itemTitle", itemTitle.value],
-        ["itemBarcode", itemBarcode.value],
-        ["cCode", cCode.value],
-        ["holds", holds.value],
-        ["copies", copies.value],
-        ["use", use.value],
-        ["patron", patron.value],
-        ["patronBarcode", patronBarcode.value],
-        ["patronPhone", patronPhone.value],
-        ["patronEmail", patronEmail.value],
-        ["notified", formatDateForDisplay(notified.value)],
-        ["staffInit", staffInit.value],
-        ["contactedVia", contactedVia.value]
-      ]
-    });
-  }
-});
-
-/*** Handle cases when we're loading the problem form with barcode data ***/
-if (location.search.length > 0) {
-  var data = location.search.substr(1).split("=");
-
-  if (data && data.length === 2) {
-    if (data[0] === "item") {
-      itemBarcode.value = data[1];
-      prepareItemData.click();
-    } else if (data[0] === "patron") {
-      patronBarcode.value = data[1];
-      getPatronData.click();
+    if (data && data.length === 2) {
+      if (data[0] === "item") {
+        itemBarcode.value = data[1];
+        prepareItemData.click();
+      } else if (data[0] === "patron") {
+        patronBarcode.value = data[1];
+        getPatronData.click();
+      }
     }
   }
-}
+
+  browser.runtime.onMessage.addListener(msg => {
+    if (msg.key === "patronData") {
+      patron.value = msg.data.patronName;
+      patronBarcode.value = msg.data.patronBarcode;
+      patronPhone.value = msg.data.patronPhone;
+      patronEmail.value = msg.data.patronEmail;
+    }
+  });
+})();

@@ -1,30 +1,30 @@
 (function(){
   'use strict';
   if (/\/cgi-bin\/koha\/catalogue\/issuehistory\.pl/.test(window.location)) {
-    var itemTable = document.getElementById('checkouthistt'),
-      libCode = window.parent.document.getElementsByClassName('loggedin'),
-      searchResults = document.getElementsByClassName('searchresults')[0].children[0].children[0];
-      itemRows = [],
-      h1Elts = document.getElementsByTagName('h1'),
-      sortSelect = document.createElement('select'),
-      orderSelect = document.createElement('select'),
-      ckoDate = document.createElement('option'),
-      dueDate = document.createElement('option'),
-      retDate = document.createElement('option'),
-      asc = document.createElement('option'),
-      desc = document.createElement('option'),
-      groupBC = document.createElement('input'),
-      restrictBC = document.createElement('input'),
-      div1 = document.createElement('div'),
-      div2 = document.createElement('div'),
-      span1 = document.createElement('span'),
-      span2 = document.createElement('span'),
-      span3 = document.createElement('span'),
-      span4 = document.createElement('span'),
-      span5 = document.createElement('span'),
-      resetTable = false;
+    const itemTable = document.getElementById('checkouthistt');
+    let libCode = window.parent.document.getElementsByClassName('loggedin');
+    let searchResults = document.getElementsByClassName('searchresults')[0].children[0].children[0];
+    const itemRows = [];
+    let h1Elts = document.getElementsByTagName('h1');
+    const sortSelect = document.createElement('select');
+    const orderSelect = document.createElement('select');
+    const ckoDate = document.createElement('option');
+    const dueDate = document.createElement('option');
+    const retDate = document.createElement('option');
+    const asc = document.createElement('option');
+    const desc = document.createElement('option');
+    const groupBC = document.createElement('input');
+    const restrictBC = document.createElement('input');
+    const div1 = document.createElement('div');
+    const div2 = document.createElement('div');
+    const span1 = document.createElement('span');
+    const span2 = document.createElement('span');
+    const span3 = document.createElement('span');
+    const span4 = document.createElement('span');
+    const span5 = document.createElement('span');
+    let resetTable = false;
 
-    var ItemRow = function(htmlTR) {
+    let ItemRow = function(htmlTR) {
       this.html = htmlTR;
       this.ckoDate = new Date(htmlTR.children[0].textContent.trim());
       this.name = htmlTR.children[1].textContent.trim();
@@ -122,7 +122,7 @@
       }
 
       function reloadTable() {
-        var newBody = document.createElement('tbody');
+        const newBody = document.createElement('tbody');
         itemRows.sort(sortItemRows);
 
         // Float rows of items owned by the logged in library to the top if grouping barcodes
@@ -149,7 +149,7 @@
         itemTable.appendChild(newBody);
 
         // Update item count
-        var numRows = itemTable.children[1].children.length;
+        let numRows = itemTable.children[1].children.length;
         if (restrictBC.value.length === 14) {
           searchResults.textContent = "Item with barcode " + restrictBC.value +
               " has been checked out " + numRows + " times";
@@ -158,7 +158,7 @@
         }
       }
 
-      for (var tr of itemTable.children[1].children) {
+      for (let tr of itemTable.children[1].children) {
         itemRows.push(new ItemRow(tr));
       }
 
