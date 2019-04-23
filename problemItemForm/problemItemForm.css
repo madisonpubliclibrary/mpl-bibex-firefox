@@ -113,12 +113,6 @@ button {
   cursor: pointer;
 }
 
-#patronDataErrMsg,
-#itemDataErrMsg {
-  color: #d02323;
-  font-weight: bold;
-}
-
 #printForm {
   cursor: pointer;
   text-align: center;

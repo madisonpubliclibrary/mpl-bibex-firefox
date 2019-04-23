@@ -4,15 +4,15 @@
     function calculateAge(birthday) { // birthday is a date
       var ageDifMs = Date.now() - birthday.getTime(),
         ageDate = new Date(ageDifMs); // miliseconds from epoch
-      return Math.abs(ageDate.getUTCFullYear() - 1970);
+      return Math.abs(ageDate.getFullYear() - 1970);
     }
 
-    var birthdayField = document.getElementById('dateofbirth'),
-      birthday,
-      patronCategory = document.getElementById('categorycode'),
-      saveButtonWrapper = document.getElementsByClassName('action')[0],
-      saveButton = document.getElementsByName('save')[0],
-      updateButton = document.createElement('input');
+    const birthdayField = document.getElementById('dateofbirth');
+    let birthday;
+    let patronCategory = document.getElementsByName('categorycode')[0];
+    let saveButtonWrapper = document.getElementsByClassName('action')[0];
+    let saveButton = document.getElementsByName('save')[0];
+    const updateButton = document.createElement('input');
 
     updateButton.id = "updateAndSave";
     updateButton.type = "button";

@@ -28,11 +28,11 @@ function setIcon() {
       case "SUN":
         browser.browserAction.setIcon({
           "path": {
-            "16": "content/img/sun-icon2-16.png",
-            "32": "content/img/sun-icon2-32.png",
-            "48": "content/img/sun-icon2-48.png",
-            "64": "content/img/sun-icon2-64.png",
-            "128": "content/img/sun-icon2-128.png"
+            "16": "content/img/sun-icon-16.png",
+            "32": "content/img/sun-icon-32.png",
+            "48": "content/img/sun-icon-48.png",
+            "64": "content/img/sun-icon-64.png",
+            "128": "content/img/sun-icon-128.png"
           }
         });
         break;
@@ -265,16 +265,6 @@ browser.webNavigation.onCompleted.addListener(details => {
           "allFrames": true
         });
       }
-
-
-      if (res.hasOwnProperty("sundayDropbox") && res.sundayDropbox && (new Date()).getDay() === 0) {
-        browser.tabs.executeScript(details.tabId, {
-          "file": "/content/scripts/opt/sundayDropbox.js",
-          "allFrames": true
-        });
-      } else {
-        browser.storage.sync.set({"sundayDropboxPaused": false});
-      }
     });
 
     // Inherent scripts
@@ -317,11 +307,29 @@ browser.webNavigation.onCompleted.addListener(details => {
       "file": "/content/scripts/sortItemCheckoutHistory.js",
       "allFrames": true
     });
+  } else { // No parent frame
+    browser.storage.sync.get(['sundayDropbox','sundayDropboxPaused']).then(res => {
+      if ((!res.hasOwnProperty('sundayDropbox') ||
+          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getDay() === 0) {
+        // If sundayDropbox is not paused
+        if (!res.hasOwnProperty('sundayDropboxPaused') ||
+            (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {
+          console.log('executing sundayDropbox');
+          browser.tabs.executeScript(details.tabId, {
+            "file": "/content/scripts/opt/sundayDropbox.js",
+            "allFrames": true
+          });
+        }
+      } else {
+        if (res.hasOwnProperty('sundayDropboxPaused') && res.sundayDropboxPaused) {
+          browser.storage.sync.set({"sundayDropboxPaused": false});
+        }
+      }
+    });
   }
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(request);
   switch (request.key) {
     case "queryGeocoder":
       var matchAddr, county, countySub, censusTract, zip;
@@ -519,7 +527,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "printBarcode":
-      console.log('trying to print');
       browser.storage.sync.get('receiptFont').then(res => {
         var receiptFont = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36px";
 
@@ -545,6 +552,15 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "updateExtensionIcon":
       setIcon();
+      break;
+    case "pauseSundayDropbox":
+      browser.storage.sync.set({"sundayDropboxPaused": true});
+      setTimeout(() => {
+        browser.storage.sync.set({"sundayDropboxPaused": false});
+      }, 180000); // 3min
+      break;
+    case "resumeSundayDropbox":
+        browser.storage.sync.set({"sundayDropboxPaused": false});
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({

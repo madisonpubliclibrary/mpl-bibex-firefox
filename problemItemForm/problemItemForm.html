@@ -136,11 +136,9 @@
         <b>Barcode:</b><span class="required">*</span>
         <input id="itemBarcode" type="text" maxlength="14">
         <button id="prepareItemData">Get Item Details</button>
-        <div id="itemDataErrMsg" style="display: none;">[Could not retrieve data with given barcode.]</div>
         <ul id="itemDataNote">
-          <li>Please allow up to 15 seconds to gather item data.</li>
-          <li>Navigation away from this page may disrupt data retrieval.</li>
-          <li>"Use" cannot be found automatically.</li>
+          <li>"Use" (Total Checkouts + Past Use) cannot be found for item records you are not authorized to edit.</li>
+          <li>Finding item data will clear the patron data fields.</li>
         </ul>
       </div>
       <fieldset class="optional">
@@ -173,7 +171,6 @@
         <b>Patron Barcode:</b>
         <input id="patronBarcode" type="text" maxlength="14">
         <button id="getPatronData">Get patron data from barcode</button>
-        <div id="patronDataErrMsg" style="display: none;">[Could not retrieve data with given barcode.]</div>
       </div>
       <fieldset class="optional">
         <legend class="optionalLabel">Optional</legend>

@@ -1,33 +1,21 @@
-var patronInfo = document.getElementsByClassName('patroninfo');
+(function(){
+  'use strict';
+  const patronInfo = document.getElementsByClassName('patroninfo');
+  const data = {};
 
-if (patronInfo && patronInfo.length > 0) {
-  var patronName = patronInfo[0].children[0].textContent.replace(/\s\s+/g, ' ').replace(/\./g,'').slice(0, -17).replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase()}),
-    phoneWrap = document.querySelector(".patroninfo ul"),
-    phoneMatchArr = (!!phoneWrap) ? /(1-)?[0-9]{3}-[0-9]{3}-[0-9]{4}/.exec(phoneWrap.textContent) : null,
-    patronBarcode = patronInfo[0].children[0].textContent.match(/2[0-9]{13}/)[0],
-    patronPhone = "",
-    patronEmail = "",
-    emailWrap = document.querySelector('.email a');
-    
-    if (phoneMatchArr && phoneMatchArr.length > 0) {
-      patronPhone = phoneMatchArr[0];
-    }
-    
-    if (emailWrap) {
-      patronEmail = emailWrap.textContent;
-    }
-    
-    console.log(patronName + "|" + patronPhone + "|" + patronEmail);
-    
-    browser.runtime.sendMessage({
-      "key": "returnPatronData",
-      "patronName": patronName,
-      "patronBarcode": patronBarcode,
-      "patronPhone": patronPhone,
-      "patronEmail": patronEmail
-    });
-} else {
-  browser.runtime.sendMessage({
-    "key": "failedPatronData"
-  });
-}
+  if (patronInfo && patronInfo.length > 0) {
+    data.patronName = patronInfo[0].children[0].textContent
+        .replace(/\s+/g, ' ')
+        .replace(/\./g,'').slice(0, -17)
+        .replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase()})
+        .replace(/ ii/i,' II').replace(/ iii/i,' III');
+    data.patronBarcode = patronInfo[0].children[0].textContent.match(/2[0-9]{13}/)[0];
+    let phoneWrap = document.querySelector(".patroninfo ul");
+    let phoneMatchArr = (!!phoneWrap) ? /(1-)?[0-9]{3}-[0-9]{3}-[0-9]{4}/.exec(phoneWrap.textContent) : null;
+    let emailWrap = document.querySelector('.email a');
+
+    data.patronPhone = phoneMatchArr && phoneMatchArr.length > 0 ? phoneMatchArr[0] : '';
+    data.patronEmail = emailWrap !== null ? emailWrap.textContent : '';
+  }
+  return data;
+})();
