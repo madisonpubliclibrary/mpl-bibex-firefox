@@ -1,6 +1,5 @@
 (function(){
   'use strict';
-  console.log('sundayDropbox');
   var t = setInterval(function() {
     if (/\/app\/staff\/circ\/checkin\//.test(window.location)) {
       browser.storage.sync.get("sundayDropboxPaused").then(res => {

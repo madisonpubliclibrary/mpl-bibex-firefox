@@ -307,26 +307,25 @@ browser.webNavigation.onCompleted.addListener(details => {
       "file": "/content/scripts/sortItemCheckoutHistory.js",
       "allFrames": true
     });
-  } else { // No parent frame
-    browser.storage.sync.get(['sundayDropbox','sundayDropboxPaused']).then(res => {
-      if ((!res.hasOwnProperty('sundayDropbox') ||
-          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getDay() === 0) {
-        // If sundayDropbox is not paused
-        if (!res.hasOwnProperty('sundayDropboxPaused') ||
-            (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {
-          console.log('executing sundayDropbox');
-          browser.tabs.executeScript(details.tabId, {
-            "file": "/content/scripts/opt/sundayDropbox.js",
-            "allFrames": true
-          });
-        }
-      } else {
-        if (res.hasOwnProperty('sundayDropboxPaused') && res.sundayDropboxPaused) {
-          browser.storage.sync.set({"sundayDropboxPaused": false});
-        }
-      }
-    });
   }
+
+  browser.storage.sync.get(['sundayDropbox','sundayDropboxPaused']).then(res => {
+    if ((!res.hasOwnProperty('sundayDropbox') ||
+        (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getDay() === 0) {
+      // If sundayDropbox is not paused
+      if (!res.hasOwnProperty('sundayDropboxPaused') ||
+          (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/sundayDropbox.js",
+          "allFrames": true
+        });
+      }
+    } else {
+      if (res.hasOwnProperty('sundayDropboxPaused') && res.sundayDropboxPaused) {
+        browser.storage.sync.set({"sundayDropboxPaused": false});
+      }
+    }
+  });
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -575,16 +574,70 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getPatronData":
-      browser.tabs.create({
-        "url": "https://lakscls-sandbox.bibliovation.com/app/staff/patrons/search/" +
-            request.patronBarcode
-      }).then(tab => {
-        setTimeout(() => {
+      return new Promise((resolve, reject) => {
+        browser.tabs.create({
+          "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
+              request.patronBarcode,
+          "active": false
+        }).then(tab => {
           browser.tabs.executeScript(tab.id, {
-            "file": "/problemItemForm/navToPatronDetails.js",
-            "allFrames": true
+            "code": "document.querySelector('a[href^=\"/app/staff/patron\"]').href.match(/\\d+/)[0]"
+          }).then(patronID => {
+            browser.tabs.remove(tab.id);
+            if (patronID.length > 0 && /\d+/.test(patronID[0])) {
+              resolve(patronID[0]);
+            } else {
+              throw new Error('Failed to get patron ID number.');
+            }
           });
-        },3000);
+        });
+      }).then(patronID => {
+        return browser.tabs.create({
+          "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
+              patronID,
+          "active": false
+        }).then(tab => {
+          return browser.tabs.executeScript(tab.id, {
+            "file": "/problemItemForm/getPatronData.js"
+          }).then(res => {
+            browser.tabs.remove(tab.id);
+            return res;
+          });
+        });
+      });
+      break;
+    case "getItemData":
+      return new Promise((resolve, reject) => {
+        browser.tabs.create({
+          "url": "https://lakscls-sandbox.bibliovation.com/app/search/" + request.itemBarcode,
+          "active": true
+        }).then(tab => {
+          browser.tabs.executeScript(tab.id, {
+            "file": "/problemItemForm/getItemBib.js"
+          }).then(bibNum => {
+            browser.tabs.remove(tab.id);
+            if (bibNum.length > 0 && /\d+/.test(bibNum)) {
+              resolve(bibNum[0]);
+            } else {
+              throw new Error('Failed to get item bib number.');
+            }
+          });
+        });
+      }).then(bibNum => {
+        return new Promise((resolve, reject) => {
+          browser.tabs.create({
+            "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
+                bibNum + "/details" + "?mbxItemBC=" + request.itemBarcode,
+            "active": true
+          }).then(tab => {
+            browser.tabs.executeScript(tab.id, {
+              "file": "/problemItemForm/getItemTitleCopiesHolds.js"
+            }).then(res => {
+              browser.tabs.remove(tab.id);
+              resolve(res[0]);
+            });
+          });
+        });
       });
       break;
   }

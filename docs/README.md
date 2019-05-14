@@ -22,4 +22,4 @@ MPL BibEx is a WebExtension for Firefox (57+) that adds additional features to P
 - [x] Disable rarely used patron fields
 - [x] Separate AV from HSA list
 - [x] Update account type (JU/LJU -> AD/LU)
-- [ ] Sunday dropbox mode
+- [x] Sunday dropbox mode

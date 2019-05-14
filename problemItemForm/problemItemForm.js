@@ -140,9 +140,9 @@
         holds.value = res.holds;
         copies.value = res.copies;
 
-        if (!isNaN(res.totalUse)) {
+        /*if (!isNaN(res.totalUse)) {
           use.value = res.totalUse;
-        }
+        }*/
       });
     } else {
       if (!itemBarcode.classList.contains("invalidInput")) {
