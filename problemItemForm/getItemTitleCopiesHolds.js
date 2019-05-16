@@ -1,12 +1,13 @@
 (function() {
   return new Promise((resolve, reject) => {
     let waitForItem = setInterval(() => {
-      let marc245a = document.querySelector('.marc245a');
+      let items = document.querySelectorAll('a .item-display-value');
 
-      if (marc245a) {
+      if (items.length > 0) {
         clearInterval(waitForItem);
         const data = {};
 
+        let marc245a = document.querySelector('.marc245a');
         let marc245b = document.querySelector('.marc245b');
 
         let holdsData = document.querySelector('.holds-data').textContent.trim();
@@ -16,12 +17,20 @@
         if (copies.length > 0) copies = copies[0].match(/\d+/)[0];
 
         let itemBC = location.search.match(/mbxItemBC=3[0-9]{13}/)[0].match(/3[0-9]{13}/)[0];
-        let items = document.querySelectorAll('a .item-display-value');
 
         for (let item of items) {
           if (item.textContent.trim() === itemBC) {
             data.itemID = item.parentElement.href.match(/=\d+/)[0].substr(1);
-            data.cCode = item.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.children[6].textContent.trim();
+            for (let td of item.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.children) {
+              if (td.classList.contains('ccode')) {
+                data.cCode = td.textContent.trim();
+              } else if (td.classList.contains('_availability')) {
+                let checkedOut = td.textContent.trim().replace(/\s+/g, ' ').match(/^Checked out to \d+/);
+                if (checkedOut.length === 1) {
+                  data.patronID = checkedOut[0].match(/\d+/)[0];
+                }
+              }
+            }
           }
         }
 

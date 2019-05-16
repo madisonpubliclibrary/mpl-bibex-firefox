@@ -135,10 +135,27 @@
         "key": "getItemData",
         "itemBarcode": itemBarcode.value
       }).then(res => {
+        console.log(res);
         itemTitle.value = res.title;
         cCode.value = res.cCode;
         holds.value = res.holds;
         copies.value = res.copies;
+
+        /*if (res.hasOwnProperty('patronID')) {
+          browser.runtime.sendMessage({
+            "key": "getPatronData",
+            "patronID": res.patronID
+          }).then(resArr => {
+            if (resArr.length > 0) {
+              let patronData = resArr[0];
+
+              patron.value = patronData.patronName;
+              patronBarcode.value = patronData.patronBarcode;
+              patronPhone.value = patronData.patronPhone;
+              patronEmail.value = patronData.patronEmail;
+            }
+          });
+        }
 
         /*if (!isNaN(res.totalUse)) {
           use.value = res.totalUse;

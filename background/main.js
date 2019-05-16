@@ -575,22 +575,29 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "getPatronData":
       return new Promise((resolve, reject) => {
-        browser.tabs.create({
-          "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
-              request.patronBarcode,
-          "active": false
-        }).then(tab => {
-          browser.tabs.executeScript(tab.id, {
-            "code": "document.querySelector('a[href^=\"/app/staff/patron\"]').href.match(/\\d+/)[0]"
-          }).then(patronID => {
-            browser.tabs.remove(tab.id);
-            if (patronID.length > 0 && /\d+/.test(patronID[0])) {
-              resolve(patronID[0]);
-            } else {
-              throw new Error('Failed to get patron ID number.');
-            }
+        console.log(request);
+        if (request.hasOwnProperty('patronBarcode')) {
+          browser.tabs.create({
+            "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
+                request.patronBarcode,
+            "active": false
+          }).then(tab => {
+            browser.tabs.executeScript(tab.id, {
+              "code": "document.querySelector('a[href^=\"/app/staff/patron\"]').href.match(/\\d+/)[0]"
+            }).then(patronID => {
+              browser.tabs.remove(tab.id);
+              if (patronID.length > 0 && /\d+/.test(patronID[0])) {
+                resolve(patronID[0]);
+              } else {
+                throw new Error('Failed to get patron ID number.');
+              }
+            });
           });
-        });
+        } else if (request.hasOwnProperty('patronID')) {
+          resolve(request.patronID);
+        } else {
+          throw new Error('Failed to get patron ID number.');
+        }
       }).then(patronID => {
         return browser.tabs.create({
           "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
