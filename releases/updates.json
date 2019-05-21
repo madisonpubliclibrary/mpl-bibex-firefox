@@ -2,10 +2,10 @@
   "addons": {
     "mpl-bibex@lrschneider.com": {
       "updates": [
-        { "version": "0.0.1",
-          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/mpl-bibex-0.0.1.xpi",
+        { "version": "0.1",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/mpl-bibex-0.1.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "57" }
+            "gecko": { "strict_min_version": "58" }
           }
         }
       ]

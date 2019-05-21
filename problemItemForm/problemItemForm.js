@@ -141,7 +141,7 @@
         holds.value = res.holds;
         copies.value = res.copies;
 
-        /*if (res.hasOwnProperty('patronID')) {
+        if (res.hasOwnProperty('patronID')) {
           browser.runtime.sendMessage({
             "key": "getPatronData",
             "patronID": res.patronID
@@ -156,10 +156,6 @@
             }
           });
         }
-
-        /*if (!isNaN(res.totalUse)) {
-          use.value = res.totalUse;
-        }*/
       });
     } else {
       if (!itemBarcode.classList.contains("invalidInput")) {

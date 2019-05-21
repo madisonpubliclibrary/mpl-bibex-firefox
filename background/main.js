@@ -269,11 +269,6 @@ browser.webNavigation.onCompleted.addListener(details => {
 
     // Inherent scripts
     browser.tabs.executeScript(details.tabId, {
-      "file": "/content/scripts/betterLogo.js",
-      "allFrames": true
-    });
-
-    browser.tabs.executeScript(details.tabId, {
       "file": "/content/scripts/fastaddWarning.js",
       "allFrames": true
     });
@@ -308,6 +303,11 @@ browser.webNavigation.onCompleted.addListener(details => {
       "allFrames": true
     });
   }
+
+  browser.tabs.executeScript(details.tabId, {
+    "file": "/content/scripts/betterLogo.js",
+    "allFrames": true
+  });
 
   browser.storage.sync.get(['sundayDropbox','sundayDropboxPaused']).then(res => {
     if ((!res.hasOwnProperty('sundayDropbox') ||
@@ -575,7 +575,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "getPatronData":
       return new Promise((resolve, reject) => {
-        console.log(request);
         if (request.hasOwnProperty('patronBarcode')) {
           browser.tabs.create({
             "url": "https://lakscls-sandbox.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
