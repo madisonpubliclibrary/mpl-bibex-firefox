@@ -9,7 +9,6 @@
     const msgLabel = document.createElement('label');
     const msgSelect = document.createElement('select');
     const defaultOpt  = document.createElement('option');
-    const cardAtNxtCko = document.createElement('option');
     const laptopAgreement = document.createElement('option');
     const rtdMailGroup = document.createElement('optgroup');
     const poRtd = document.createElement('option');
@@ -38,8 +37,6 @@
 
     defaultOpt.value = "";
     defaultOpt.textContent = "Select BibEx Note";
-    cardAtNxtCko.value = "Patron must have library card at next checkout. ";
-    cardAtNxtCko.textContent = "Have card at next CKO";
     laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file. ";
     laptopAgreement.textContent = "Patron signed laptop agreement";
     rtdMailGroup.label = "Returned Mail";
@@ -57,7 +54,6 @@
     wrapper.appendChild(msgLabel);
     wrapper.appendChild(msgSelect);
     msgSelect.appendChild(defaultOpt);
-    msgSelect.appendChild(cardAtNxtCko);
     msgSelect.appendChild(laptopAgreement);
     msgSelect.appendChild(rtdMailGroup);
     rtdMailGroup.appendChild(poRtd);

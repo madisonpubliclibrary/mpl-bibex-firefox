@@ -1,8 +1,8 @@
 # Madison Public Library Bibliovation Web Extension
 
-| Current Version | Supported Browsers<br>(Click to Install)    | Author          |
-| :-------------: | :-----------------------------------------: | :-------------: |
-| <br>0.1         | <br>Firefox | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| Current Version | Install on Firefox | Author |
+| :-------------: | :----------------: | :----: |
+| <br>0.1         | <br>[Install MPL BibEx][1] | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 MPL BibEx is a WebExtension for Firefox (58+) that adds additional features to PTFS's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of the South Central Library System, and, while not supported by SCLS, it is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
 
@@ -89,8 +89,29 @@ If you try to checkout an item to a patron with a barcode that is not a 14-digit
 When creating or updating a patron record, compare their address against MPL's list of dorms, restricted addresses, and unacceptable addresses. Dorm addresses are given a special expiration date of May 15 of that academic year. Restricted addresses are automatically made limited use, and unacceptable addresses trigger the save button to be hidden (which could be overridden by staff). In each of these cases, staff are notified of the nature of the address, and a circulation note is automatically entered into the patron's record.
 
 ## Add patron messages
+This option adds additional canned messages frequently used by MPL staff:
+
+* "Patron has signed Laptop/iPad Loan Agreement form. Form on file."
+* "Mail returned by PO. Holds, if any, are suspended and notices are deactivated."
+* "Card was mailed to patron to establish proof of address, but was ret'd by PO. Card is now at MAD. When patron provides new address, please contact MAD-CIRC so card can be mailed again."
+* "Email address not recognized, unable to send notices. Verify that mailing address and phone are correct. Enter new email address. Holds, if any, are suspended. Previous email was: "
+* "Email box is full; unable to send notices by email. Holds, if any, are suspended. Email was: "
+
 ## Restrict fields in patron records
+This feature disables many of the rarely used input fields which appear while editing a patron’s record. This encourages library staff to maintain a consistent system of data entry across patron accounts. This may be overridden to enable all input fields by checking the checkbox at the top of the patron edit page.
+
+If you are logged into Koha as one of the MPL libraries, this will even more greatly reduce the available input fields when creating a new web-use only account. Additionally, the address, PSTAT, and circulation note fields will be automatically filled in according to MPL and SCLS standards.
+
 ## Sunday dropbox mode
+Automatically checks "Dropbox Mode" on Sundays. If enabled, unchecking the box for dropbox mode on Sundays will disable it for 3 minutes (unless manually enabled).
+
 ## Update patron account type
+This feature will allow you to update a patron's account type from juvenile to adult or limited use juvenile to limited use upon saving their record if the patron is at least 16 years old on the day you are editing their record.
+
 # Bug reporting and developer contact
+This web extension is developed by Lucas Schneider, a Library Page II at Madison Central Library. You may email Lucas comments, questions, or feature requests to [lschneider@madisonpubliclibrary.org](mailto:lschneider@madisonpubliclibrary.org).
+
 # Disclaimer
+This extension has been vetted for security by SCLS, however, it is neither supported nor endorsed by PTFS/LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
+
+  [1]: javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/currXPI/mpl-bibex.xpi'}));
