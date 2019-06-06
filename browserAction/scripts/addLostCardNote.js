@@ -13,15 +13,12 @@
       let library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
 
       if (library) {
-        date = new Date();
-        month = date.getMonth();
-
         if (month+1 < 10) {
           currDate += '0' + (month+1) + '/';
         } else {
           currDate += (month+1) + '/';
         }
-        day = date.getDate();
+
         if (day < 10) {
           day = '0' + day;
         }

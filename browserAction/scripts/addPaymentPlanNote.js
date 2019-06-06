@@ -3,7 +3,7 @@
   // Only execute script in the patron edit page
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     const circNote = document.getElementById('borrowernotes');
-    const categoryCode = document.getElementsByClassName('categorycode');
+    const categoryCode = document.getElementById('categorycode');
     const date = new Date();
     let month = date.getMonth();
     let day = date.getDate();
@@ -11,7 +11,7 @@
     let year;
     let expiryDate = '';
     let currDate = '';
-    
+
     if (circNote) {
       let startingBalance = prompt('What is the patron\'s starting balance for this payment plan?')
         .replace(/^\$/,'');
@@ -40,10 +40,10 @@
           circNote.value += "\n\n";
         }
         circNote.value += 'AT MADISON PUBLIC LIBRARY ONLY, patron is allowed to checkout if they pay $1.00 per item. FULL payment is required outside of MPL. NO Outerloan or Rental checkouts allowed while on the plan. Holds are allowed only as copy specific on MPL items. Plan is void if new fees are added. Patron’s account is limited use while they are on the plan. Starting balance was $' + startingBalance + '. Charges must be paid by ' + expiryDate + '. Plan started on '+ currDate + ' ';
-        if (categoryCode && categoryCode[0].value === 'AD') {
-          categoryCode[0].value = 'LU';
-        } else if (categoryCode && categoryCode[0].value == 'JU') {
-          categoryCode[0].value = 'LUJ';
+        if (categoryCode && categoryCode.value === 'AD') {
+          categoryCode.value = 'LU';
+        } else if (categoryCode && categoryCode.value == 'JU') {
+          categoryCode.value = 'LUJ';
         }
       } else {
         alert('Payment plan note was not added.');
