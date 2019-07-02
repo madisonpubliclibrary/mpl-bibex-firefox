@@ -1320,6 +1320,7 @@
     if (addrElt && addrElt.value) {
       addr = addrElt.value.trim().toLowerCase()
         .replace(/[^#a-z0-9/ ]/g, '')
+        .replace(/ave (\d+)/, 'ave #$1')
         .replace(/ave (apt|unit|fl) ?/, 'ave #')
         .replace(/ c(ou)?n?ty /, ' co ')
         .replace(/ n /, ' north ')
