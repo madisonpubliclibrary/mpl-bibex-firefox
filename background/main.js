@@ -646,5 +646,20 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       });
       break;
+    case "printProblemForm":
+      browser.tabs.create({
+        "active": false,
+        "url": browser.runtime.getURL("../problemItemForm/printProblemForm.html")
+      }).then(tab => {
+        setTimeout(() => {
+          browser.tabs.sendMessage(tab.id, {
+            "key": "printProblemForm",
+            "data": request.data
+          }).then(() => {
+            browser.tabs.remove(tab.id);
+          });
+        }, 500);
+      });
+      break;
   }
 });

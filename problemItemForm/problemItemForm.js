@@ -135,7 +135,6 @@
         "key": "getItemData",
         "itemBarcode": itemBarcode.value
       }).then(res => {
-        console.log(res);
         itemTitle.value = res.title;
         cCode.value = res.cCode;
         holds.value = res.holds;
