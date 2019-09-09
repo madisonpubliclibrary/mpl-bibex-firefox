@@ -14,6 +14,17 @@ function setIcon() {
           }
         });
         break;
+      case "PCPL":
+        browser.browserAction.setIcon({
+          "path": {
+            "16": "content/img/pcpl-icon-16.png",
+            "32": "content/img/pcpl-icon-32.png",
+            "48": "content/img/pcpl-icon-48.png",
+            "64": "content/img/pcpl-icon-64.png",
+            "128": "content/img/pcpl-icon-128.png"
+          }
+        });
+        break;
       case "SCLS":
         browser.browserAction.setIcon({
           "path": {

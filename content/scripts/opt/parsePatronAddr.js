@@ -111,7 +111,7 @@
                 if (bn && !bn.value.includes(noteBody)) {
                   expDate.value = "05/15/" + year;
                   if (bn.value !== "") {
-                    if (/Special expiration date of 05\/15\/[0-9]{4} set due to residence at/.test(bn.value)) {
+                    if (/Special expiration date of 05\/15\/20[0-9]{2} set due to residence at/.test(bn.value)) {
                       msg = "Please remove old dorm expiration note.\n\n" + noteBody;
                     }
                     bn.value += "\n\n";
@@ -184,12 +184,6 @@
           }
           if (bn.value.includes("Special expiration date of 05/15/")) {
             deleteDormNotice();
-          }
-
-          if (cc.value === "LU") {
-            cc.value = "AD";
-          } else if (cc.value === "LUJ") {
-            cc.value = "JU";
           }
         }, reject => {
           console.error(reject.message);
