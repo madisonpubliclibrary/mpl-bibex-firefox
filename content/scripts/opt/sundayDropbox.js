@@ -2,7 +2,7 @@
   'use strict';
   var t = setInterval(function() {
     if (/\/app\/staff\/circ\/checkin\//.test(window.location)) {
-      browser.storage.sync.get("sundayDropboxPaused").then(res => {
+      chrome.storage.sync.get("sundayDropboxPaused", res => {
         var dropbox = Array.from(document.getElementsByTagName('button'))
                            .filter(elt => elt.title === "Dropbox mode");
 
@@ -15,16 +15,14 @@
           if (!dropbox.getAttribute('onclick')) {
             dropbox.onclick = function() {
               if (this.classList.contains("dropbox-active")) {
-                browser.runtime.sendMessage({"key": "pauseSundayDropbox"});
+                chrome.runtime.sendMessage({"key": "pauseSundayDropbox"});
               } else {
-                browser.runtime.sendMessage({"key": "resumeSundayDropbox"});
+                chrome.runtime.sendMessage({"key": "resumeSundayDropbox"});
               }
             };
-
-            clearInterval(t);
           }
         }
       });
     }
-  }, 250);
+  }, 500);
 })();
