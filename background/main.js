@@ -572,6 +572,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "resumeSundayDropbox":
         browser.storage.sync.set({"sundayDropboxPaused": false});
       break;
+    case "addrNoteCooldown":
+      chrome.storage.sync.set({"addrNoteCooldown": true});
+      setTimeout(() => {
+        chrome.storage.sync.set({"addrNoteCooldown": false});
+      }, 5000);
+      break;
     case "addLostCardNote":
       browser.tabs.executeScript({
         "file": "/browserAction/scripts/addLostCardNote.js",
@@ -624,9 +630,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getItemData":
-      return new Promise((resolve, reject) => {
-        browser.storage.sync.get('silentItemData', function(res) {
-          let isSilent = res.hasOwnProperty('silentItemData') ? res.silentItemData : false;
+      return browser.storage.sync.get('silentItemData').then(res => {
+        let isSilent = res.hasOwnProperty('silentItemData') ? res.silentItemData : false;
+        return new Promise((resolve, reject) => {
           browser.tabs.create({
             "url": "https://lakscls-sandbox.bibliovation.com/app/search/" + request.itemBarcode,
             "active": !isSilent
@@ -635,7 +641,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
               "file": "/problemItemForm/getItemBib.js"
             }).then(bibNum => {
               browser.tabs.remove(tab.id);
-              if (bibNum.length > 0 && /\d+/.test(bibNum)) {
+              if (bibNum.length > 0 && /\d+/.test(bibNum[0])) {
                 resolve(bibNum[0]);
               } else {
                 throw new Error('Failed to get item bib number.');

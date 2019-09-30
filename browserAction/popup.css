@@ -35,10 +35,6 @@ a:focus {
   padding: 2px 10px 2px 0;
 }
 
-#laptopButton {
-  margin: 1em 1em 0 1em;
-}
-
 .mainWrapper {
   margin: 0 1em 1em 1em;
 }
@@ -86,7 +82,7 @@ a:focus {
 }
 
 input {
-  display: block; 
+  display: block;
 }
 
 input:checked + .slider {

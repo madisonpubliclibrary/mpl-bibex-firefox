@@ -85,11 +85,23 @@
     }
 
     function deleteLUNotice() {
-      alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
+      browser.storage.sync.get('addrNoteCooldown', res => {
+        if ((res.hasOwnProperty('addrNoteCooldown') && !res.addrNoteCooldown) || !res.hasOwnProperty('addrNoteCooldown')) {
+          browser.runtime.sendMessage({"key": "addrNoteCooldown"}, () => {
+            alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
+          });
+        }
+      });
     }
 
     function deleteDormNotice() {
-      alert('Please delete the circulation note regarding the patron\'s previous dorm address')
+      browser.storage.sync.get('addrNoteCooldown', res => {
+        if ((res.hasOwnProperty('addrNoteCooldown') && !res.addrNoteCooldown) || !res.hasOwnProperty('addrNoteCooldown')) {
+          browser.runtime.sendMessage({"key": "addrNoteCooldown"}, () => {
+            alert('Please delete the circulation note regarding the patron\'s previous dorm address');
+          });
+        }
+      });
     }
 
     var parseAddr = function() {
