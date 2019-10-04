@@ -17,6 +17,7 @@ const receiptFont = document.getElementById("receiptFont");
 const sundayDropbox = document.getElementById("sundayDropbox");
 const sundayDropboxPaused = document.getElementById("sundayDropboxPaused");
 const silentItemData = document.getElementById("silentItemData");
+const getItemUse = document.getElementById("getItemUse");
 const shortcutText1 = document.getElementById("shortcutText1");
 const shortcutLink1 = document.getElementById("shortcutLink1");
 const shortcutText2 = document.getElementById("shortcutText2");
@@ -51,6 +52,7 @@ function restoreOptions() {
     receiptFont.value = res.receiptFont;
     sundayDropbox.checked = res.sundayDropbox;
     silentItemData.checked = res.silentItemData;
+    getItemUse.checked = res.getItemUse;
     shortcutText1.value = res.shortcutText1;
     shortcutLink1.value = res.shortcutLink1;
     shortcutText2.value = res.shortcutText2;
@@ -105,6 +107,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "sundayDropbox": true,
     "sundayDropboxPaused": false,
     "silentItemData": false,
+    "getItemUse": false,
     "shortcutText1": "Koha—Checkin",
     "shortcutLink1": "http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/returns.pl",
     "shortcutText2": "Koha—Checkout",
@@ -190,7 +193,10 @@ document.getElementById("sundayDropboxSwitch").addEventListener('click', functio
    browser.storage.sync.set({"sundayDropbox": sundayDropbox.checked});
 });
 document.getElementById("silentItemDataSwitch").addEventListener('click', function() {
-   chrome.storage.sync.set({"silentItemData": silentItemData.checked});
+   browser.storage.sync.set({"silentItemData": silentItemData.checked});
+});
+document.getElementById("getItemUseSwitch").addEventListener('click', function() {
+   browser.storage.sync.set({"getItemUse": getItemUse.checked});
 });
 document.getElementById("shortcutText1").addEventListener('blur', function() {
   browser.storage.sync.set({"shortcutText1": shortcutText1.value});

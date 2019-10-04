@@ -649,19 +649,60 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             });
           });
         }).then(bibNum => {
-          return new Promise((resolve, reject) => {
-            browser.tabs.create({
-              "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
-                  bibNum + "/details" + "?mbxItemBC=" + request.itemBarcode,
-              "active": !isSilent
-            }).then(tab => {
-              browser.tabs.executeScript(tab.id, {
-                "file": "/problemItemForm/getItemTitleCopiesHolds.js"
-              }).then(res => {
-                browser.tabs.remove(tab.id);
-                resolve(res[0]);
+          return browser.storage.sync.get('getItemUse').then(usePref => {
+            let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
+              browser.tabs.create({
+                "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
+                    bibNum + "/details?mbxItemBC=" + request.itemBarcode,
+                "active": !isSilent
+              }).then(tab => {
+                browser.tabs.executeScript(tab.id, {
+                  "file": "/problemItemForm/getItemTitleCopiesHolds.js"
+                }).then(res => {
+                  browser.tabs.remove(tab.id);
+                  resolve(res[0]);
+                });
               });
             });
+
+            let getItemUse = new Promise((resolve, reject) => {
+              browser.tabs.create({
+                "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
+                    bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
+                "active": !isSilent
+              }).then(tab => {
+                browser.tabs.executeScript(tab.id, {
+                  "file": "/problemItemForm/getItemUse.js"
+                }).then(res => {
+                  browser.tabs.remove(tab.id);
+                  resolve(res[0]);
+                });
+              });
+            });
+
+            let getItemPastUse = new Promise((resolve, reject) => {
+              browser.tabs.create({
+                "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
+                    bibNum + "/items?mbxItemBC=" + request.itemBarcode,
+                "active": !isSilent
+              }).then(tab => {
+                browser.tabs.executeScript(tab.id, {
+                  "file": "/problemItemForm/getItemPastUse.js"
+                }).then(res => {
+                  browser.tabs.remove(tab.id);
+                  resolve(res[0]);
+                });
+              });
+            });
+
+            if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
+              return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
+                res[0].use = parseInt(res[1]) + parseInt(res[2]);
+                return res[0];
+              });
+            } else {
+              return getItemTitleCopiesHolds.then(res => {return res});
+            }
           });
         });
       });

@@ -1,4 +1,5 @@
 (function() {
+  'use strict'
   return new Promise((resolve, reject) => {
     let waitForItem = setInterval(() => {
       let items = document.querySelectorAll('a .item-display-value');
@@ -52,7 +53,6 @@
         let checkToResolve = setInterval(() => {
           if (!waitToResolve) {
             clearInterval(checkToResolve);
-            console.log(data);
             resolve(data);
           }
         }, 350);
