@@ -630,46 +630,45 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getItemData":
-      return browser.storage.sync.get('silentItemData').then(res => {
-        let isSilent = res.hasOwnProperty('silentItemData') ? res.silentItemData : false;
-        return new Promise((resolve, reject) => {
-          browser.tabs.create({
-            "url": "https://lakscls-sandbox.bibliovation.com/app/search/" + request.itemBarcode,
-            "active": !isSilent
-          }).then(tab => {
-            browser.tabs.executeScript(tab.id, {
-              "file": "/problemItemForm/getItemBib.js"
-            }).then(bibNum => {
-              browser.tabs.remove(tab.id);
-              if (bibNum.length > 0 && /\d+/.test(bibNum[0])) {
-                resolve(bibNum[0]);
-              } else {
-                throw new Error('Failed to get item bib number.');
-              }
-            });
+      return new Promise((resolve, reject) => {
+        browser.tabs.create({
+          "url": "https://lakscls-sandbox.bibliovation.com/app/search/" + request.itemBarcode,
+          "active": true
+        }).then(tab => {
+          browser.tabs.executeScript(tab.id, {
+            "file": "/problemItemForm/getItemBib.js"
+          }).then(bibNum => {
+            browser.tabs.remove(tab.id);
+            if (bibNum.length > 0 && /\d+/.test(bibNum[0])) {
+              resolve(bibNum[0]);
+            } else {
+              throw new Error('Failed to get item bib number.');
+            }
           });
-        }).then(bibNum => {
-          return browser.storage.sync.get('getItemUse').then(usePref => {
-            let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
-              browser.tabs.create({
-                "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
-                    bibNum + "/details?mbxItemBC=" + request.itemBarcode,
-                "active": !isSilent
-              }).then(tab => {
-                browser.tabs.executeScript(tab.id, {
-                  "file": "/problemItemForm/getItemTitleCopiesHolds.js"
-                }).then(res => {
-                  browser.tabs.remove(tab.id);
-                  resolve(res[0]);
-                });
+        });
+      }).then(bibNum => {
+        return browser.storage.sync.get('getItemUse').then(usePref => {
+          let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
+            browser.tabs.create({
+              "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
+                  bibNum + "/details?mbxItemBC=" + request.itemBarcode,
+              "active": true
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "file": "/problemItemForm/getItemTitleCopiesHolds.js"
+              }).then(res => {
+                browser.tabs.remove(tab.id);
+                resolve(res[0]);
               });
             });
+          });
 
+          if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
             let getItemUse = new Promise((resolve, reject) => {
               browser.tabs.create({
                 "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
                     bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
-                "active": !isSilent
+                "active": true
               }).then(tab => {
                 browser.tabs.executeScript(tab.id, {
                   "file": "/problemItemForm/getItemUse.js"
@@ -684,7 +683,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
               browser.tabs.create({
                 "url": "https://lakscls-sandbox.bibliovation.com/app/staff/bib/" +
                     bibNum + "/items?mbxItemBC=" + request.itemBarcode,
-                "active": !isSilent
+                "active": true
               }).then(tab => {
                 browser.tabs.executeScript(tab.id, {
                   "file": "/problemItemForm/getItemPastUse.js"
@@ -695,15 +694,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
               });
             });
 
-            if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
-              return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
-                res[0].use = parseInt(res[1]) + parseInt(res[2]);
-                return res[0];
-              });
-            } else {
-              return getItemTitleCopiesHolds.then(res => {return res});
-            }
-          });
+            return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
+              res[0].use = parseInt(res[1]) + parseInt(res[2]);
+              return res[0];
+            });
+          } else {
+            return getItemTitleCopiesHolds.then(res => {return res});
+          }
         });
       });
       break;

@@ -50,8 +50,8 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('sundayDropbox')) {
     browser.storage.sync.set({"sundayDropbox": true});
   }
-  if (!res.hasOwnProperty('silentItemData')) {
-    chrome.storage.sync.set({"silentItemData": false});
+  if (!res.hasOwnProperty('getItemUse')) {
+    chrome.storage.sync.set({"getItemUse": true});
   }
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1')) {
     browser.storage.sync.set({
