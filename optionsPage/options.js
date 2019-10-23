@@ -119,7 +119,6 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
   }).then(() => {
     browser.runtime.sendMessage({"key": "updateExtensionIcon"});
-    restoreOptions();
   });
 });
 
@@ -127,6 +126,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
 skin.addEventListener('change', function() {
   browser.storage.sync.set({"skin": skin.value}).then(() => {
     browser.runtime.sendMessage({"key": "updateExtensionIcon"});
+    setTimeout(() => {restoreOptions()}, 500);
   });
 });
 document.getElementById("parseAddrSwitch").addEventListener('click', function() {
