@@ -9,9 +9,9 @@
       if (items.length > 0 ) {
         for (let item of items) {
           if (item.textContent.includes(itemBC) &&
-              /^\d+$/.test(item.parentElement.parentElement.children[1].children[2].children[1].children[1].children[1].textContent.split(',')[0].trim())) {
+              item.parentElement.parentElement.children[1].children[2].children[1].children[1].children[1].textContent.match(/YTD:\s+\d+/).length > 0) {
             clearInterval(waitForItems);
-            resolve(item.parentElement.parentElement.children[1].children[2].children[1].children[1].children[1].textContent.split(',')[0].trim());
+            resolve(item.parentElement.parentElement.children[1].children[2].children[1].children[1].children[1].textContent.match(/YTD:\s+\d+/)[0].match(/\d+/)[0]);
           }
         }
       }

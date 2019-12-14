@@ -10,9 +10,14 @@
         clearInterval(waitForItems);
         for (let item of items) {
           if (item.textContent.includes(itemBC)) {
-            resolve(item.parentElement.parentElement.parentElement.children[12].textContent.trim());
+            for (let col of item.parentElement.parentElement.parentElement.children) {
+              if (col.classList.contains('952.Z')) {
+                resolve(col.textContent.trim());
+              }
+            }
           }
         }
+        reject('Item past use not found.')
       }
     }, 350);
   });
