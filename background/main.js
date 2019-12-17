@@ -13,8 +13,8 @@ function setIcon() {
       "shortcutLink4": "https://www.midlibrary.org",
       "shortcutText5": "MID Staff Page",
       "shortcutLink5": "https://www.midlibrary.org/library/staff/login.asp",
-      "shortcutText6": "",
-      "shortcutLink6": ""
+      "shortcutText6": "iSolved HCM",
+      "shortcutLink6": "https://payrollcompany.myisolved.com/UserLogin.aspx"
     },
     "SUN": {
       "shortcutText4": "SUN Home Page",
@@ -318,6 +318,13 @@ browser.webNavigation.onCompleted.addListener(details => {
           (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
         browser.tabs.executeScript(details.tabId, {
           "file": "/content/scripts/opt/updateAccountType.js",
+          "allFrames": true
+        });
+      }
+
+      if (res.hasOwnProperty('madInternetCards') && res.madInternetCards) {
+        browser.tabs.executeScript(details.tabId, {
+          "file": "/content/scripts/opt/madInternetCards.js",
           "allFrames": true
         });
       }
