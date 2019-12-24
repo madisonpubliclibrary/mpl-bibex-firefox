@@ -51,7 +51,7 @@
 
   let formatDateForDisplay = function(date) {
     if (date && date !== "") {
-      const d = new Date(date);
+      const d = new Date(date+"T00:00:00");
       return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
     } else {
       return "";

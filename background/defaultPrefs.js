@@ -20,8 +20,8 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('updateAccountType') || performReset) {
     browser.storage.sync.set({"updateAccountType": true});
   }
-  if (!res.hasOwnProperty('madInternetCards') || performReset) {
-    browser.storage.sync.set({"madInternetCards": false});
+  if (!res.hasOwnProperty('mplInternetCards') || performReset) {
+    browser.storage.sync.set({"mplInternetCards": false});
   }
   if (!res.hasOwnProperty('addPatronNotes') || performReset) {
     browser.storage.sync.set({"addPatronNotes": true});

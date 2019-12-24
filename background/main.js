@@ -322,9 +322,9 @@ browser.webNavigation.onCompleted.addListener(details => {
         });
       }
 
-      if (res.hasOwnProperty('madInternetCards') && res.madInternetCards) {
+      if (res.hasOwnProperty('mplInternetCards') && res.mplInternetCards) {
         browser.tabs.executeScript(details.tabId, {
-          "file": "/content/scripts/opt/madInternetCards.js",
+          "file": "/content/scripts/opt/mplInternetCards.js",
           "allFrames": true
         });
       }

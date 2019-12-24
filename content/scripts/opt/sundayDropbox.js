@@ -15,9 +15,9 @@
           if (!dropbox.getAttribute('onclick')) {
             dropbox.onclick = function() {
               if (this.classList.contains("dropbox-active")) {
-                chrome.runtime.sendMessage({"key": "pauseSundayDropbox"});
+                browser.runtime.sendMessage({"key": "pauseSundayDropbox"});
               } else {
-                chrome.runtime.sendMessage({"key": "resumeSundayDropbox"});
+                browser.runtime.sendMessage({"key": "resumeSundayDropbox"});
               }
             };
           }
