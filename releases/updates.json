@@ -77,6 +77,13 @@
           "applications": {
             "gecko": { "strict_min_version": "58" }
           }
+        },
+        {
+          "version": "1.4",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/mpl-bibex-1.4.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "58" }
+          }
         }
       ]
     }
