@@ -1264,6 +1264,14 @@
       "__default__": "X-UND"
     };
 
+    this.madTracts = ["1","10","105.01","107.01","107.02","108","109.01","109.03",
+        "11.01","11.02","110","112","114.01","114.02","12","13",
+        "14.01","14.02","14.03","15.01","15.02","16.03","16.05","16.06","17.04",
+        "17.05","18.02","18.04","19","2.01","2.02","2.04","2.05","20","21","22",
+        "23.01","23.02","24.01","24.02","25","26.01","26.02","26.03","27","28",
+        "29","3","30.01","30.02","31","32","4.01","4.02","4.05","4.06","4.07",
+        "4.08","5.01","5.03","5.04","6","7","8","9.01","9.02"];
+
     /**
      * Passes the county and county subdivision arguments to PSTATS.find()
      * with an empty string for the census tractNotice
@@ -1283,7 +1291,7 @@
      */
     this.find = function(county, countySub, censusTract) {
       if (county === "Dane" && countySub === "Madison city") {
-        return censusTract ? "D-" + censusTract : "D-X-MAD";
+        return censusTract && this.madTracts.includes(censusTract) ? "D-" + censusTract : "D-X-MAD";
       } else {
         return this.data[county][countySub] || this.data[county].__default__ ||
             this.data.__default__;
@@ -1538,14 +1546,28 @@
             selectList[0].value = pstats.find(result.county,result.countySub,result.censusTract);
           }
 
-          pstatMsg.send(MSG_SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
-          toggleGMapSearch(true);
+          if (selectList[0].value === "D-X-MAD") {
+            const tempCensusTractMap = {
+              '108.01': '108'
+            };
+
+            if (tempCensusTractMap.hasOwnProperty(result.censusTract)) {
+            selectList[0].value = "D-" + tempCensusTractMap[result.censusTract];
+              pstatMsg.send(MSG_SUCCESS, "City of Madison Census Tract " + result.censusTract + " was found, but " + tempCensusTractMap[result.censusTract] + " was selected in Bibliovation.", findAltPSTAT);
+            } else {
+              pstatMsg.send(MSG_ERROR, "City of Madison Census Tract " + result.censusTract + " was found, but is not available in Bibliovation. Please report to MAD-CIRC.", findAltPSTAT);
+            }
+            toggleGMapSearch(true);
+          } else if (selectList[0].value !== "D-X-SUN" && selectList[0].value !== "X-UND") {
+            pstatMsg.send(MSG_SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
+            toggleGMapSearch(true);
+          }
         }
       }, reject => {
         selectList[0].value = "X-UND";
         initialRejectMsg = reject.message;
       }).then(() => {
-        if (selectList[0].value === "X-UND") {
+        if (selectList[0].value === "X-UND" || selectList[0].value === "D-X-SUN") {
           browser.runtime.sendMessage({
             "key": "queryAlderDists",
             "address": targetAddr.value,
@@ -1568,7 +1590,7 @@
               initialRejectMsg = reject.message;
             }
 
-            pstatMsg.send(MSG_ERROR, "PSTAT " + initialRejectMsg, findAltPSTAT);
+            pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
             if (selectList[0].value === "X-UND") {
               openFactFinder.style.display = 'block';
               if (findAltPSTAT) {

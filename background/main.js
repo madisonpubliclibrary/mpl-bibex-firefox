@@ -470,10 +470,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
               return fetch(alderURL, {"method": "GET"}).then(response => {
                 return response.json();
               }).then(json => {
-                var value = "";
+                let value = "";
 
-                for (var i = 0; i < json.length; i++) {
-                  var regex = new RegExp(json[i].regex, "i");
+                for (let i = 0; i < json.length; i++) {
+                  let regex = new RegExp(json[i].regex, "i");
                   if (regex.test(matchAddr)) {
                     value = json[i].value;
                   }
@@ -529,7 +529,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         for (var i = 0; i < json.length; i++) {
           var regex = new RegExp(json[i].regex, "i");
 
-          if (regex.test(request.address)) {
+          if (regex.test(request.address.replace(/\./g,''))) {
             value = json[i].value;
             zip = json[i].zip
             break;
