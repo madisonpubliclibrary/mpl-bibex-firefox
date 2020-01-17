@@ -49,6 +49,7 @@
     HTMLInputElement.prototype.parseName = function () {
       const surname = document.getElementById('surname');
       const initials = document.getElementById('initials');
+      const firstName = document.getElementById('firstname');
       let names;
       let len;
       // Strip commas from string
@@ -66,6 +67,17 @@
           initials.value = names[1][0].toUpperCase();
         }
       }
+
+      /** Until SCLS can fix hold slip printing issue **/
+      while (surname.value.length < 5) {
+        surname.value += ' ';
+      }
+
+
+      while (firstName.value.length < 4) {
+        firstName.value += ' ';
+      }
+      /*************************************************/
 
       return false;
     }
