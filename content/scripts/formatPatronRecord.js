@@ -5,6 +5,8 @@
     let inputs = document.querySelectorAll('input[type=text]');
     let cities = [document.getElementById('city'), document.getElementById('B_city'),
           document.getElementById('altcontactaddress3')];
+    const surname = document.getElementById('surname');
+    const initials = document.getElementById('initials');
     const firstName = document.getElementById('firstname');
     const cardNum = document.getElementById('cardnumber');
     const userId = document.getElementById('userid');
@@ -19,6 +21,8 @@
       } else if (this.id !== 'userid') {
         this.value = this.value.toUpperCase().replace(/\s{2,}/g, ' ').trim();
       }
+
+      addSpacesForHolds();
     }
 
     /**
@@ -47,9 +51,6 @@
      *
      */
     HTMLInputElement.prototype.parseName = function () {
-      const surname = document.getElementById('surname');
-      const initials = document.getElementById('initials');
-      const firstName = document.getElementById('firstname');
       let names;
       let len;
       // Strip commas from string
@@ -67,8 +68,12 @@
           initials.value = names[1][0].toUpperCase();
         }
       }
+      addSpacesForHolds();
 
-      /** Until SCLS can fix hold slip printing issue **/
+      return false;
+    }
+
+    function addSpacesForHolds() {
       while (surname.value.length > 1 && surname.value.length < 5) {
         surname.value += ' ';
       }
@@ -77,9 +82,6 @@
       while (firstName.value.length > 1 && firstName.value.length < 4) {
         firstName.value += ' ';
       }
-      /*************************************************/
-
-      return false;
     }
 
     for (let input of inputs) {
