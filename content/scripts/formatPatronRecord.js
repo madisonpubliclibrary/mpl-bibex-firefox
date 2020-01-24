@@ -21,8 +21,6 @@
       } else if (this.id !== 'userid') {
         this.value = this.value.toUpperCase().replace(/\s{2,}/g, ' ').trim();
       }
-
-      addSpacesForHolds();
     }
 
     /**
@@ -68,20 +66,7 @@
           initials.value = names[1][0].toUpperCase();
         }
       }
-      addSpacesForHolds();
-
       return false;
-    }
-
-    function addSpacesForHolds() {
-      while (surname.value.length > 1 && surname.value.length < 5) {
-        surname.value += ' ';
-      }
-
-
-      while (firstName.value.length > 1 && firstName.value.length < 4) {
-        firstName.value += ' ';
-      }
     }
 
     for (let input of inputs) {
