@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   /**
-   * The PSTATS opject contains all of the PSTAT codes for
+   * The PSTATS object contains all of the PSTAT codes for
    * every county subdivision in Wisconsin except for Middleton,
    * Sun Prairie, and Verona, which will be queried via
    * https://mpl-bibex.lrschneider.com
@@ -1376,7 +1376,7 @@
     const selectList = document.getElementsByName('sort1');
     const pstatNotice = document.createElement('div');
     const pstatNoticeAlt = document.createElement('div');
-    const openFactFinder = document.createElement('div');
+    const openTIGERweb = document.createElement('div');
     const nearestLib = document.createElement('div');
     const mapRegionList = document.createElement('select');
     const gmapResponse = document.createElement('div');
@@ -1491,16 +1491,16 @@
       // Style the notification elements
       pstatNotice.id = "pstatNotice";
       pstatNoticeAlt.id = "pstatNoticeAlt";
-      openFactFinder.id = "openFactFinder";
-      openFactFinder.textContent = "Click to search American Fact Finder";
+      openTIGERweb.id = "openTIGERweb";
+      openTIGERweb.textContent = "Click to open TIGERweb";
       pstatNotice.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
       pstatNoticeAlt.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;display:none;');
-      openFactFinder.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;color:' +
+      openTIGERweb.setAttribute('style', 'margin-top:.5em;margin-left:118px;font-size:1.25em;font-weight:bold;font-style:italic;color:' +
           MSG_SEARCHING + ';cursor:pointer;display:none;');
 
-      openFactFinder.addEventListener('click', function() {
+      openTIGERweb.addEventListener('click', function() {
         browser.runtime.sendMessage({
-          "key": "openFactFinder",
+          "key": "openTIGERweb",
           "address": cleanAddr(targetAddr, false),
           "city": getCity(targetCity, false)
         });
@@ -1527,7 +1527,7 @@
       targetZip = findAltPSTAT ? zipEltAlt : zipElt;
 
       lnBrk.style.display = 'none';
-      openFactFinder.style.display = 'none';
+      openTIGERweb.style.display = 'none';
       gmapResponse.style.display = 'none';
       toggleGMapSearch(false);
       pstatMsg.send(MSG_SEARCHING, "Finding PSTAT...", findAltPSTAT);
@@ -1591,11 +1591,11 @@
 
             pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
             if (selectList[0].value === "X-UND") {
-              openFactFinder.style.display = 'block';
+              openTIGERweb.style.display = 'block';
               if (findAltPSTAT) {
-                addrEltAlt.parentElement.appendChild(openFactFinder);
+                addrEltAlt.parentElement.appendChild(openTIGERweb);
               } else {
-                addrElt.parentElement.appendChild(openFactFinder);
+                addrElt.parentElement.appendChild(openTIGERweb);
               }
             }
           });

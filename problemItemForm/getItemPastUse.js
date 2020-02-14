@@ -1,6 +1,7 @@
 (function() {
   'use strict'
   return new Promise((resolve, reject) => {
+    let data = {'pastUse': 0, 'acqDate': new Date()};
     let itemBC = location.search.match(/mbxItemBC=3[0-9]{13}/)[0].match(/3[0-9]{13}/)[0];
 
     let waitForItems = setInterval(() => {
@@ -12,12 +13,15 @@
           if (item.textContent.includes(itemBC)) {
             for (let col of item.parentElement.parentElement.parentElement.children) {
               if (col.classList.contains('952.Z')) {
-                resolve(col.textContent.trim());
+                data.pastUse = col.textContent.trim();
+              } else if (col.classList.contains('dateaccessioned')) {
+                data.acqDate = new Date(col.textContent.trim());
               }
             }
+            break;
           }
         }
-        resolve(0); // If no past use cell, resolve 0
+        resolve(data);
       }
     }, 350);
   });
