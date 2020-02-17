@@ -1512,9 +1512,9 @@
     }
 
     /**
-     * Queries the US Census Geocoder, American Fact Finder, and a database of
-     * PSTAT exceptions and aldermanic districts to determine the proper "sort 1"
-     * code for a patron's record.
+     * Queries the US Census Geocoder and a database of PSTAT exceptions and
+     * aldermanic districts to determine the proper "sort 1" code for a
+     * patron's record.
      *
      * @param {boolean} findAltPSTAT Whether the the query should use the patron's
      *   primary or alternate address

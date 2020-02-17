@@ -1,5 +1,5 @@
 (function() {
-  'use strict'
+  'use strict';
   return new Promise((resolve, reject) => {
     let waitForItem = setInterval(() => {
       let items = document.querySelectorAll('a .item-display-value');

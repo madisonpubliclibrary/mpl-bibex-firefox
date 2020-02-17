@@ -1,7 +1,7 @@
 (function() {
   'use strict'
   return new Promise((resolve, reject) => {
-    let data = {'pastUse': 0, 'acqDate': new Date()};
+    let data = {'pastUse': 0};
     let itemBC = location.search.match(/mbxItemBC=3[0-9]{13}/)[0].match(/3[0-9]{13}/)[0];
 
     let waitForItems = setInterval(() => {
@@ -14,8 +14,6 @@
             for (let col of item.parentElement.parentElement.parentElement.children) {
               if (col.classList.contains('952.Z')) {
                 data.pastUse = col.textContent.trim();
-              } else if (col.classList.contains('dateaccessioned')) {
-                data.acqDate = new Date(col.textContent.trim());
               }
             }
             break;
