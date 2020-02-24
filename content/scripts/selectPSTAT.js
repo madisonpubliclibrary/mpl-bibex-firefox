@@ -1541,7 +1541,15 @@
         if (result.key === "returnCensusData") {
           targetZip.value = result.zip;
 
-          if (result.value) {
+          // [Feb 2020] The census geocoder has been assigning 4600 University Ave
+          // to the city of Madison, when it should actually be Shorewood Hills. The
+          // geocoder also has been returning W Wash data for 630 E Washington Ave.
+          if (/^4600 university av/i.test(targetAddr.value)) {
+            selectList[0].value = 'D-SH-V';
+          } else if (/^630 e(ast)? washington av/i.test(targetAddr.value)) {
+            selectList[0].value = 'D-18.02';
+            result.matchAddr = "630 E WASHINGTON AVE";
+          } else if (result.value) {
             selectList[0].value = result.value;
           } else {
             selectList[0].value = pstats.find(result.county,result.countySub,result.censusTract);
@@ -1549,9 +1557,8 @@
 
           if (selectList[0].value === "D-X-MAD") {
             const tempCensusTractMap = {}; // All known new 2020 Madison census tract numbers have been added to the madTracts array
-
             if (tempCensusTractMap.hasOwnProperty(result.censusTract)) {
-            selectList[0].value = "D-" + tempCensusTractMap[result.censusTract];
+              selectList[0].value = "D-" + tempCensusTractMap[result.censusTract];
               pstatMsg.send(MSG_SUCCESS, "City of Madison Census Tract " + result.censusTract + " was found, but " + tempCensusTractMap[result.censusTract] + " was selected in Bibliovation.", findAltPSTAT);
             } else {
               pstatMsg.send(MSG_ERROR, "City of Madison Census Tract " + result.censusTract + " was found, but is not available in Bibliovation. Please report to MAD-CIRC.", findAltPSTAT);
@@ -1567,35 +1574,54 @@
         initialRejectMsg = reject.message;
       }).then(() => {
         if (selectList[0].value === "X-UND" || selectList[0].value === "D-X-SUN") {
-          browser.runtime.sendMessage({
-            "key": "queryAlderDists",
-            "address": targetAddr.value,
-            "code": targetCity.value.toLowerCase().substring(0,3)
-          }).then(result => {
-            if (result.value) {
+          let queryAlderDists;
+          if (/^mid|ver|sun$/i.test(targetCity.value.substring(0,3))) {
+            queryAlderDists = browser.runtime.sendMessage({
+              "key": "queryAlderDists",
+              "address": targetAddr.value,
+              "code": targetCity.value.toLowerCase().substring(0,3)
+            });
+          } else {
+            queryAlderDists = Promise.resolve(false);
+          }
+
+          function processAlderQuery(res) {
+            
+          }
+
+          queryAlderDists.then(res => {
+            if (res && res.hasOwnProperty('value')) {
               selectList[0].value = result.value;
-            }
 
-            if (result.zip) {
-              targetZip.value = result.zip;
-            }
+              if (res.hasOwnProperty('zip')) {
+                targetZip.value = res.zip;
+              }
 
-            pstatMsg.send(MSG_SUCCESS,
-                "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
-                findAltPSTAT);
-            toggleGMapSearch(true);
-          }, reject => {
-            if (/middleton|sun prairie|verona/i.test(targetCity.value)) {
-              initialRejectMsg = reject.message;
-            }
+              pstatMsg.send(MSG_SUCCESS,
+                  "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
+                  findAltPSTAT);
+              toggleGMapSearch(true);
+            } else {
+              if (res && res.hasOwnProperty('error')) {
+                initialRejectMsg = res.error;
+              }
+              // TODO: Query exceptions
+              browser.runtime.sendMessage({
+                "key": "queryAlderDists",
+                "address": targetAddr.value,
+                "code": "exception"
+              }).then(res => {
 
-            pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
-            if (selectList[0].value === "X-UND") {
-              openTIGERweb.style.display = 'block';
-              if (findAltPSTAT) {
-                addrEltAlt.parentElement.appendChild(openTIGERweb);
-              } else {
-                addrElt.parentElement.appendChild(openTIGERweb);
+              });
+
+              pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
+              if (selectList[0].value === "X-UND") {
+                openTIGERweb.style.display = 'block';
+                if (findAltPSTAT) {
+                  addrEltAlt.parentElement.appendChild(openTIGERweb);
+                } else {
+                  addrElt.parentElement.appendChild(openTIGERweb);
+                }
               }
             }
           });

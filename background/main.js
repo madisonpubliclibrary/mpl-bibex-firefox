@@ -544,7 +544,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (value) {
           return Promise.resolve({"value": value});
         } else {
-          throw new Error("Address not found in database of aldermanic districts.");
+          if (request.code === "exception") {
+            return Promise.resolve({"error": "Address not found in database of PSTAT exceptions."});
+          } else {
+            return Promise.resolve({"error": "Address not found in database of aldermanic districts."});
+          }
         }
       });
       break;
