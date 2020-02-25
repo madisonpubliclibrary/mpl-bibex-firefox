@@ -1585,13 +1585,9 @@
             queryAlderDists = Promise.resolve(false);
           }
 
-          function processAlderQuery(res) {
-            
-          }
-
           queryAlderDists.then(res => {
             if (res && res.hasOwnProperty('value')) {
-              selectList[0].value = result.value;
+              selectList[0].value = res.value;
 
               if (res.hasOwnProperty('zip')) {
                 targetZip.value = res.zip;
@@ -1605,24 +1601,40 @@
               if (res && res.hasOwnProperty('error')) {
                 initialRejectMsg = res.error;
               }
-              // TODO: Query exceptions
+
               browser.runtime.sendMessage({
                 "key": "queryAlderDists",
                 "address": targetAddr.value,
                 "code": "exception"
               }).then(res => {
+                if (/madison|middleton|verona|monona|fitchburg/i.test(targetCity.value)
+                    && res && res.hasOwnProperty('value')) {
+                  selectList[0].value = res.value;
 
-              });
+                  if (res.hasOwnProperty('zip')) {
+                    targetZip.value = res.zip;
+                  }
 
-              pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
-              if (selectList[0].value === "X-UND") {
-                openTIGERweb.style.display = 'block';
-                if (findAltPSTAT) {
-                  addrEltAlt.parentElement.appendChild(openTIGERweb);
+                  pstatMsg.send(MSG_SUCCESS,
+                      "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
+                      findAltPSTAT);
+                  toggleGMapSearch(true);
                 } else {
-                  addrElt.parentElement.appendChild(openTIGERweb);
+                  if (res && res.hasOwnProperty('error')) {
+                    initialRejectMsg = res.error;
+                  }
+
+                  pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
+                  if (selectList[0].value === "X-UND") {
+                    openTIGERweb.style.display = 'block';
+                    if (findAltPSTAT) {
+                      addrEltAlt.parentElement.appendChild(openTIGERweb);
+                    } else {
+                      addrElt.parentElement.appendChild(openTIGERweb);
+                    }
+                  }
                 }
-              }
+              });
             }
           });
         }
