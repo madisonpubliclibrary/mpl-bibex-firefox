@@ -13,7 +13,7 @@
           if (item.textContent.includes(itemBC)) {
             for (let col of item.parentElement.parentElement.parentElement.children) {
               if (col.classList.contains('952.Z')) {
-                data.pastUse = col.textContent.trim();
+                data.pastUse = col.textContent.trim() || "0";
               }
             }
             break;
