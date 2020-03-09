@@ -484,19 +484,23 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (matchAddr && county && countySub && censusTract && zip) {
             if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
-              const libCode = countySub.substring(0,3).toLowerCase(),
-                alderURL = "https://mpl-bibex.lrschneider.com/pstats/" + libCode +
-                  "?val=all&regex=true";
+              const libCode = {'mid':'1','sun':'2','ver':'3','exception':'4'},
+                alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/" + libCode[countySub.substring(0,3).toLowerCase()] +
+                  "/public/full?alt=json";
 
               return fetch(alderURL, {"method": "GET"}).then(response => {
                 return response.json();
               }).then(json => {
+                if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
+                  json = json.feed.entry;
+                } else return Promise.resolve({"key": "returnCensusData"});
+
                 let value = "";
 
                 for (let i = 0; i < json.length; i++) {
-                  let regex = new RegExp(json[i].regex, "i");
+                  let regex = new RegExp(json[i]['gsx$regex']['$t'], "i");
                   if (regex.test(matchAddr)) {
-                    value = json[i].value;
+                    value = json[i]['gsx$value']['$t'];
                   }
                 }
 
@@ -537,22 +541,27 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "queryAlderDists":
-      const alderURL = "https://mpl-bibex.lrschneider.com/pstats?library="
-          + request.code;
+      const libCode = {'mid':'1','sun':'2','ver':'3','exception':'4'},
+        alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/" + libCode[request.code.toLowerCase()] +
+        "/public/full?alt=json";
 
       return fetch(alderURL, {"method": "GET"}).then(response => {
         if(!response.ok) {
-          throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
+          throw new Error('[Google Sheets] HTTP error, status = ' + response.status);
         }
         return response.json();
       }).then(json => {
-        var value, zip;
-        for (var i = 0; i < json.length; i++) {
-          var regex = new RegExp(json[i].regex, "i");
+        if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
+          json = json.feed.entry;
+        } else return Promise.resolve({"key": "returnCensusData"});
+
+        let value, zip;
+        for (let i = 0; i < json.length; i++) {
+          let regex = new RegExp(json[i]['gsx$regex']['$t'], "i");
 
           if (regex.test(request.address.replace(/\./g,''))) {
-            value = json[i].value;
-            zip = json[i].zip
+            value = json[i]['gsx$value']['$t'];
+            zip = json[i]['gsx$zip']['$t']
             break;
           }
         }
@@ -625,13 +634,17 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "parsePatronAddr":
-      const madAddrURL = "https://mpl-bibex.lrschneider.com/madAddr";
+      const madAddrURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/5/public/full?alt=json";
 
       return fetch(madAddrURL, {"method": "GET"}).then(response => {
         if (!response.ok) {
           throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
         }
         return response.json();
+      }).then(json => {
+        if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
+          return Promise.resolve(json.feed.entry);
+        } else return false;
       });
       break;
     case "updateExtensionIcon":

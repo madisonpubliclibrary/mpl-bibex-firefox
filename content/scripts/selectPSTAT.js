@@ -1582,7 +1582,7 @@
               "code": targetCity.value.toLowerCase().substring(0,3)
             });
           } else {
-            queryAlderDists = Promise.resolve(false);
+            queryAlderDists = Promise.reject('Unknown error.');
           }
 
           queryAlderDists.then(res => {
