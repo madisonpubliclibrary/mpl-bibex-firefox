@@ -1538,6 +1538,7 @@
         "addressURI": cleanAddr(targetAddr, true),
         "city": getCity(targetCity, true)
       }).then(result => {
+
         if (result.key === "returnCensusData") {
           targetZip.value = result.zip;
 
@@ -1568,6 +1569,8 @@
             pstatMsg.send(MSG_SUCCESS, "PSTAT Matched with: " + result.matchAddr, findAltPSTAT);
             toggleGMapSearch(true);
           }
+        } else {
+          selectList[0].value = "X-UND";
         }
       }, reject => {
         selectList[0].value = "X-UND";
@@ -1582,7 +1585,43 @@
               "code": targetCity.value.toLowerCase().substring(0,3)
             });
           } else {
-            queryAlderDists = Promise.reject('Unknown error.');
+            queryExceptions();
+          }
+
+          function queryExceptions() {
+            browser.runtime.sendMessage({
+              "key": "queryAlderDists",
+              "address": targetAddr.value,
+              "code": "exception"
+            }).then(res => {
+              if (/madison|middleton|verona|monona|fitchburg/i.test(targetCity.value)
+                  && res && res.hasOwnProperty('value')) {
+                selectList[0].value = res.value;
+
+                if (res.hasOwnProperty('zip')) {
+                  targetZip.value = res.zip;
+                }
+
+                pstatMsg.send(MSG_SUCCESS,
+                    "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
+                    findAltPSTAT);
+                toggleGMapSearch(true);
+              } else {
+                if (res && res.hasOwnProperty('error')) {
+                  initialRejectMsg = res.error;
+                }
+
+                pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
+                if (selectList[0].value === "X-UND") {
+                  openTIGERweb.style.display = 'block';
+                  if (findAltPSTAT) {
+                    addrEltAlt.parentElement.appendChild(openTIGERweb);
+                  } else {
+                    addrElt.parentElement.appendChild(openTIGERweb);
+                  }
+                }
+              }
+            });
           }
 
           queryAlderDists.then(res => {
@@ -1602,39 +1641,8 @@
                 initialRejectMsg = res.error;
               }
 
-              browser.runtime.sendMessage({
-                "key": "queryAlderDists",
-                "address": targetAddr.value,
-                "code": "exception"
-              }).then(res => {
-                if (/madison|middleton|verona|monona|fitchburg/i.test(targetCity.value)
-                    && res && res.hasOwnProperty('value')) {
-                  selectList[0].value = res.value;
+              queryExceptions();
 
-                  if (res.hasOwnProperty('zip')) {
-                    targetZip.value = res.zip;
-                  }
-
-                  pstatMsg.send(MSG_SUCCESS,
-                      "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
-                      findAltPSTAT);
-                  toggleGMapSearch(true);
-                } else {
-                  if (res && res.hasOwnProperty('error')) {
-                    initialRejectMsg = res.error;
-                  }
-
-                  pstatMsg.send(MSG_ERROR, "[PSTAT] " + initialRejectMsg, findAltPSTAT);
-                  if (selectList[0].value === "X-UND") {
-                    openTIGERweb.style.display = 'block';
-                    if (findAltPSTAT) {
-                      addrEltAlt.parentElement.appendChild(openTIGERweb);
-                    } else {
-                      addrElt.parentElement.appendChild(openTIGERweb);
-                    }
-                  }
-                }
-              });
             }
           });
         }

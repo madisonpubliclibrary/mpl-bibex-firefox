@@ -491,9 +491,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
               return fetch(alderURL, {"method": "GET"}).then(response => {
                 return response.json();
               }).then(json => {
+
                 if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
                   json = json.feed.entry;
-                } else return Promise.resolve({"key": "returnCensusData"});
+                } else throw new Error("[Google Sheets] Invalid JSON response.");
 
                 let value = "";
 
@@ -541,9 +542,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "queryAlderDists":
-      const libCode = {'mid':'1','sun':'2','ver':'3','exception':'4'},
-        alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/" + libCode[request.code.toLowerCase()] +
-        "/public/full?alt=json";
+      const libCode = {'mid':'1','sun':'2','ver':'3'},
+        alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/"
+            + (libCode[request.code.toLowerCase()] || '4') + "/public/full?alt=json"; // 4 = 'exception'
 
       return fetch(alderURL, {"method": "GET"}).then(response => {
         if(!response.ok) {
@@ -553,7 +554,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }).then(json => {
         if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
           json = json.feed.entry;
-        } else return Promise.resolve({"key": "returnCensusData"});
+        } else return Promise.resolve({"error": "[Google Sheets] Invalid JSON response."});
 
         let value, zip;
         for (let i = 0; i < json.length; i++) {
@@ -561,7 +562,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (regex.test(request.address.replace(/\./g,''))) {
             value = json[i]['gsx$value']['$t'];
-            zip = json[i]['gsx$zip']['$t']
+            zip = json[i]['gsx$zip']['$t'];
             break;
           }
         }
@@ -638,7 +639,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       return fetch(madAddrURL, {"method": "GET"}).then(response => {
         if (!response.ok) {
-          throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
+          throw new Error('[Google Sheets] HTTP error, status = ' + response.status);
         }
         return response.json();
       }).then(json => {
