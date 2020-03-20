@@ -106,7 +106,7 @@
         }).then(result => {
           for (let item of result) {
             var fullAddr = (addr.value + ' ' + addr2.value).trim().replace(/[^\w\s]|_/g, "");
-            var regex = new RegExp('^' + item['gsx$regex']['$t'], 'i');
+            var regex = new RegExp(item['gsx$regex']['$t'], 'i');
 
             if (regex.test(fullAddr)) {
               if (item['gsx$type']['$t'] === "dorm") {

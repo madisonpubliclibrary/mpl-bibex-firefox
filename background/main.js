@@ -484,7 +484,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (matchAddr && county && countySub && censusTract && zip) {
             if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
-              const libCode = {'mid':'1','sun':'2','ver':'3','exception':'4'},
+              const libCode = {'mid':'1','sun':'2','ver':'3'},
                 alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/" + libCode[countySub.substring(0,3).toLowerCase()] +
                   "/public/full?alt=json";
 
