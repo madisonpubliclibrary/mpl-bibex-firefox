@@ -335,14 +335,6 @@ browser.webNavigation.onCompleted.addListener(details => {
         });
       }
 
-      if (!res.hasOwnProperty('updateAccountType') ||
-          (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
-        browser.tabs.executeScript(details.tabId, {
-          "file": "/content/scripts/opt/updateAccountType.js",
-          "allFrames": true
-        });
-      }
-
       if (res.hasOwnProperty('mplInternetCards') && res.mplInternetCards) {
         browser.tabs.executeScript(details.tabId, {
           "file": "/content/scripts/opt/mplInternetCards.js",
@@ -385,6 +377,11 @@ browser.webNavigation.onCompleted.addListener(details => {
 
     browser.tabs.executeScript(details.tabId, {
       "file": "/content/scripts/formatPatronRecord.js",
+      "allFrames": true
+    });
+
+    browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/updateAccountType.js",
       "allFrames": true
     });
 

@@ -31,12 +31,11 @@
       this.barcode = htmlTR.children[2].textContent.trim();
       this.owningLibrary = htmlTR.children[3].textContent.trim();
       this.dueDate = new Date(htmlTR.children[6].textContent.trim());
-      this.returnDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent.trim()) : new Date();
+      this.retDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent.trim()) : new Date();
     }
 
     if (libCode && libCode.length > 0) {
       libCode = libCode[0].textContent.substr(0,3).toUpperCase();
-      console.log(libCode);
     }
 
     if (itemTable && libCode && h1Elts && h1Elts.length > 0) {
