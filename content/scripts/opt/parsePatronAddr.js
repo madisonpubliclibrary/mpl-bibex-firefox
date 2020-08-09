@@ -83,7 +83,7 @@
       browser.storage.sync.get('addrNoteCooldown', res => {
         if ((res.hasOwnProperty('addrNoteCooldown') && !res.addrNoteCooldown) || !res.hasOwnProperty('addrNoteCooldown')) {
           browser.runtime.sendMessage({"key": "addrNoteCooldown"}, () => {
-            alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
+            alert('Please delete the circulation note regarding the patron\'s previous limited use address');
           });
         }
       });
