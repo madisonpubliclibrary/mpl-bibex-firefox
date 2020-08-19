@@ -417,10 +417,45 @@ browser.webNavigation.onCompleted.addListener(details => {
   });
 });
 
+/**
+ * Query database of PSTATs for MID, SUN, VER, and Madison-area exceptions
+ * @param {string} libCode Case-insensitive library code; must be one of:
+ *                         MID, VER, SUN, Exception
+ * @param {string} address The address for which to find a PSTAT
+ * @return {Promise} A Promise that will resolve the query results
+**/
+function queryAlderDists(libCode, address) {
+  return fetch("https://mplnet.org/bibex/xml/pstats/" + libCode).then(res => {
+    if (!res.ok) {
+      throw new Error('[MPLnet] HTTP error, status = ' + res.status);
+    }
+    return res.text();
+  }).then(str => {
+    return (new window.DOMParser()).parseFromString(str, "text/xml");
+  }).then(data => {
+    if (data && data.getElementsByTagName('address').length > 0) {
+      for (let item of data.getElementsByTagName('address')) {
+        let regex = new RegExp(item.getElementsByTagName('regex')[0].textContent, "i");
+        if (regex.test(address)) {
+          return Promise.resolve({
+            "key": "returnCensusData",
+            "matchAddr": address,
+            "zip": item.getElementsByTagName('zip')[0].textContent,
+            "value": item.getElementsByTagName('value')[0].textContent
+          });
+        }
+      }
+      return Promise.resolve({"error": "Address not found in database of PSTAT exceptions/aldermanic districts."});
+    } else {
+      return Promise.resolve({"error": "Error retrieving XML data from MPLnet."});
+    }
+  });
+}
+
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "queryGeocoder":
-      var matchAddr, county, countySub, censusTract, zip;
+      let matchAddr, county, countySub, censusTract, zip;
 
       const baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
         countyURL = baseURL + request.addressURI + "&city=" + request.city
@@ -481,37 +516,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (matchAddr && county && countySub && censusTract && zip) {
             if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
-              const libCode = {'mid':'1','sun':'2','ver':'3'},
-                alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/" + libCode[countySub.substring(0,3).toLowerCase()] +
-                  "/public/full?alt=json";
-
-              return fetch(alderURL, {"method": "GET"}).then(response => {
-                return response.json();
-              }).then(json => {
-
-                if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
-                  json = json.feed.entry;
-                } else throw new Error("[Google Sheets] Invalid JSON response.");
-
-                let value = "";
-
-                for (let i = 0; i < json.length; i++) {
-                  let regex = new RegExp(json[i]['gsx$regex']['$t'], "i");
-                  if (regex.test(matchAddr)) {
-                    value = json[i]['gsx$value']['$t'];
-                  }
-                }
-
-                return Promise.resolve({
-                  "key": "returnCensusData",
-                  "matchAddr": matchAddr,
-                  "county": county,
-                  "countySub": countySub,
-                  "censusTract": censusTract,
-                  "zip": zip,
-                  "value": value
-                });
-              });
+              return queryAlderDists(countySub.substring(0,3), matchAddr);
             } else {
               return Promise.resolve({
                 "key": "returnCensusData",
@@ -539,46 +544,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "queryAlderDists":
-      const libCode = {'mid':'1','sun':'2','ver':'3'},
-        alderURL = "https://spreadsheets.google.com/feeds/list/1ftLNpSrnF0n_YDfR9Sj3Pk-upxsLIxE6Ptzoo20cxG4/"
-            + (libCode[request.code.toLowerCase()] || '4') + "/public/full?alt=json"; // 4 = 'exception'
-
-      return fetch(alderURL, {"method": "GET"}).then(response => {
-        if(!response.ok) {
-          throw new Error('[Google Sheets] HTTP error, status = ' + response.status);
-        }
-        return response.json();
-      }).then(json => {
-        if (json && json.hasOwnProperty('feed') && json.feed.hasOwnProperty('entry')) {
-          json = json.feed.entry;
-        } else return Promise.resolve({"error": "[Google Sheets] Invalid JSON response."});
-
-        let value, zip;
-        for (let i = 0; i < json.length; i++) {
-          let regex = new RegExp(json[i]['gsx$regex']['$t'], "i");
-
-          if (regex.test(request.address.replace(/\./g,''))) {
-            value = json[i]['gsx$value']['$t'];
-            zip = json[i]['gsx$zip']['$t'];
-            break;
-          }
-        }
-
-        if (value && zip) {
-          return Promise.resolve({
-            "value": value,
-            "zip": zip
-          })
-        } else if (value) {
-          return Promise.resolve({"value": value});
-        } else {
-          if (request.code === "exception") {
-            return Promise.resolve({"error": "Address not found in database of PSTAT exceptions."});
-          } else {
-            return Promise.resolve({"error": "Address not found in database of aldermanic districts."});
-          }
-        }
-      });
+      return queryAlderDists(request.code, request.address.replace(/\./g,''));
       break;
     case "openTIGERweb":
       browser.tabs.create({
@@ -632,7 +598,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "parsePatronAddr":
-      return fetch("https://www.mplnet.org/mpl-bibex/special-addresses").then(res => {
+      return fetch("https://www.mplnet.org/bibex/xml/special").then(res => {
         if (!res.ok) {
           throw new Error('[MPLnet] HTTP error, status = ' + res.status);
         }
@@ -793,7 +759,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                * is after 2012, item use should use only the "total use" value.
                *
                * The most accurate use data will always be the larger of these two calculations, which
-               * is what the extension  calculates below.
+               * is what the extension calculates below.
                */
               res[0].use = Math.max(parseInt(res[1].ytd) + parseInt(res[2].pastUse), parseInt(res[1].totalUse));
               return res[0];
