@@ -437,17 +437,17 @@ function queryAlderDists(libCode, address) {
       for (let item of data.getElementsByTagName('address')) {
         let regex = new RegExp(item.getElementsByTagName('regex')[0].textContent, "i");
         if (regex.test(address)) {
-          return Promise.resolve({
+          return {
             "key": "returnCensusData",
             "matchAddr": address,
             "zip": item.getElementsByTagName('zip')[0].textContent,
             "value": item.getElementsByTagName('value')[0].textContent
-          });
+          };
         }
       }
-      return Promise.resolve({"error": "Address not found in database of PSTAT exceptions/aldermanic districts."});
+      return {"error": "Address not found in database of PSTAT exceptions/aldermanic districts."};
     } else {
-      return Promise.resolve({"error": "Error retrieving XML data from MPLnet."});
+      return {"error": "Error retrieving XML data from MPLnet."};
     }
   });
 }
@@ -518,14 +518,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
               return queryAlderDists(countySub.substring(0,3), matchAddr);
             } else {
-              return Promise.resolve({
+              return {
                 "key": "returnCensusData",
                 "matchAddr": matchAddr,
                 "county": county,
                 "countySub": countySub,
                 "censusTract": censusTract,
                 "zip": zip
-              });
+              };
             }
           }
         }
@@ -576,11 +576,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           distArray.push([distanceOrder[i], distanceData[i].distance.value])
         }
 
-        return Promise.resolve(distArray.sort((a,b) => {
+        return distArray.sort((a,b) => {
           if (a[1] < b[1]) return -1;
           else if (a[1] > b[1]) return 1;
           else return 0;
-        })[0]);
+        })[0];
       });
       break;
     case "printBarcode":
