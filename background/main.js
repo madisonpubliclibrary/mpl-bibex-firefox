@@ -423,7 +423,7 @@ browser.webNavigation.onCompleted.addListener(details => {
  *                         MID, VER, SUN, Exception
  * @param {string} address The address for which to find a PSTAT
  * @return {Promise} A Promise that will resolve the query results
-**/
+**
 function queryAlderDists(libCode, address) {
   return fetch("https://mplnet.org/bibex/xml/pstats/" + libCode).then(res => {
     if (!res.ok) {
@@ -450,108 +450,10 @@ function queryAlderDists(libCode, address) {
       return {"error": "Error retrieving XML data from MPLnet."};
     }
   });
-}
+}*/
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
-    case "queryGeocoder":
-      let matchAddr, county, countySub, censusTract, zip;
-
-      const baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
-        countyURL = baseURL + request.addressURI + "&city=" + request.city
-            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties&format=json",
-        countySubdivisionURL = baseURL + request.addressURI + "&city=" + request.city
-            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=County+Subdivisions&format=json",
-        censusTractURL = baseURL + request.addressURI + "&city=" + request.city
-            + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Census Tracts&format=json";
-
-      const getCounty = fetch(countyURL, {"method": "GET"}).then(response => {
-        if(!response.ok && response.status != '400') {
-          throw new Error('[census.gov] HTTP error, status = ' + response.status);
-        }
-        return response.json();
-      });
-
-      const getCountySub = fetch(countySubdivisionURL, {"method": "GET"}).then(response => {
-        if(!response.ok && response.status != '400') {
-          throw new Error('[census.gov] HTTP error, status = ' + response.status);
-        }
-        return response.json();
-      });
-
-      const getCensusTract = fetch(censusTractURL, {"method": "GET"}).then(response => {
-        if(!response.ok && response.status != '400') {
-          throw new Error('[census.gov] HTTP error, status = ' + response.status);
-        }
-        return response.json();
-      });
-
-      return Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
-        var countyData = vals[0], countySubData = vals[1],
-            censusTractData = vals[2];
-
-        if (countyData.errors) {
-          throw new Error(countyData.errors.join("; "));
-        } else if (!countyData || !countyData.result || countyData.result.addressMatches.length === 0) {
-          throw new Error("No county data matched given address.");
-        } else if (countySubData.errors) {
-          throw new Error(countySubData.errors.join("; "));
-        } else if (!countySubData || !countySubData.result || countySubData.result.addressMatches.length === 0) {
-          throw new Error("No county subdivision data matched given address.");
-        } else if (censusTractData.errors) {
-          throw new Error(censusTractData.errors.join("; "));
-        } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
-          throw new Error("No census tract data matched given address.");
-        } else {
-          countyData = countyData.result.addressMatches[0];
-          countySubData = countySubData.result.addressMatches[0];
-          censusTractData = censusTractData.result.addressMatches[0];
-
-          matchAddr = countyData.matchedAddress.split(',')[0].toUpperCase();
-          county = countyData.geographies.Counties[0].BASENAME;
-          countySub = countySubData.geographies['County Subdivisions'][0].NAME;
-          zip = countyData.addressComponents.zip;
-          censusTract = censusTractData.geographies['Census Tracts'];
-          if (censusTract) censusTract = censusTract[0].BASENAME;
-
-          if (matchAddr && county && countySub && censusTract && zip) {
-            if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
-              return queryAlderDists(countySub.substring(0,3), matchAddr);
-            } else {
-              return {
-                "key": "returnCensusData",
-                "matchAddr": matchAddr,
-                "county": county,
-                "countySub": countySub,
-                "censusTract": censusTract,
-                "zip": zip
-              };
-            }
-          }
-        }
-      });
-      break;
-    case "alternatePSTAT":
-      browser.tabs.query({
-        "currentWindow": true,
-        "active": true
-      }).then(tabs => {
-        for (let tab of tabs) {
-          browser.tabs.sendMessage(tab.id, {
-            "key": "findAlternatePSTAT"
-          });
-        }
-      });
-      break;
-    case "queryAlderDists":
-      return queryAlderDists(request.code, request.address.replace(/\./g,''));
-      break;
-    case "openTIGERweb":
-      browser.tabs.create({
-        "url": "https://tigerweb.geo.census.gov/tigerweb",
-        "active": true
-      });
-      break;
     case "findNearestLib":
       var scls = new SCLSLibs();
       const mapURL = "https://maps.googleapis.com/maps/api/distancematrix/json" +
