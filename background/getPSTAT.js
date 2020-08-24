@@ -1431,13 +1431,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       payload.error = reject.message;
     }).then(res => {
       if (/madison|middleton|verona|monona|fitchburg/i.test(request.city)) {
-console.log("query exceptions");
         return queryAlderExceptions("exception", request.address);
       }
       // Pass along previous error message
       throw new Error(payload.error);
     }).then(res => {
-      console.log("exceptions success");
       payload.success = true;
       // Overwrite Census matched address in case of incorrect data, as with
       // 822 E Washington Ave (Census returns W Washington Ave)
@@ -1447,7 +1445,6 @@ console.log("query exceptions");
     }, reject => {
       payload.error = reject.message;
     }).then(res => {
-      console.log("exceptions fail");
       if (!payload.success && /^sun prairie/i.test(request.city.replace('%20',' '))) payload.pstat = "D-X-SUN";
       else if (!payload.success && /^madison/i.test(request.city)) payload.pstat = "D-X-MAD";
       return payload;
