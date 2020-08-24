@@ -417,41 +417,6 @@ browser.webNavigation.onCompleted.addListener(details => {
   });
 });
 
-/**
- * Query database of PSTATs for MID, SUN, VER, and Madison-area exceptions
- * @param {string} libCode Case-insensitive library code; must be one of:
- *                         MID, VER, SUN, Exception
- * @param {string} address The address for which to find a PSTAT
- * @return {Promise} A Promise that will resolve the query results
-**
-function queryAlderDists(libCode, address) {
-  return fetch("https://mplnet.org/bibex/xml/pstats/" + libCode).then(res => {
-    if (!res.ok) {
-      throw new Error('[MPLnet] HTTP error, status = ' + res.status);
-    }
-    return res.text();
-  }).then(str => {
-    return (new window.DOMParser()).parseFromString(str, "text/xml");
-  }).then(data => {
-    if (data && data.getElementsByTagName('address').length > 0) {
-      for (let item of data.getElementsByTagName('address')) {
-        let regex = new RegExp(item.getElementsByTagName('regex')[0].textContent, "i");
-        if (regex.test(address)) {
-          return {
-            "key": "returnCensusData",
-            "matchAddr": address,
-            "zip": item.getElementsByTagName('zip')[0].textContent,
-            "value": item.getElementsByTagName('value')[0].textContent
-          };
-        }
-      }
-      return {"error": "Address not found in database of PSTAT exceptions/aldermanic districts."};
-    } else {
-      return {"error": "Error retrieving XML data from MPLnet."};
-    }
-  });
-}*/
-
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "findNearestLib":
