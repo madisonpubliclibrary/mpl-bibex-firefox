@@ -1449,5 +1449,16 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       else if (!payload.success && /^madison/i.test(request.city)) payload.pstat = "D-X-MAD";
       return payload;
     });
+  } else if (request.key === "getAlternatePSTAT") {
+    browser.tabs.query({
+      "currentWindow": true,
+      "active": true
+    }).then(tabs => {
+      for (let tab of tabs) {
+        browser.tabs.sendMessage(tab.id, {
+          "key": "getAlternatePSTAT"
+        });
+      }
+    });
   }
 });
