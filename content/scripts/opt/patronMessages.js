@@ -40,8 +40,8 @@
 
       defaultOpt.value = "";
       defaultOpt.textContent = "Select BibEx Note";
-      covidCard.value = "Card mailed during COVID closures. Please check photo ID when the card is first presented at a service desk, then delete this note. "
-      covidCard.textContent = "COVID Account Verification"
+      covidCard.value = "Card mailed during COVID closures. Please check photo ID when the card is first presented at a service desk, then delete this note. ";
+      covidCard.textContent = "COVID Account Verification";
       cardAtNxtCko.value = "Patron must have library card at next checkout. ";
       cardAtNxtCko.textContent = "Have card at next checkout"
       laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file. ";
@@ -77,11 +77,11 @@
 
         midGroup.label = "MID";
         covidRenewal.textContent = "COVID Account Renewal";
-        covidRenewal.value = "Library account renewed during COVID closures. Please check photo ID when the card is first presented at a service desk, then delete this note. ";
+        covidRenewal.value = "Account renewed during COVID closures. Check ID when full services resume. ";
         onlineReg.textContent = "Verify Online Registration";
-        onlineReg.value = "Card mailed after online registration. Please check photo ID when the card is first presented at a service desk, then delete this note. ";
+        onlineReg.value = "Online registration, card mailed. Check ID when full services resume. ";
         curbsideNoShow.textContent = "Curbside No-Show";
-        curbsideNoShow.value = "Patron missed hold pickup appointment on " + currDate + ". Delete this note after holding period. ";
+        curbsideNoShow.value = "Curbside pickup no-show on " + currDate + ". Archive note after pickup/holding period ends. ";
 
         msgSelect.appendChild(midGroup);
         midGroup.appendChild(covidRenewal);
