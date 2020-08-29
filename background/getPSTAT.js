@@ -1350,6 +1350,14 @@ function queryGeocoder(addressURI,city) {
       countySubData = countySubData.result.addressMatches[0];
       censusTractData = censusTractData.result.addressMatches[0];
 
+console.log({
+  "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
+  "county": countyData.geographies.Counties[0].BASENAME,
+  "countySub": countySubData.geographies['County Subdivisions'][0].NAME,
+  "censusTract": censusTractData.geographies['Census Tracts'][0].BASENAME,
+  "zip": countyData.addressComponents.zip
+});
+
       return {
         "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
         "county": countyData.geographies.Counties[0].BASENAME,
@@ -1406,26 +1414,31 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       "pstat": "X-UND",
       "zip": undefined,
       "error": "Unknown error occured.",
-      "success": false
-    };
+      "success": false,
+    },
+    countySubCode = ""; // In case, e.g., a Madison, WI address has the county subdivision "Middleton city"
 
     return queryGeocoder(request.addressURI, request.city).then(res => {
       payload.success = true;
       payload.matchAddr = res.matchAddr;
       payload.zip = res.zip;
       payload.pstat = pstats.find(res.county,res.countySub,res.censusTract);
+      countySubCode = res.countySub.substring(0,3);
     }, reject => {
       payload.error = reject.message;
     }).then(res => {
-      if (/^mid|ver|sun$/i.test(request.city.substring(0,3))) {
+      if (/^mid|ver|sun$/i.test(countySubCode)) {
+        return queryAlderExceptions(countySubCode, request.address);
+      } else if (/^mid|ver|sun$/i.test(request.city.substring(0,3))) {
         return queryAlderExceptions(request.city.substring(0,3), request.address);
+      } else {
+        // Pass along previous error message
+        throw new Error(payload.error);
       }
-      // Pass along previous error message
-      throw new Error(payload.error);
     }).then(res => {
       payload.success = true;
       if (!payload.matchAddr) payload.matchAddr = request.address;
-      payload.zip = res.zip;
+      if (!payload.zip) payload.zip = res.zip;
       payload.pstat = res.pstat;
     }, reject => {
       payload.error = reject.message;
