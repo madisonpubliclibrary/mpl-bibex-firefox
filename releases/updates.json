@@ -289,7 +289,7 @@
           }
         },
         {
-          "version": "2021.03.05",
+          "version": "2021.3.5",
           "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/mpl-bibex-2021.03.05.xpi",
           "applications": {
             "gecko": { "strict_min_version": "58" }
