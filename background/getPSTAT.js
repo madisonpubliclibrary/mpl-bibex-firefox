@@ -1348,14 +1348,6 @@ function queryGeocoder(addressURI,city) {
       countySubData = countySubData.result.addressMatches[0];
       censusTractData = censusTractData.result.addressMatches[0];
 
-console.log({
-  "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
-  "county": countyData.geographies.Counties[0].BASENAME,
-  "countySub": countySubData.geographies['County Subdivisions'][0].NAME,
-  "censusTract": censusTractData.geographies['Census Tracts'][0].BASENAME,
-  "zip": countyData.addressComponents.zip
-});
-
       return {
         "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
         "county": countyData.geographies.Counties[0].BASENAME,
@@ -1425,7 +1417,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }, reject => {
       payload.error = reject.message;
     }).then(res => {
-      console.log(payload);
       if (/^mid|ver|sun$/i.test(countySubCode)) {
         return queryAlderExceptions(countySubCode, request.address);
       } else if (/^mid|ver|sun$/i.test(request.city.substring(0,3))) {
