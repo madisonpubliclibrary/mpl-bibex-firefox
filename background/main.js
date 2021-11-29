@@ -508,12 +508,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         "allFrames": true
       });
       break;
-    case "addPaymentPlanNote":
-      browser.tabs.executeScript({
-        "file": "/browserAction/scripts/addPaymentPlanNote.js",
-        "allFrames": true
-      });
-      break;
     case "getPatronData":
       return new Promise((resolve, reject) => {
         if (request.hasOwnProperty('patronBarcode')) {
