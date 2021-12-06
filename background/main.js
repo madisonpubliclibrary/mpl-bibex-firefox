@@ -215,7 +215,7 @@ var SCLSLibs = function() {
     "Wood": {
       "ARP": "8091+County+E,+Arpin,+WI+54410",
       "MCM": "490+E+Grand+Ave,+Wisconsin+Rapids,+WI+54494",
-      //"MFD": "211+E+Second+St,+Marshfield,+WI+54449", ** NON LINK LIBRARY **
+      "MFD": "211+E+Second+St,+Marshfield,+WI+54449",
       "NEK": "100+Park+St,+Nekoosa,+WI+54457"
       //"PIT": "5291+Third+Ave,+Pittsville,+WI+54466", ** NON LINK LIBRARY **
       //"VES": "6550+Virginia+St,+Vesper,+WI+54489" ** NON LINK LIBRARY **
