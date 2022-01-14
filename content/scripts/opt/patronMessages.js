@@ -45,7 +45,7 @@
 
       defaultOpt.value = "";
       defaultOpt.textContent = "Select BibEx Note";
-      onlineReg.value = "This account has been created from an online application. The card will be mailed to the address provided. ";
+      onlineReg.value = "This account has been created from an online application. The card will be mailed to the address provided. Please archive this note upon first use. ";
       onlineReg.textContent = "Online Registration";
       easyAccess.value = "Easy Access Card - Patron must show proof of acceptable address to change patron category from LU to AD (full use card)."
       easyAccess.textContent = "Easy Access Card"

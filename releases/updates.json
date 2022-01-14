@@ -343,6 +343,13 @@
           "applications": {
             "gecko": { "strict_min_version": "58" }
           }
+        },
+        {
+          "version": "2022.1.13",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/mpl-bibex-2022.01.13.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "58" }
+          }
         }
       ]
     }
