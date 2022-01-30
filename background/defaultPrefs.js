@@ -1,7 +1,7 @@
 browser.storage.sync.get().then((res) => {
   // Increment the resetCounter to trigger the extension to restore defalt settings
   // next time it loads
-  let resetCounter = 1;
+  let resetCounter = 2;
   let performReset = false;
   if (!res.hasOwnProperty('resetCounter') || (res.hasOwnProperty('resetCounter') && parseInt(res.resetCounter) < resetCounter)) {
     browser.storage.sync.set({"resetCounter": resetCounter});
@@ -68,7 +68,7 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1') || performReset) {
     browser.storage.sync.set({
       "shortcutText1": "Bibliovation—Checkin",
-      "shortcutLink1": "https://scls.kohalibrary.com/app/staff/circ/checkin"
+      "shortcutLink1": "https://scls.kohalibrary.com/app/staff/circ/checkin/"
     });
   }
   if (!res.hasOwnProperty('shortcutText2') || !res.hasOwnProperty('shortcutLink2') || performReset) {

@@ -2,14 +2,14 @@
 
 | Current Version | Install on Firefox | Author |
 | :-------------: | :----------------: | :----: |
-| <br>2022.1.13   | <br>[Install MPL BibEx][1] | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| <br>2022.1.29   | <br>[Install MPL BibEx][1] | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 MPL BibEx is a WebExtension for Firefox (58+) and Google Chrome that adds additional features to LibLimes's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of Wisconsin's South Central Library System, and, while not supported by SCLS, it has been vetted by them for security and is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
 
 ## Table of Contents
 * [Inherent features of MPL BibEx](#inherent-features-of-mpl-bibex)
   * [Browser action button](#browser-action-button)
-  * [Higher resolution logo](#higher-resolution-logo)
+  * [Higher resolution logo](#higher-r29olution-logo)
   * [Standardize patron record formatting](#standardize-patron-record-formatting)
   * [Sort item checkout history](#sort-item-checkout-history)
   * [Print patron barcode numbers](#print-patron-barcode-numbers)
