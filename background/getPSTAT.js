@@ -1042,7 +1042,7 @@ const pstats = new function() {
       "Westboro town": "TA-LIB",
       "__default__": "TA-NOLIB"
     },
-    "Trempeleau": {
+    "Trempealeau": {
       "Arcadia city": "TR-LIB",
       "Blair city": "TR-LIB",
       "Ettrick town": "TR-LIB",
@@ -1343,6 +1343,8 @@ function queryGeocoder(addressURI,city) {
       throw new Error(censusTractData.errors.join("; "));
     } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
       throw new Error("[census.gov] No census tract data matched given address.");
+    } else if (!addressURI.includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
+      throw new Error("[census.gov] Matched wrong address: " + countyData.result.addressMatches[0].matchedAddress + ".");
     } else {
       countyData = countyData.result.addressMatches[0];
       countySubData = countySubData.result.addressMatches[0];
