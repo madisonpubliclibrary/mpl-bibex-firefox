@@ -5,6 +5,10 @@
   #screen { display:none; }
   #print { display:block; }
 
+  body {
+    font-size: 10pt;
+  }
+
   h1 { margin-top: 0; margin-bottom: 12px; padding: 0;}
 
   table {
@@ -26,11 +30,50 @@
   margin: 0.6in 0.6in 0.6in 0.6in;
 }
 
+@media not print {
+  body {
+    font-size: 14pt;
+  }
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background: #77797c;
+}
+
 body {
-  width: 800px;
+  max-width: 1000px;
+  min-width: 600px;
   margin: 0 auto;
-  font-size: 12pt;
   font-family: sans-serif;
+  background: #ffffff;
+}
+
+header {
+  background: #1C6677;
+  padding: 0.75em 0;
+}
+
+header h1,
+header h2 {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 2px 2px #000000;
+  margin: 0;
+  padding: 5px;
+}
+
+section {
+  padding: 0 15px;
+}
+
+section:first-of-type {
+  margin-top: 15px;
+}
+
+section:last-of-type {
+  padding-bottom: 15px;
 }
 
 #noConfig {

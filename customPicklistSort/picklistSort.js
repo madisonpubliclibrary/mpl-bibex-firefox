@@ -56,7 +56,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort"]).then(res =>
 
               for (let i = 0,mergeBelow = 0; i < results.data.length;) {
                 let ccodeCompare = results.data[i][0] + ':' + results.data[i][1];
-                while (results.data[i+mergeBelow][2] === "true") {
+                while (results.data[i+mergeBelow][2].toLowerCase() === "true") {
                   ccodeCompare += "|";
                   mergeBelow++;
                   ccodeCompare += results.data[i+mergeBelow][0] + ':' + results.data[i+mergeBelow][1];

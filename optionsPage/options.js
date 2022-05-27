@@ -158,7 +158,7 @@ document.getElementById('applyPicklistDefaults').addEventListener('click', funct
         skipEmptyLines: true,
         complete: function(results,file) {
           resolve({
-            "file": file.name,
+            "file": libDefault.value + "locColSort.csv",
             "data": Papa.unparse(results.data)
           });
         }
@@ -171,7 +171,7 @@ document.getElementById('applyPicklistDefaults').addEventListener('click', funct
         skipEmptyLines: true,
         complete: function(results,file) {
           resolve({
-            "file": file.name,
+            "file": libDefault.value + "pbjfiSort.csv",
             "data": Papa.unparse(results.data)
           });
         }

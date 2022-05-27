@@ -14,15 +14,20 @@
       </table>
     </div>
     <div id="screen">
-      <h1>MPL Custom Picklist Sorter</h1>
-      <ol>
-        <li>Open the Holds Queue page in Bibliovation.</li>
-        <li>Without filtering or sorting any columns, export <span style="font-weight:bold;font-style:italic;">all</span> data as csv.</li>
-        <li>Process the csv by seecting it below, and print the resulting page.</li>
-      </ol>
-      <p id="noConfig">Sort order not configured. Please edit the extension settings.</p>
-      <input id="picklistCSV" type="file" accept=".csv">
-    </div>
+      <header>
+        <h1>MPL Custom Picklist Sorter</h1>
+      </header>
+      <section>
+        <ol>
+          <li>Ensure you <span style="font-weight:bold;font-style:italic;">are NOT</span> in "Bibliovation Receipts"
+          <li>Open the Holds Queue page in Bibliovation.</li>
+          <li>Without filtering or sorting any columns, export <span style="font-weight:bold;font-style:italic;">all</span> data as csv.</li>
+          <li>Process the .csv by selecting it below, and print the resulting page.</li>
+        </ol>
+        <p id="noConfig">Sort order not configured. Please edit the extension settings.</p>
+        <input id="picklistCSV" type="file" accept=".csv">
+      </div>
+    </section>
     <script src="picklistSort.js"></script>
   </body>
 </html>
