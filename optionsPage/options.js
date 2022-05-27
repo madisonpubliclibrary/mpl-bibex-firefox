@@ -4,6 +4,7 @@ const restrictPatronFields = document.getElementById("restrictPatronFields");
 const addPatronNotes = document.getElementById("addPatronNotes");
 const adultAge = document.getElementById("adultAge");
 const mplInternetCards = document.getElementById("mplInternetCards");
+const picklistLocColSortName = document.getElementById("picklistLocColSortName");
 const avAndOther = document.getElementById("avAndOther");
 const cassette = document.getElementById("cassette");
 const cd = document.getElementById("cd");
@@ -147,6 +148,50 @@ document.getElementById("mplInternetCardsSwitch").addEventListener('click', func
 document.getElementById("addPatronNotesSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"addPatronNotes": addPatronNotes.checked});
 });
+
+document.getElementById('applyPicklistDefaults').addEventListener('click', function() {
+  let libDefault = document.getElementById('customPicklistDefaults');
+  if (libDefault.value !== "") {
+    const parseDefaultLocCol = new Promise((resolve, reject) => {
+      Papa.parse("../customPicklistSort/defaultConfig/locColSort/" + libDefault.value + "locColSort.csv", {
+        download: true,
+        skipEmptyLines: true,
+        complete: function(results,file) {
+          resolve({
+            "file": file.name,
+            "data": Papa.unparse(results.data)
+          });
+        }
+      });
+    });
+
+    const parseDefaultPBJFI = new Promise((resolve, reject) => {
+      Papa.parse("../customPicklistSort/defaultConfig/pbjfiSort/" + libDefault.value + "pbjfiSort.csv", {
+        download: true,
+        skipEmptyLines: true,
+        complete: function(results,file) {
+          resolve({
+            "file": file.name,
+            "data": Papa.unparse(results.data)
+          });
+        }
+      });
+    });
+
+    Promise.all([parseDefaultLocCol, parseDefaultPBJFI]).then(values => {
+      let currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+      browser.storage.sync.set({
+        "picklistLocColSortName": values[0].file,
+        "picklistLocColSort": values[0].data,
+        "picklistLocColSortUploadDate": currDate,
+        "picklistPBJFISortName": values[1].file,
+        "picklistPBJFISort": values[1].data,
+        "picklistPBJFISortUploadDate": currDate
+      }).then(updatePicklistSortConfigText);
+    });
+  }
+});
+
 document.getElementById("sepAllAV").addEventListener('change', function() {
   for (let id of avCodes) {
     document.getElementById(id).checked = this.checked;
@@ -233,4 +278,128 @@ document.getElementById("shortcutText6").addEventListener('blur', function() {
 });
 document.getElementById("shortcutLink6").addEventListener('blur', function() {
   browser.storage.sync.set({"shortcutLink6": shortcutLink6.value});
+});
+
+/** Update Picklist Sort if Config Saved **/
+function updatePicklistSortConfigText() {
+  browser.storage.sync.get([
+    "picklistLocColSortName",
+    "picklistLocColSortUploadDate",
+    "picklistPBJFISortName",
+    "picklistPBJFISortUploadDate"
+  ]).then(res => {
+    if (res && res.picklistLocColSortName && res.picklistLocColSortUploadDate) {
+      document.getElementById('locColConfigFile').textContent = res.picklistLocColSortName;
+      document.getElementById('locColConfigDate').textContent = res.picklistLocColSortUploadDate;
+
+      document.querySelector('#locColStatus .notSet').style.display = "none";
+      document.querySelector('#locColStatus .set').style.display = "block";
+    }
+
+    if (res && res.picklistPBJFISortName && res.picklistPBJFISortUploadDate) {
+      document.getElementById('pbjfiConfigFile').textContent = res.picklistPBJFISortName;
+      document.getElementById('pbjfiConfigDate').textContent = res.picklistPBJFISortUploadDate;
+
+      document.querySelector('#pbjfiStatus .notSet').style.display = "none";
+      document.querySelector('#pbjfiStatus .set').style.display = "block";
+    }
+  });
+}
+updatePicklistSortConfigText();
+
+/** Upload single config files **/
+document.getElementById('updateLocColSort').addEventListener('click',function() {
+  let locColFile = document.getElementById('locColSortUpload');
+  if (locColFile !== '') {
+    Papa.parse(locColFile.files[0],{
+      skipEmptyLines: true,
+      complete: function(results,file) {
+        let locColNote = document.getElementById('updateLocColSortStatus');
+
+        if (results.data[0].includes('location') && results.data[0].includes('collection')
+              && results.data[0].includes('merge_below')) {
+          let currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+          browser.storage.sync.set({
+            "picklistLocColSortName": file.name,
+            "picklistLocColSort": Papa.unparse(results.data),
+            "picklistLocColSortUploadDate": currDate
+          }).then(() => {
+            updatePicklistSortConfigText();
+            locColNote.className = 'success';
+            locColNote.textContent = 'Successfully updated.'
+          });
+        } else {
+          locColNote.className = 'error';
+          locColNote.textContent = 'Invalid CSV.'
+        }
+      }
+    });
+  }
+});
+
+document.getElementById('updatePBJFISort').addEventListener('click',function() {
+  let locColFile = document.getElementById('pbjfiSortUpload');
+  if (locColFile !== '') {
+    Papa.parse(locColFile.files[0],{
+      skipEmptyLines: true,
+      complete: function(results,file) {
+        let pbjfiNote = document.getElementById('updatePBJFISortStatus');
+
+        if (results.data[0].includes('category') && results.data[0].includes('code')) {
+          let currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+          browser.storage.sync.set({
+            "picklistPBJFISortName": file.name,
+            "picklistPBJFISort": Papa.unparse(results.data),
+            "picklistPBJFISortUploadDate": currDate
+          }).then(() => {
+            updatePicklistSortConfigText();
+            pbjfiNote.className = 'success';
+            pbjfiNote.textContent = 'Successfully updated.'
+          });
+        } else {
+          pbjfiNote.className = 'error';
+          pbjfiNote.textContent = 'Invalid CSV.'
+        }
+      }
+    });
+  }
+});
+
+/** Download config csv **/
+function saveCSV(filename,data) {
+  let csv = "";
+  for (let i = 0; i < data.length; i++) {
+    csv += data[i].join(',');
+    csv += "\n";
+  }
+
+  let a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+  a.target = '_blank';
+  a.download = filename;
+  a.click();
+}
+
+document.getElementById('downloadLocColConfig').addEventListener('click', function() {
+  browser.storage.sync.get(['picklistLocColSortName','picklistLocColSort']).then(vals => {
+    Papa.parse(vals.picklistLocColSort,{
+      skipEmptyLines: true,
+      complete: function(results,file) {
+        saveCSV(vals.picklistLocColSortName.split('/').at(-1),results.data);
+      }
+    });
+  });
+});
+
+document.getElementById('downloadPBJFIConfig').addEventListener('click', function() {
+  browser.storage.sync.get(['picklistPBJFISortName','picklistPBJFISort']).then(vals => {
+    Papa.parse(vals.picklistPBJFISort,{
+      skipEmptyLines: true,
+      complete: function(results,file) {
+        browser.storage.sync.set({
+        });
+        saveCSV(vals.picklistPBJFISortName.split('/').at(-1),results.data);
+      }
+    });
+  });
 });
