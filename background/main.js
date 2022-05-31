@@ -512,7 +512,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return new Promise((resolve, reject) => {
         if (request.hasOwnProperty('patronBarcode')) {
           browser.tabs.create({
-            "url": "https://scls.kohalibrary.com/cgi-bin/koha/members/member.pl?member=" +
+            "url": "https://scls.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
                 request.patronBarcode,
             "active": false
           }).then(tab => {
@@ -534,7 +534,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
       }).then(patronID => {
         return browser.tabs.create({
-          "url": "https://scls.kohalibrary.com/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
+          "url": "https://scls.bibliovation.com/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
               patronID,
           "active": false
         }).then(tab => {
@@ -550,7 +550,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "getItemData":
       return new Promise((resolve, reject) => {
         browser.tabs.create({
-          "url": "https://scls.kohalibrary.com/app/search/" + request.itemBarcode,
+          "url": "https://scls.bibliovation.com/app/search/" + request.itemBarcode,
           "active": true
         }).then(tab => {
           browser.tabs.executeScript(tab.id, {
@@ -568,7 +568,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return browser.storage.sync.get('getItemUse').then(usePref => {
           let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
             browser.tabs.create({
-              "url": "https://scls.kohalibrary.com/app/staff/bib/" +
+              "url": "https://scls.bibliovation.com/app/staff/bib/" +
                   bibNum + "/details?mbxItemBC=" + request.itemBarcode,
               "active": true
             }).then(tab => {
@@ -584,7 +584,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
             let getItemUse = new Promise((resolve, reject) => {
               browser.tabs.create({
-                "url": "https://scls.kohalibrary.com/app/staff/bib/" +
+                "url": "https://scls.bibliovation.com/app/staff/bib/" +
                     bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
                 "active": true
               }).then(tab => {
@@ -599,7 +599,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
             let getItemPastUse = new Promise((resolve, reject) => {
               browser.tabs.create({
-                "url": "https://scls.kohalibrary.com/app/staff/bib/" +
+                "url": "https://scls.bibliovation.com/app/staff/bib/" +
                     bibNum + "/items?mbxItemBC=" + request.itemBarcode,
                 "active": true
               }).then(tab => {

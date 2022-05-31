@@ -23,6 +23,19 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('mplInternetCards') || performReset) {
     browser.storage.sync.set({"mplInternetCards": false});
   }
+
+  if (!res.hasOwnProperty('picklistPBJFISortName')) {
+    browser.storage.sync.set({"picklistPBJFISortName": "alphabetical.csv"});
+  }
+
+  if (!res.hasOwnProperty('picklistPBJFISort')) {
+    browser.storage.sync.set({"picklistPBJFISort": "category,code\r\nAdvanced,ADV\r\nAnimals,ANI\r\nCelebration,CEL\r\nCharacters,CHA\r\nConcepts,CON\r\nFavorites,FAV\r\nFolk,FOL\r\nGrowing,GRO\r\nNature,NAT\r\nRhymes,RHY\r\nStories,STO\r\nThings that Go,GO"});
+  }
+
+  if (!res.hasOwnProperty('picklistPBJFISortUploadDate')) {
+    browser.storage.sync.set({"picklistPBJFISortUploadDate":(new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"")});
+  }
+
   if (!res.hasOwnProperty('addPatronNotes') || performReset) {
     browser.storage.sync.set({"addPatronNotes": true});
   }
@@ -68,13 +81,13 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1') || performReset) {
     browser.storage.sync.set({
       "shortcutText1": "Bibliovation—Checkin",
-      "shortcutLink1": "https://scls.kohalibrary.com/app/staff/circ/checkin/"
+      "shortcutLink1": "https://scls.bibliovation.com/app/staff/circ/checkin/"
     });
   }
   if (!res.hasOwnProperty('shortcutText2') || !res.hasOwnProperty('shortcutLink2') || performReset) {
     browser.storage.sync.set({
       "shortcutText2": "Bibliovation—Checkout",
-      "shortcutLink2": "https://scls.kohalibrary.com/app/staff/circ/checkout"
+      "shortcutLink2": "https://scls.bibliovation.com/app/staff/circ/checkout"
     });
   }
   if (!res.hasOwnProperty('shortcutText3') || !res.hasOwnProperty('shortcutLink3') || performReset) {

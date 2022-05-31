@@ -28,7 +28,8 @@ AD,CDAWL,,
 AD,LPFI,,
 AD,LPFIMY,,
 AD,LPNF,,
-AD,BKAFI,,
+AD,BKAFI,,true
+AD.BKAFIHL,,
 AD,BKAFIMY,,
 AD,BKAFISF,true,
 AD,BKAFIFA,,
@@ -104,10 +105,10 @@ CH,PAJFI,,
 CH,BKJFI14,,
 CH,PBJFIWL,,
 PC,BKANF,,
-CH,PBJFI,,*There's specialized sort order hard-coded into the macro 
+CH,PBJFI,,*There's specialized sort order hard-coded into the macro
 CH,ERJFI,,
 APB,PBJFIWL,,
 CH,CDJFI,,
-NC,PBJFI,,*There's specialized sort order hard-coded into the macro 
+NC,PBJFI,,*There's specialized sort order hard-coded into the macro
 CH,PBJFIBB,,
 CH,PBJFIBBWL,,

@@ -85,3 +85,26 @@ section:last-of-type {
   display: none;
   cursor: pointer;
 }
+
+.draggable {
+    cursor: move;
+    margin-bottom: 10px;
+    user-select: none;
+
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Size */
+    width: 150px;
+
+    /* Misc */
+    border: 1px solid #cbd5e0;
+}
+.placeholder {
+    background-color: #edf2f7;
+    border: 2px dashed #cbd5e0;
+    margin-bottom: 10px;
+    width: 150px;
+}

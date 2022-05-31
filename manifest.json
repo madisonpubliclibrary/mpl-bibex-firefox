@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "MPL Bibliovation Extension",
   "short_name": "MPL BibEx",
-  "version": "2022.5.28",
+  "version": "2022.6.1",
   "author": "Lucas Schneider",
   "description": "MPL-BibEx provides additional tools for library staff of Wisconsin's South Central Library System using LibLime's Bibliovation ILS.",
   "homepage_url": "http://lrschneider.com/mpl-bibex-firefox",
@@ -10,7 +10,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "mpl-bibex@lrschneider.com",
-      "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/updates.json",
+      "update_url": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/updates.json",
       "strict_min_version": "79.0"
     }
   },
@@ -55,7 +55,7 @@
     "storage",
     "tabs",
     "webNavigation",
-    "https://*.kohalibrary.com/*",
+    "https://*.bibliovation.com/*",
     "https://*.census.gov/*",
     "https://*.googleapis.com/*",
     "https://*.mplnet.org/bibex/*"
