@@ -33,10 +33,12 @@
         .replace(/ave (\d+)/, 'ave #$1')
         .replace(/ave (apt|unit|fl) ?/, 'ave #')
         .replace(/ c(ou)?n?ty /, ' co ')
-        .replace(/ n /, ' north ')
-        .replace(/ s /, ' south ')
-        .replace(/ e /, ' east ')
-        .replace(/ w /, ' west ')
+        .replace(' highway ', ' hwy ')
+        .replace(/ road(?= )?/, ' rd')
+        .replace(' n ', ' north ')
+        .replace(' s ', ' south ')
+        .replace(' e ', ' east ')
+        .replace(' w ', ' west ')
         .split('#')[0];
     }
 
