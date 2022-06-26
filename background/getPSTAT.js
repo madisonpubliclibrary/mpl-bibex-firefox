@@ -1343,7 +1343,7 @@ function queryGeocoder(addressURI,city) {
       throw new Error(censusTractData.errors.join("; "));
     } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
       throw new Error("[census.gov] No census tract data matched given address.");
-    } else if (!addressURI.includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
+    } else if (!addressURI.replaceAll('%20',' ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
       throw new Error("[census.gov] Matched wrong address: " + countyData.result.addressMatches[0].matchedAddress + ".");
     } else {
       countyData = countyData.result.addressMatches[0];
