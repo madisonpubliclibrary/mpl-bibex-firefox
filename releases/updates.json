@@ -369,35 +369,42 @@
           "version": "2022.5.27",
           "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.05.27.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "58" }
+            "gecko": { "strict_min_version": "79.0" }
           }
         },
         {
           "version": "2022.5.28",
           "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.05.28.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "58" }
+            "gecko": { "strict_min_version": "79.0" }
           }
         },
         {
           "version": "2022.6.1",
           "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.06.01.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "58" }
+            "gecko": { "strict_min_version": "79.0" }
           }
         },
         {
           "version": "2022.6.26",
           "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.06.26.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "58" }
+            "gecko": { "strict_min_version": "79.0" }
           }
         },
         {
           "version": "2022.6.27",
           "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.06.27.xpi",
           "applications": {
-            "gecko": { "strict_min_version": "58" }
+            "gecko": { "strict_min_version": "79.0" }
+          }
+        },
+        {
+          "version": "2022.7.25",
+          "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2022.07.25.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "79.0" }
           }
         }
       ]
