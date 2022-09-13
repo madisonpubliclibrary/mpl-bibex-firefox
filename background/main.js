@@ -6,7 +6,9 @@ function setIcon() {
       "shortcutText5": "MPLnet",
       "shortcutLink5": "http://www.mplnet.org",
       "shortcutText6": "MPL Reference Tools",
-      "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
+      "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2",
+      "shortcutText7": "SCLS Status Wiki",
+      "shortcutLink7": "https://sclsstatus.pbworks.com"
     },
     "MID": {
       "shortcutText4": "MID Home Page",
@@ -14,7 +16,9 @@ function setIcon() {
       "shortcutText5": "MID Staff Page",
       "shortcutLink5": "https://www.midlibrary.org/library/staff/login.asp",
       "shortcutText6": "iSolved HCM",
-      "shortcutLink6": "https://payrollcompany.myisolved.com/UserLogin.aspx"
+      "shortcutLink6": "https://payrollcompany.myisolved.com/UserLogin.aspx",
+      "shortcutText7": "",
+      "shortcutLink7": ""
     },
     "SUN": {
       "shortcutText4": "SUN Home Page",
@@ -22,7 +26,9 @@ function setIcon() {
       "shortcutText5": "",
       "shortcutLink5": "",
       "shortcutText6": "",
-      "shortcutLink6": ""
+      "shortcutLink6": "",
+      "shortcutText7": "",
+      "shortcutLink7": ""
     },
     "PCPL": {
       "shortcutText4": "PCPL Home Page",
@@ -30,15 +36,19 @@ function setIcon() {
       "shortcutText5": "",
       "shortcutLink5": "",
       "shortcutText6": "",
-      "shortcutLink6": ""
+      "shortcutLink6": "",
+      "shortcutText7": "",
+      "shortcutLink7": ""
     },
     "SCLS": {
       "shortcutText4": "SCLS Home Page",
       "shortcutLink4": "https://www.scls.info",
       "shortcutText5": "SCLS Login Page",
       "shortcutLink5": "https://www.scls.info/user",
-      "shortcutText6": "",
-      "shortcutLink6": ""
+      "shortcutText6": "SCLS Status Wiki",
+      "shortcutLink6": "https://sclsstatus.pbworks.com",
+      "shortcutText7": "",
+      "shortcutLink7": ""
     },
     "STO": {
       "shortcutText4": "STO Home Page",
@@ -46,7 +56,9 @@ function setIcon() {
       "shortcutText5": "",
       "shortcutLink5": "",
       "shortcutText6": "",
-      "shortcutLink6": ""
+      "shortcutLink6": "",
+      "shortcutText7": "",
+      "shortcutLink7": ""
     }
   };
 

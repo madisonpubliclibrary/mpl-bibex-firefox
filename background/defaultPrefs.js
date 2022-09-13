@@ -99,19 +99,25 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('shortcutText4') || !res.hasOwnProperty('shortcutLink4') || performReset) {
     browser.storage.sync.set({
       "shortcutText4": "MPL Home Page",
-      "shortcutLink4": "http://madisonpubliclibrary.org"
+      "shortcutLink4": "https://madisonpubliclibrary.org"
     });
   }
   if (!res.hasOwnProperty('shortcutText5') || !res.hasOwnProperty('shortcutLink5') || performReset) {
     browser.storage.sync.set({
       "shortcutText5": "MPLnet",
-      "shortcutLink5": "http://www.mplnet.org"
+      "shortcutLink5": "https://www.mplnet.org"
     });
   }
   if (!res.hasOwnProperty('shortcutText6') || !res.hasOwnProperty('shortcutLink6') || performReset) {
     browser.storage.sync.set({
       "shortcutText6": "MPL Reference Tools",
-      "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
+      "shortcutLink6": "https://www.madisonpubliclibrary.org/research/referenc2"
+    });
+  }
+  if (!res.hasOwnProperty('shortcutText7') || !res.hasOwnProperty('shortcutLink7') || performReset) {
+    browser.storage.sync.set({
+      "shortcutText7": "SCLS Status Wiki",
+      "shortcutLink7": "https://sclsstatus.pbworks.com"
     });
   }
 });

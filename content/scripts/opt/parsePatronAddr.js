@@ -79,24 +79,22 @@
       }
     }
 
-    function deleteLUNotice() {
+    function triggerAlertCooldown(note) {
       browser.storage.sync.get('addrNoteCooldown', res => {
         if ((res.hasOwnProperty('addrNoteCooldown') && !res.addrNoteCooldown) || !res.hasOwnProperty('addrNoteCooldown')) {
           browser.runtime.sendMessage({"key": "addrNoteCooldown"}, () => {
-            alert('Please delete the circulation note regarding the patron\'s previous limited use address');
+            alert(note);
           });
         }
       });
     }
 
+    function deleteLUNotice() {
+      triggerAlertCooldown('Please delete the circulation note regarding the patron\'s previous limited use address');
+    }
+
     function deleteDormNotice() {
-      browser.storage.sync.get('addrNoteCooldown', res => {
-        if ((res.hasOwnProperty('addrNoteCooldown') && !res.addrNoteCooldown) || !res.hasOwnProperty('addrNoteCooldown')) {
-          browser.runtime.sendMessage({"key": "addrNoteCooldown"}, () => {
-            alert('Please delete the circulation note regarding the patron\'s previous dorm address');
-          });
-        }
-      });
+      triggerAlertCooldown('Please delete the circulation note regarding the patron\'s previous dorm address');
     }
 
     let parseAddr = function() {
@@ -191,7 +189,7 @@
                 }
                 return;
               } else if (item['type'] === "SaH") {
-                alert(item['note'].replace(/\\n/g, "\n"));
+                triggerAlertCooldown(item['note'].replace(/\\n/g, "\n"));
               } else if (item['type'] === "WUO") { /*** Requested by STP ***/
                 if (cc) {
                   cc.value = "WEB";

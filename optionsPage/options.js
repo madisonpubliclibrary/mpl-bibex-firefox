@@ -31,6 +31,8 @@ const shortcutText5 = document.getElementById("shortcutText5");
 const shortcutLink5 = document.getElementById("shortcutLink5");
 const shortcutText6 = document.getElementById("shortcutText6");
 const shortcutLink6 = document.getElementById("shortcutLink6");
+const shortcutText7 = document.getElementById("shortcutText7");
+const shortcutLink7 = document.getElementById("shortcutLink7");
 const avCodes = ["avAndOther", "cassette", "cd", "dap", "dvd", "equipment", "software", "video"];
 
 function restoreOptions() {
@@ -66,6 +68,8 @@ function restoreOptions() {
     shortcutLink5.value = res.shortcutLink5;
     shortcutText6.value = res.shortcutText6;
     shortcutLink6.value = res.shortcutLink6;
+    shortcutText7.value = res.shortcutText7;
+    shortcutLink7.value = res.shortcutLink7;
   });
 }
 
@@ -120,7 +124,9 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "shortcutText5": "MPLnet",
     "shortcutLink5": "http://www.mplnet.org",
     "shortcutText6": "MPL Reference Tools",
-    "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
+    "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2",
+    "shortcutText7": "SCLS Status Wiki",
+    "shortcutLink7": "https://sclsstatus.pbworks.com"
   }).then(() => {
     browser.runtime.sendMessage({"key": "updateExtensionIcon"});
   });
@@ -278,6 +284,12 @@ document.getElementById("shortcutText6").addEventListener('blur', function() {
 });
 document.getElementById("shortcutLink6").addEventListener('blur', function() {
   browser.storage.sync.set({"shortcutLink6": shortcutLink6.value});
+});
+document.getElementById("shortcutText7").addEventListener('blur', function() {
+  browser.storage.sync.set({"shortcutText7": shortcutText7.value});
+});
+document.getElementById("shortcutLink7").addEventListener('blur', function() {
+  browser.storage.sync.set({"shortcutLink7": shortcutLink7.value});
 });
 
 /** Update Picklist Sort if Config Saved **/
