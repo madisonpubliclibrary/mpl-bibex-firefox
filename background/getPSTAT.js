@@ -240,7 +240,7 @@ const pstats = new function() {
       "Edgerton city": "D-EDG-C",
       "Fitchburg city": "D-FIT-T",
       //"Madison city": "", // Handled separately
-      "Madison town": "D-MAD-T",
+      "Madison town": "D-MAD-T", // Dissolved on 11/1/2022
       "Marshall village": "D-MARS-V",
       "Mazomanie town": "D-MAZ-T",
       "Mazomanie village": "D-MAZ-V",
@@ -1452,6 +1452,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }).then(res => {
       if (!payload.success && /^sun prairie/i.test(request.city.replace('%20',' '))) payload.pstat = "D-X-SUN";
       else if (!payload.success && /^madison/i.test(request.city)) payload.pstat = "D-X-MAD";
+      else if (payload.pstat === "D-MAD-T") {
+        payload.error = "The Town of Madison was dissolved on Nov. 1, 2022. Please contact Madison Central Library circulation staff with the address that triggered this error.";
+        payload.success = false;
+      }
       return payload;
     });
   } else if (request.key === "getAlternatePSTAT") {
