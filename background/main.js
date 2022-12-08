@@ -658,5 +658,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }, 500);
       });
       break;
+    case "addPicklistContextMenu":
+      browser.menus.create({
+        "id": "insert-picklist-sort-below",
+        "title": "Insert Row Below",
+        "contexts": ["editable"]
+      });
+      
+      browser.menus.onClicked.addListener((info, tab) => {
+        browser.tabs.sendMessage(tab.id,{"key": "insertBelow", "contextInfo": info});
+      });
+      break;
+    case "removePicklistContextMenu":
+      browser.menus.remove("insert-picklist-sort-below");
+      break;
   }
 });

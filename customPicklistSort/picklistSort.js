@@ -32,7 +32,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort"]).then(res =>
                 else if (headers[i] === 'Enum/Chron') enumIdx = i;
                 else if (headers[i] === 'barcode') barcodeIdx = i;
               }
-
+              
               resolve({
                 "headers": headers,
                 "picklist": data,
@@ -152,144 +152,239 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort"]).then(res =>
       }
     });
 
+    function strikeThrough(e) {
+      e.target.parentElement.style.textDecoration = 'line-through';
+    }
+    function removeStrikeThrough(e) {
+      e.target.parentElement.style.textDecoration = 'none';
+    }
+
+    function makeDraggable(table) {
+      return tableDragger.default(table, {
+        'mode': 'row',
+        'dragHandler': '.handle',
+        'onlyBody': 'true',
+        'animation': 200
+      });
+    }
+
+    let locColDragger;
+
+    const editConfigInstructions = document.getElementById('editConfigInstructions');
+    const editPicklistConfig = document.getElementById('editPicklistConfig');
+
     /** Show PBJFI Order **/
-    const pbjfiList = document.getElementById('pbjfiList');
+    const pbjfiTable = document.getElementById('pbjfiTable');
+    const pbjfiBody = document.getElementById('pbjfiBody');
 
     // Generate initial list order
     const getPBList = new Promise((resolve,reject) => {
       Papa.parse(res.picklistPBJFISort, {
         skipEmptyLines: true,
         complete: function(results, file) {
-          results.data.shift(); // Remove readers
+          results.data.shift(); // Remove headers
 
           for (let i = 0; i < results.data.length; i++) {
-            const draggablePBCat = document.createElement('div');
-            draggablePBCat.classList.add('draggable');
-            draggablePBCat.setAttribute('data-pbCode', results.data[i][1]);
-            draggablePBCat.textContent = results.data[i][0];
+            const pbjfiCatRow = document.createElement('tr');
 
-            pbjfiList.append(draggablePBCat);
+            const dragMe = document.createElement('td');
+            dragMe.classList.add('handle');
+
+            const pbjfiCat = document.createElement('td');
+            pbjfiCat.setAttribute('data-pbCode', results.data[i][1]);
+            pbjfiCat.textContent = results.data[i][0];
+
+            pbjfiCatRow.append(dragMe);
+            pbjfiCatRow.append(pbjfiCat);
+            pbjfiBody.append(pbjfiCatRow);
           }
           resolve();
         }
       });
     });
-    getPBList.then(()=> {
-      let draggingEle;
-      let placeholder;
-      let isDraggingStarted = false;
+    getPBList.then(() => {
+      /* Make rows draggable */
+      const pbjfiDragger = makeDraggable(pbjfiTable);
+    });
 
-      // The current position of mouse relative to the dragging element
-      let x = 0;
-      let y = 0;
+    /* Generate table of Location/Collection sort order */
+    const locColTable = document.getElementById('locColTable');
+    const locColBody = document.getElementById('locColBody');
 
-      // Swap two nodes
-      const swap = function (nodeA, nodeB) {
-          const parentA = nodeA.parentNode;
-          const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+    // Generate initial list order
+    const getLocColList = new Promise((resolve,reject) => {
+      Papa.parse(res.picklistLocColSort, {
+        skipEmptyLines: true,
+        complete: function(results, file) {
+          results.data.shift(); // Remove headers
 
-          // Move `nodeA` to before the `nodeB`
-          nodeB.parentNode.insertBefore(nodeA, nodeB);
+          for (let i = 0; i < results.data.length; i++) {
+            const locColRow = document.createElement('tr');
 
-          // Move `nodeB` to before the sibling of `nodeA`
-          parentA.insertBefore(nodeB, siblingA);
-      };
+            const dragMe = document.createElement('td');
+            dragMe.classList.add('handle');
 
-      // Check if `nodeA` is above `nodeB`
-      const isAbove = function (nodeA, nodeB) {
-          // Get the bounding rectangle of nodes
-          const rectA = nodeA.getBoundingClientRect();
-          const rectB = nodeB.getBoundingClientRect();
+            const location = document.createElement('td');
+            location.textContent = results.data[i][0];
+            location.contentEditable = true;
+            location.spellcheck = false;
 
-          return rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2;
-      };
+            const collection = document.createElement('td');
+            collection.textContent = results.data[i][1];
+            collection.contentEditable = true;
+            collection.spellcheck = false;
 
-      const mouseDownHandler = function (e) {
-          draggingEle = e.target;
+            const mergeBelow = document.createElement('td');
+            mergeBelow.style.textAlign = 'center';
 
-          // Calculate the mouse position
-          const rect = draggingEle.getBoundingClientRect();
-          x = e.pageX - rect.left;
-          y = e.pageY - rect.top;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = results.data[i][2] === 'true';
+            mergeBelow.append(checkbox);
+            
+            const notes = document.createElement('td');
+            notes.textContent = results.data[i][3];
+            notes.contentEditable = true;
 
-          // Attach the listeners to `document`
-          document.addEventListener('mousemove', mouseMoveHandler);
-          document.addEventListener('mouseup', mouseUpHandler);
-      };
+            const del = document.createElement('td');
+            del.classList.add('delete');
+            del.addEventListener('click', e => {
+              e.target.parentElement.remove();
+            });
+            del.addEventListener('mouseover',strikeThrough);
+            del.addEventListener('mouseout',removeStrikeThrough);
 
-      const mouseMoveHandler = function (e) {
-          const draggingRect = draggingEle.getBoundingClientRect();
 
-          if (!isDraggingStarted) {
-              isDraggingStarted = true;
-
-              // Let the placeholder take the height of dragging element
-              // So the next element won't move up
-              placeholder = document.createElement('div');
-              placeholder.classList.add('placeholder');
-              draggingEle.parentNode.insertBefore(placeholder, draggingEle.nextSibling);
-              placeholder.style.height = `${draggingRect.height}px`;
+            locColRow.append(dragMe, location, collection, mergeBelow, notes, del);
+            locColBody.append(locColRow);
           }
-
-          // Set position for dragging element
-          draggingEle.style.position = 'absolute';
-          draggingEle.style.top = `${e.pageY - y}px`;
-          draggingEle.style.left = `${e.pageX - x}px`;
-
-          // The current order
-          // prevEle
-          // draggingEle
-          // placeholder
-          // nextEle
-          const prevEle = draggingEle.previousElementSibling;
-          const nextEle = placeholder.nextElementSibling;
-
-          // The dragging element is above the previous element
-          // User moves the dragging element to the top
-          if (prevEle && isAbove(draggingEle, prevEle)) {
-              // The current order    -> The new order
-              // prevEle              -> placeholder
-              // draggingEle          -> draggingEle
-              // placeholder          -> prevEle
-              swap(placeholder, draggingEle);
-              swap(placeholder, prevEle);
-              return;
-          }
-
-          // The dragging element is below the next element
-          // User moves the dragging element to the bottom
-          if (nextEle && isAbove(nextEle, draggingEle)) {
-              // The current order    -> The new order
-              // draggingEle          -> nextEle
-              // placeholder          -> placeholder
-              // nextEle              -> draggingEle
-              swap(nextEle, placeholder);
-              swap(nextEle, draggingEle);
-          }
-      };
-
-      const mouseUpHandler = function () {
-          // Remove the placeholder
-          placeholder && placeholder.parentNode.removeChild(placeholder);
-
-          draggingEle.style.removeProperty('top');
-          draggingEle.style.removeProperty('left');
-          draggingEle.style.removeProperty('position');
-
-          x = null;
-          y = null;
-          draggingEle = null;
-          isDraggingStarted = false;
-
-          // Remove the handlers of `mousemove` and `mouseup`
-          document.removeEventListener('mousemove', mouseMoveHandler);
-          document.removeEventListener('mouseup', mouseUpHandler);
-      };
-
-      // Query all items
-      [].slice.call(pbjfiList.querySelectorAll('.draggable')).forEach(function (item) {
-          item.addEventListener('mousedown', mouseDownHandler);
+          resolve();
+        }
       });
+    });
+    getLocColList.then(() => {
+      /* Make rows draggable */
+      locColDragger = makeDraggable(locColTable);
+    });
+
+    const editConfigButton = document.getElementById('editConfigButton');
+    editConfigButton.addEventListener('click', e => {
+      if (editConfigButton.classList.contains('edit')) {
+        editConfigButton.classList.remove('edit');
+        editConfigButton.classList.add('verify');
+        editConfigButton.textContent = "Verify Picklist Sort Order";
+        editConfigButton.style.background = "#782c54";
+
+        editConfigInstructions.style.display = 'block';
+        editPicklistConfig.style.display = 'flex';
+
+
+        browser.runtime.sendMessage({"key": "addPicklistContextMenu"});
+        browser.runtime.onMessage.addListener(message => {
+          if (message.key === "insertBelow") {
+            const newRow = document.createElement('tr');
+            const newDragMe = document.createElement('td');
+            newDragMe.classList.add('handle');
+
+            const newLoc = document.createElement('td')
+            newLoc.contentEditable = true;
+            newLoc.spellcheck = false;
+
+            const newCol = document.createElement('td');
+            newCol.contentEditable = true;
+            newCol.spellcheck = false;
+
+            const newMerge = document.createElement('td');
+            newMerge.style.textAlign = 'center';
+
+            const newCheckbox = document.createElement('input');
+            newCheckbox.type = 'checkbox';
+            newMerge.append(newCheckbox);
+
+            const newNotes = document.createElement('td');
+            newNotes.contentEditable = true;
+
+            const newDel = document.createElement('td');
+            newDel.classList.add('delete');
+            newDel.addEventListener('click', e => {
+              e.target.parentElement.remove();
+            });
+            newDel.addEventListener('mouseover',strikeThrough);
+            newDel.addEventListener('mouseout',removeStrikeThrough);
+
+            newRow.append(newDragMe, newLoc, newCol, newMerge, newNotes, newDel);
+            
+            const td = browser.menus.getTargetElement(message.contextInfo.targetElementId);
+            td.parentElement.after(newRow);
+
+            /* Refresh draggable table */
+            locColDragger.destroy();
+            locColDragger = makeDraggable(locColTable);
+          }
+        });
+
+      } else if (editConfigButton.classList.contains('verify')) {
+        let locationWarn = 0;
+        let collectionWarn = 0;
+
+        for (const row of locColBody.children) {
+          const locationTD = row.children[1];
+          const collectionTD = row.children[2];
+
+          if (!locationCodes.hasOwnProperty(locationTD.textContent)) {
+            locationTD.style.color = "red";
+            locationTD.style.fontWeight = "bold";
+            locationWarn++;
+          } else {
+            locationTD.style.color = "black";
+            locationTD.style.fontWeight = "normal";
+          }
+
+          if (!collectionCodes.hasOwnProperty(collectionTD.textContent)) {
+            collectionTD.style.color = "red";
+            collectionTD.style.fontWeight = "bold";
+            collectionWarn++;
+          } else {
+            collectionTD.style.color = "black";
+            collectionTD.style.fontWeight = "normal";
+          }
+        }
+        let saveButton = document.getElementById('saveConfigButton');
+        saveButton.style.display = 'block';
+
+        saveButton.addEventListener('click', e => {
+          let pbjfiCSV = "category,code\r\n";
+          for (const row of pbjfiBody.children) {
+            pbjfiCSV += row.children[1].textContent + ',' + row.children[1].getAttribute('data-pbcode') + '\r\n';
+          }
+
+          let locColCSV = "location,collection,merge_below,notes\r\n";
+          for (const row of locColBody.children) {
+            locColCSV += row.children[1].textContent.trim() + ',' + row.children[2].textContent.trim() + ',';
+            if (row.children[3].children[0].checked) locColCSV += 'true';
+            locColCSV += ',' + row.children[4].textContent.trim() + '\r\n';
+          }
+
+          const currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+          browser.storage.sync.set({
+            "picklistLocColSortName": "customLocColSort.csv",
+            "picklistLocColSort": locColCSV.trim(),
+            "picklistLocColSortUploadDate": currDate,
+            "picklistPBJFISortName": "customPBJFISort.csv",
+            "picklistPBJFISort": pbjfiCSV.trim(),
+            "picklistPBJFISortUploadDate": currDate
+          }).then(() => {
+            alert("Configuration saved!");
+            window.location.reload();
+          });
+
+        });
+
+        alert(locationWarn + " location code(s) and " + collectionWarn
+        + " collection code(s) did not match SCLS documentation, last updated 8/8/2022."
+        + " please confirm the codes in red are typed correctly and either"
+        + " verify the codes again, or save the sort order.");
+      }
     });
   }
 });

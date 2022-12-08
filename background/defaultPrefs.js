@@ -24,15 +24,15 @@ browser.storage.sync.get().then((res) => {
     browser.storage.sync.set({"mplInternetCards": false});
   }
 
-  if (!res.hasOwnProperty('picklistPBJFISortName')) {
+  if (!res.hasOwnProperty('picklistPBJFISortName') || performReset) {
     browser.storage.sync.set({"picklistPBJFISortName": "alphabetical.csv"});
   }
 
-  if (!res.hasOwnProperty('picklistPBJFISort')) {
+  if (!res.hasOwnProperty('picklistPBJFISort') || performReset) {
     browser.storage.sync.set({"picklistPBJFISort": "category,code\r\nAdvanced,ADV\r\nAnimals,ANI\r\nCelebration,CEL\r\nCharacters,CHA\r\nConcepts,CON\r\nFavorites,FAV\r\nFolk,FOL\r\nGrowing,GRO\r\nNature,NAT\r\nRhymes,RHY\r\nStories,STO\r\nThings that Go,GO"});
   }
 
-  if (!res.hasOwnProperty('picklistPBJFISortUploadDate')) {
+  if (!res.hasOwnProperty('picklistPBJFISortUploadDate') || performReset) {
     browser.storage.sync.set({"picklistPBJFISortUploadDate":(new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"")});
   }
 
@@ -78,13 +78,15 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('getItemUse') || performReset) {
     chrome.storage.sync.set({"getItemUse": true});
   }
-  if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1') || performReset) {
+  if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1') || performReset
+      || res.shortcutLink1 === "https://scls.bibliovation.com/app/staff/circ/checkin") { // Correct URL if missing final /
     browser.storage.sync.set({
       "shortcutText1": "Bibliovation—Checkin",
       "shortcutLink1": "https://scls.bibliovation.com/app/staff/circ/checkin/"
     });
   }
-  if (!res.hasOwnProperty('shortcutText2') || !res.hasOwnProperty('shortcutLink2') || performReset) {
+  if (!res.hasOwnProperty('shortcutText2') || !res.hasOwnProperty('shortcutLink2') || performReset
+      || res.shortcutLink2 === "https://scls.bibliovation.com/app/staff/circ/checkin") { // Correct URL if it was set to checkin
     browser.storage.sync.set({
       "shortcutText2": "Bibliovation—Checkout",
       "shortcutLink2": "https://scls.bibliovation.com/app/staff/circ/checkout"

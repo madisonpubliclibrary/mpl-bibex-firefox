@@ -1,9 +1,9 @@
 (function(){
   'use strict';
-  var t = setInterval(function() {
+  let t = setInterval(function() {
     if (/\/app\/staff\/circ\/checkin\//.test(window.location)) {
       chrome.storage.sync.get("sundayDropboxPaused", res => {
-        var dropbox = Array.from(document.getElementsByTagName('button'))
+        let dropbox = Array.from(document.getElementsByTagName('button'))
                            .filter(elt => elt.title === "Dropbox mode");
 
         if (dropbox && dropbox.length > 0) {

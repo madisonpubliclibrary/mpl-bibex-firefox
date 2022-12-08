@@ -68,12 +68,20 @@ section {
   padding: 0 15px;
 }
 
-section:first-of-type {
-  margin-top: 15px;
+.handle::before {
+  content: "↕";
 }
 
-section:last-of-type {
-  padding-bottom: 15px;
+.delete {
+  cursor: pointer;
+}
+
+.delete::before {
+  content: "🗙";
+}
+
+.delete:hover {
+  color: #d25d28;
 }
 
 #noConfig {
@@ -86,25 +94,49 @@ section:last-of-type {
   cursor: pointer;
 }
 
-.draggable {
-    cursor: move;
-    margin-bottom: 10px;
-    user-select: none;
-
-    /* Center the content */
-    align-items: center;
-    display: flex;
-    justify-content: center;
-
-    /* Size */
-    width: 150px;
-
-    /* Misc */
-    border: 1px solid #cbd5e0;
+#editConfigInstructions {
+  font-size: 12pt;
+  display: none;
 }
-.placeholder {
-    background-color: #edf2f7;
-    border: 2px dashed #cbd5e0;
-    margin-bottom: 10px;
-    width: 150px;
+
+#editConfigButton,
+#saveConfigButton {
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: center;
+  background: #1c6677;
+  color: #ffffff;
+  text-shadow: 2px 2px #000000;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#editConfigButton {
+  margin-top: 2em;
+}
+
+#saveConfigButton {
+  background:#d25d28;
+  display:none;
+}
+
+#editConfigButton:hover:before,
+#saveConfigButton:hover:before {
+  content: "― ";
+}
+
+#editConfigButton:hover:after,
+#saveConfigButton:hover:after {
+  content: " ―";
+}
+
+#editPicklistConfig {
+  margin-top: 1em;
+  padding-bottom: 2em;
+  display: none;
+}
+
+#editPicklistConfig section:first-of-type {
+  border-right: 2px solid #000000;
 }

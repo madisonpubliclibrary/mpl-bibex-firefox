@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="picklistSort.css">
 		<script src="codeObjects.js"></script>
 		<script src="../lib/papaparse.js"></script>
+    <script src="../lib/table-dragger.js"></script>
   </head>
   <body>
     <div id="print">
@@ -19,6 +20,7 @@
         <h1>MPL Custom Picklist Sorter</h1>
       </header>
       <section>
+        <h2>Upload and Print</h2>
         <ol>
           <li>Ensure you <span style="font-weight:bold;font-style:italic;">are NOT</span> in "Bibliovation Receipts"
           <li>Open the Holds Queue page in Bibliovation.</li>
@@ -28,17 +30,33 @@
         <p id="noConfig">Sort order not configured. Please edit the extension settings.</p>
         <input id="picklistCSV" type="file" accept=".csv">
       </section>
-      <!--<section>
-        <h2>Picture Book Order</h2>
-        <div id="pbjfiList">
-        </div>
+      <section id="editConfigButton" class="edit">Edit Picklist Sort Order</section>
+      <section id="saveConfigButton" class="edit">Save Picklist Sort Order</section>
+      <section id="editConfigInstructions">
+        <ul>
+          <li>Right-click on the location, collection, or notes field and select "Insert Row Below" from the context menu to add a row</li>
+          <li>Click on the up and down arrow icon and drag the cursor to rearrange rows</li>
+          <li>Click on the cancel icon to remove a row.</li>
+        </ul>
       </section>
-      <section>
-        <h2>Collection Code Order</h2>
-        <table>
-          <tr><th>Location</th><th>Collection</th><th>Interfiled with Code Below?</th><th>
-        </table>
-      </section>-->
+      <section id="editPicklistConfig">
+        <section>
+          <table id="pbjfiTable">
+            <thead>
+              <tr><th></th><th>PBJFI Order</th></tr>
+            </thead>
+            <tbody id="pbjfiBody"></tbody>
+          </table>
+        </section>
+        <section>
+          <table id="locColTable">
+            <thead>
+              <tr><th></th></th><th>Location</th><th>Collection</th><th>Interfiled with Row Below?</th><th>Notes</th><th></th></tr>
+            </thead>
+            <tbody id="locColBody"></tbody>
+          </table>
+        </section>
+      </section>
     </div>
     <script src="picklistSort.js"></script>
   </body>

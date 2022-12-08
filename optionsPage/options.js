@@ -114,7 +114,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "sundayDropboxPaused": false,
     "getItemUse": true,
     "shortcutText1": "Bibliovation—Checkin",
-    "shortcutLink1": "https://scls.bibliovation.com/app/staff/circ/checkin",
+    "shortcutLink1": "https://scls.bibliovation.com/app/staff/circ/checkin/",
     "shortcutText2": "Bibliovation—Checkout",
     "shortcutLink2": "https://scls.bibliovation.com/app/staff/circ/checkout",
     "shortcutText3": "TIGERweb",
@@ -185,7 +185,7 @@ document.getElementById('applyPicklistDefaults').addEventListener('click', funct
     });
 
     Promise.all([parseDefaultLocCol, parseDefaultPBJFI]).then(values => {
-      let currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+      const currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
       browser.storage.sync.set({
         "picklistLocColSortName": values[0].file,
         "picklistLocColSort": values[0].data,
@@ -330,7 +330,7 @@ document.getElementById('updateLocColSort').addEventListener('click',function() 
 
         if (results.data[0].includes('location') && results.data[0].includes('collection')
               && results.data[0].includes('merge_below')) {
-          let currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
+          const currDate = (new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"");
           browser.storage.sync.set({
             "picklistLocColSortName": file.name,
             "picklistLocColSort": Papa.unparse(results.data),
