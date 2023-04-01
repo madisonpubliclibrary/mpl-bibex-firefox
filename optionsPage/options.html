@@ -164,6 +164,25 @@
           <input id="pbjfiSortUpload" type="file" accept=".csv"><br>
           <button id="updatePBJFISort" type="button">Update</button><span id="updatePBJFISortStatus"></span>
         </fieldset>
+        <fieldset>
+          <legend>Print Settings</legend>
+          <div>
+            <span style="font-weight:bold;">Font Size:&nbsp;</span>
+            <select id="picklistFont">
+              <option value="smallFont">Small (10pt)</option>
+              <option value="medFont">Medium (12pt)</option>
+              <option value="largeFont">Large (14pt)</option>
+            </select>
+          </div>
+          <div>
+            <span style="font-weight:bold;">Table Cell Padding:&nbsp;</span>
+            <select id="picklistPad">
+              <option value="smallPad">Narrow (2px)</option>
+              <option value="medPad">Standard (4px)</option>
+              <option value="largePad">Relaxed (6px)</option>
+            </select>
+          </div>
+        </fieldset>
       </div>
       <div class="option">
         <h1>Separate Hold Shelf Action List</h1>

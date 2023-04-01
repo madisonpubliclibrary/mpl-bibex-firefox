@@ -23,6 +23,30 @@
     border-color: #000;
     padding: 2px;
   }
+
+  .smallPad th, .smallPad td{
+    padding: 2px;
+  }
+
+  .medPad th, .medPad td{
+    padding: 4px 3px;
+  }
+
+  .largePad th, .largePad td {
+    padding: 6px 4px;
+  }
+
+  .smallFont {
+    font-size: 10pt;
+  }
+
+  .medFont {
+    font-size: 12pt;
+  }
+
+  .largeFont {
+    font-size: 14pt;
+  }
 }
 
 @page {

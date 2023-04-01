@@ -36,6 +36,12 @@ browser.storage.sync.get().then((res) => {
     browser.storage.sync.set({"picklistPBJFISortUploadDate":(new Date()).toLocaleString().toLowerCase().replace(/:\d\d /,"")});
   }
 
+  if (!res.hasOwnProperty('picklistFont') || performReset) {
+    browser.storage.sync.set({"picklistFont": "smallFont"});
+  }
+  if (!res.hasOwnProperty('picklistPad') || performReset) {
+    browser.storage.sync.set({"picklistPad": "smallPad"});
+  }
   if (!res.hasOwnProperty('addPatronNotes') || performReset) {
     browser.storage.sync.set({"addPatronNotes": true});
   }

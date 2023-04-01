@@ -5,6 +5,8 @@ const addPatronNotes = document.getElementById("addPatronNotes");
 const adultAge = document.getElementById("adultAge");
 const mplInternetCards = document.getElementById("mplInternetCards");
 const picklistLocColSortName = document.getElementById("picklistLocColSortName");
+const picklistFont = document.getElementById("picklistFont");
+const picklistPad = document.getElementById("picklistPad");
 const avAndOther = document.getElementById("avAndOther");
 const cassette = document.getElementById("cassette");
 const cd = document.getElementById("cd");
@@ -43,6 +45,8 @@ function restoreOptions() {
     adultAge.value = res.adultAge;
     mplInternetCards.checked = res.mplInternetCards;
     addPatronNotes.checked = res.addPatronNotes;
+    picklistFont.value = res.picklistFont;
+    picklistPad.value = res.picklistPad;
     sepAllAV.checked = res.sepAllAV;
     avAndOther.checked = res.avAndOther;
     cassette.checked = res.cassette;
@@ -99,6 +103,8 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "adultAge": "16",
     "mplInternetCards": false,
     "addPatronNotes": true,
+    "picklistFont": "10pt",
+    "picklistPad": "2px",
     "sepAllAV": false,
     "avAndOther": false,
     "cassette": false,
@@ -196,6 +202,14 @@ document.getElementById('applyPicklistDefaults').addEventListener('click', funct
       }).then(updatePicklistSortConfigText);
     });
   }
+});
+
+picklistFont.addEventListener('change', function() {
+  browser.storage.sync.set({"picklistFont": picklistFont.value});
+});
+
+picklistPad.addEventListener('change', function() {
+  browser.storage.sync.set({"picklistPad": picklistPad.value});
 });
 
 document.getElementById("sepAllAV").addEventListener('change', function() {

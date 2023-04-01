@@ -1,5 +1,9 @@
-browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort"]).then(res => {
-  if (res && res.picklistLocColSort && res.picklistPBJFISort) {
+browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont","picklistPad"]).then(res => {
+  if (res && res.picklistLocColSort && res.picklistPBJFISort && res.picklistFont && res.picklistPad) {
+    document.body.classList.add(res.picklistFont);
+
+    document.getElementById('picklistHeaders').classList.add = res.picklistPad;
+
     document.getElementById('picklistCSV').style.display = "block";
     document.getElementById('noConfig').style.display = "none";
     const csvInput = document.getElementById('picklistCSV');
@@ -126,6 +130,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort"]).then(res =>
             let callNo = row[callNoIdx] ? row[callNoIdx] : row[enumIdx];
 
             let tr = document.createElement('tr');
+            tr.classList.add(res.picklistPad);
             let titleTD = document.createElement('td');
             titleTD.textContent = row[titleIdx];
             tr.append(titleTD);
