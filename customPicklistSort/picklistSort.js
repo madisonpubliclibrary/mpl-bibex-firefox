@@ -126,7 +126,10 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont
             else return 0;
           });
 
-          for (let row of picklist) {
+          // Remove items with invalid barcodes
+          const filteredPicklist = picklist.filter(row => /3\d{13}/.test(row[barcodeIdx]));
+
+          for (let row of filteredPicklist) {
             let callNo = row[callNoIdx] ? row[callNoIdx] : row[enumIdx];
 
             let tr = document.createElement('tr');
@@ -150,7 +153,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont
             table.append(tr);
           }
 
-          queueLength.textContent = picklist.length;
+          queueLength.textContent = filteredPicklist.length;
 
           window.print();
         });
