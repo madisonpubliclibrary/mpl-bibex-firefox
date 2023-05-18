@@ -24,14 +24,16 @@
     const span5 = document.createElement('span');
     let resetTable = false;
 
-    let ItemRow = function(htmlTR) {
-      this.html = htmlTR;
-      this.ckoDate = new Date(htmlTR.children[0].textContent.trim());
-      this.name = htmlTR.children[1].textContent.trim();
-      this.barcode = htmlTR.children[2].textContent.trim();
-      this.owningLibrary = htmlTR.children[3].textContent.trim();
-      this.dueDate = new Date(htmlTR.children[6].textContent.trim());
-      this.retDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent.trim()) : new Date();
+    class ItemRow {
+      constructor(htmlTR) {
+        this.html = htmlTR;
+        this.ckoDate = new Date(htmlTR.children[0].textContent.trim().replace("AM", " AM").replace("PM", " PM"));
+        this.name = htmlTR.children[1].textContent.trim();
+        this.barcode = htmlTR.children[2].textContent.trim();
+        this.owningLibrary = htmlTR.children[3].textContent.trim();
+        this.dueDate = new Date(htmlTR.children[6].textContent.trim().replace("AM", " AM").replace("PM", " PM"));
+        this.retDate = htmlTR.children[7].textContent.trim() !== "" ? new Date(htmlTR.children[7].textContent.trim().replace("AM", " AM").replace("PM", " PM")) : new Date();
+      }
     }
 
     if (libCode && libCode.length > 0) {

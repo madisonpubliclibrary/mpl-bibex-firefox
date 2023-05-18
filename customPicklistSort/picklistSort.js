@@ -34,7 +34,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont
                 else if (headers[i] === 'Shelving Location') shelvingLocIdx = i;
                 else if (headers[i] === 'Call Number') callNoIdx = i;
                 else if (headers[i] === 'Enum/Chron') enumIdx = i;
-                else if (headers[i] === 'barcode') barcodeIdx = i;
+                else if (headers[i] === 'Barcode') barcodeIdx = i;
               }
               
               resolve({
@@ -128,7 +128,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont
 
           // Remove items with invalid barcodes
           const filteredPicklist = picklist.filter(row => /3\d{13}/.test(row[barcodeIdx]));
-
+          
           for (let row of filteredPicklist) {
             let callNo = row[callNoIdx] ? row[callNoIdx] : row[enumIdx];
 
