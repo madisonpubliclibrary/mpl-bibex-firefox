@@ -39,6 +39,7 @@
         .replace(' s ', ' south ')
         .replace(' e ', ' east ')
         .replace(' w ', ' west ')
+        .replace(/ hl/," hill")
         .split('#')[0];
     }
 
