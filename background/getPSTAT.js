@@ -279,7 +279,7 @@ const pstats = new function() {
     "Dodge": {
       "Ashippun town": "DG-ASH-T",
       "Beaver Dam city": "DG-BDM-C",
-      "Beaver Dam village": "DG-BDM-T",
+      "Beaver Dam town": "DG-BDM-T",
       "Brownsville village": "DG-BRO-V",
       "Burnett town":  "DG-BUR-T",
       "Calamus town": "DG-CAL-T",
