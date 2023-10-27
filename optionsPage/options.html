@@ -23,19 +23,6 @@
         </select>
       </div>
       <div class="option">
-        <h1>Receipt Font Size</h1>
-        <select id="receiptFont">
-          <option value="26px">26px</option>
-          <option value="28px">28px (MOO)</option>
-          <option value="30px">30px</option>
-          <option value="32px">32px</option>
-          <option value="34px">34px</option>
-          <option value="36px">36px (MPL)</option>
-          <option value="38px">38px</option>
-        </select>
-        <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
-      </div>
-      <div class="option">
         <h1>Parse Patron Addresses</h1>
         <table>
           <tr>
@@ -50,6 +37,33 @@
         </table>
       </div>
       <div class="option">
+        <h1>Print Barcode Image</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="printBarcodeImageSwitch">
+                <input type="checkbox" id="printBarcodeImage">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="printBarcodeImage">Include the patron's barcode image along with the printed number when you click the Print Barcode button.</label></td>
+          </tr>
+        </table>
+      </div>
+      <div id="receiptFontSize" class="option">
+        <h2>Receipt Font Size</h2>
+        <select id="receiptFont">
+          <option value="26px">26px</option>
+          <option value="28px">28px (MOO)</option>
+          <option value="30px">30px</option>
+          <option value="32px">32px</option>
+          <option value="34px">34px</option>
+          <option value="36px">36px (MPL)</option>
+          <option value="38px">38px</option>
+        </select>
+        <p>Determines the font size for the patron barcode printing function. Contact <a href="mailto:lschneider@madisonpubliclibrary.org">Lucas Schneider &lt;lschneider@madisonpubliclibrary.org&gt;</a> if your library would like a customized font size.</p>
+      </div>
+      <div class="option">
         <h1>Restrict Patron Fields</h1>
         <table>
           <tr>
@@ -59,7 +73,7 @@
                 <span class="slider"></span>
               </label>
             </td>
-            <td><label for="restrictPatronFields">Disable patron record fields that are rarely used by MPL staff to aid in keeping data entry consistant across patron records. If activated, this feature may still be overridden by a checkbox on the patron edit page.</label></td>
+            <td><label for="restrictPatronFields">Disable patron record fields that are rarely used by MPL staff to aid in keeping data entry consistent across patron records. If activated, this feature may still be overridden by a checkbox on the patron edit page.</label></td>
           </tr>
         </table>
       </div>

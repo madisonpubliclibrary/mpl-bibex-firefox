@@ -14,6 +14,9 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('parseAddr') || performReset) {
     browser.storage.sync.set({"parseAddr": true});
   }
+  if (!res.hasOwnProperty('printBarcodeImage') || performReset) {
+    browser.storage.sync.set({"printBarcodeImage": true});
+  }
   if (!res.hasOwnProperty('restrictPatronFields') || performReset) {
     browser.storage.sync.set({"restrictPatronFields": true});
   }

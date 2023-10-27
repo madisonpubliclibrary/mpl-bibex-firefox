@@ -1,5 +1,6 @@
 const skin = document.getElementById("skin");
 const parseAddr = document.getElementById("parseAddr");
+const printBarcodeImage = document.getElementById("printBarcodeImage");
 const restrictPatronFields = document.getElementById("restrictPatronFields");
 const addPatronNotes = document.getElementById("addPatronNotes");
 const adultAge = document.getElementById("adultAge");
@@ -17,6 +18,7 @@ const ill = document.getElementById("ill");
 const software = document.getElementById("software");
 const video = document.getElementById("video");
 const sepAllAV = document.getElementById("sepAllAV");
+const receiptFontSize = document.getElementById("receiptFontSize");
 const receiptFont = document.getElementById("receiptFont");
 const sundayDropbox = document.getElementById("sundayDropbox");
 const sundayDropboxPaused = document.getElementById("sundayDropboxPaused");
@@ -41,6 +43,8 @@ function restoreOptions() {
   browser.storage.sync.get().then((res) => {
     skin.value = res.skin;
     parseAddr.checked = res.parseAddr;
+    printBarcodeImage.checked = res.printBarcodeImage;
+    if (res.printBarcodeImage) receiptFontSize.classList.add("hide");
     restrictPatronFields.checked = res.restrictPatronFields;
     adultAge.value = res.adultAge;
     mplInternetCards.checked = res.mplInternetCards;
@@ -98,6 +102,7 @@ document.getElementById("setDefault").addEventListener('click', function() {
   browser.storage.sync.set({
     "skin": "MAD",
     "parseAddr": true,
+    "printBarcodeImage": true,
     "restrictPatronFields": true,
     "dueDateToggle": true,
     "adultAge": "16",
@@ -147,6 +152,14 @@ skin.addEventListener('change', function() {
 });
 document.getElementById("parseAddrSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"parseAddr": parseAddr.checked});
+});
+document.getElementById("printBarcodeImageSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"printBarcodeImage": printBarcodeImage.checked});
+  if (printBarcodeImage.checked) {
+    receiptFontSize.classList.add("hide");
+  } else {
+    receiptFontSize.classList.remove("hide");
+  }
 });
 document.getElementById("restrictPatronFieldsSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"restrictPatronFields": restrictPatronFields.checked});

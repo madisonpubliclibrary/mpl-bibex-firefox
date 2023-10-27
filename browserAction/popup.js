@@ -1,7 +1,6 @@
 const lostcard = document.getElementById('lostCard');
 const altPSTAT = document.getElementById('PSTAT2');
 const problemItem = document.getElementById('problemItem');
-const noticeFormatter = document.getElementById('noticeFormatter');
 const customPicklistSort = document.getElementById('customPicklistSort');
 const shortcut1 = document.getElementById('shortcut1');
 const shortcut2 = document.getElementById('shortcut2');
@@ -23,13 +22,6 @@ altPSTAT.addEventListener('click', function() {
 problemItem.addEventListener('click', function() {
   browser.tabs.create({
     "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html"),
-    "active": true
-  });
-});
-
-noticeFormatter.addEventListener('click', function() {
-  browser.tabs.create({
-    "url": browser.runtime.getURL("../noticeFormatter/noticeFormatter.html"),
     "active": true
   });
 });

@@ -13,6 +13,10 @@ button {
   margin-top: 1em;
 }
 
+.hide {
+  display: none;
+}
+
 table td {
   padding-right: 1em;
 }
@@ -92,6 +96,7 @@ fieldset {
   margin-top: 1em;
   padding: 15px;
 }
+
 legend {
   border: 2px solid #444;
   background: #444;
