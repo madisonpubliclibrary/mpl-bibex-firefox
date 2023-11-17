@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="weedingSlip.css" />
+  <title>Weeding Slip</title>
+</head>
+
+<body>
+  <header>
+    <h1>Withdrawal Slip</h1>
+  </header>
+  <h3>Search</h3>
+  <section>
+    <div>
+      <span class="fieldTitle">Barcode:</span>
+      <input id="barcode" type="text" maxlength="14" />
+      <button id="getItemData">Get Item Data</button>
+    </div>
+  </section>
+  <h3>Item Details</h3>
+  <section>
+    <div>
+      <span class="fieldTitle">Title:</span>
+      <input id="title" type="text">
+    </div>
+    <div>
+      <span class="fieldTitle">Collection Code:</span>
+      <input id="ccode" type="text">
+    </div>
+    <div>
+      <span class="fieldTitle">Publication Date:</span>
+      <input id="pubDate" type="text">
+    </div>
+    <div>
+      <div class="fieldTitle">Other Notes:</div>
+      <textarea id="notes" cols="60" rows="6"></textarea>
+    </div>
+    <div>
+      <fieldset>
+        <legend><a target="_blank" href="http://www.scls.lib.wi.us/cgi-bin/libauth.cgi?connectto=MADCCC">Core Collections</a><span class="ext">🡕</span></legend>
+        <div>
+          <input id="inCoreColl" type="checkbox">
+          <label for="inCoreColl">In the Core Collections database</label>
+        </div>
+        <div id="recLevelWrap">
+          <div class="fieldTitle">Recommendation Level:</div>
+          <select id="recLevel">
+            <option value=""></option>
+            <option value="Essential">Essential</option>
+            <option value="Recommended">Recommended</option>
+            <option value="Supplemental">Supplemental</option>
+            <option value="Weeded">Weeded</option>
+          </select>
+        </div>
+      </fieldset>
+    </div>
+    <div>
+      <fieldset>
+        <legend><a target="_blank" href="https://www.wiscat.net/ext/validateglobal.php?cid=stwi&lid=stwi&dataid=183">NoveList</a><span class="ext">🡕</span></legend>
+        <div>
+          <p style="margin-top: 0;font-style: italic;">Fill out only for BKAFI, BKAFIMY, BKAFIFA, BKAFISF</p>
+          <input id="inNoveList" type="checkbox" disabled>
+          <label for="inNoveList">In the NoveList database</label>
+        </div>
+        <div id="noveListWrap">
+          <div>
+            <input id="inSeries" type="checkbox">
+            <label for="inSeries">Part of a series</label>
+          </div>
+          <div id="seriesDetails">
+            <div>
+              <span class="fieldTitle">Series Name:</span>
+              <input id="seriesName" type="text">
+            </div>
+            <div>
+              <span class="fieldTitle">Series # of book in hand:</span>
+              <input id="seriesNumber" type="text">
+            </div>
+          </div>
+          <div>
+            <span class="fieldTitle">Starred Reviews:</span>
+            <div class="indent">
+              <input id="booklist" type="checkbox">
+              <label for="booklist">Booklist</label>
+            </div>
+            <div class="indent">
+              <input id="pubWeekly" type="checkbox">
+              <label for="pubWeekly">Publishers Weekly</label>
+            </div>
+            <div class="indent">
+              <input id="libJoural" type="checkbox">
+              <label for="libJoural">Library Journal</label>
+            </div>
+            <div class="indent">
+              <input id="kirkus" type="checkbox">
+              <label for="kirkus">Kirkus Reviews</label>
+            </div>
+          </div>
+          <div>
+            <input id="awards" type="checkbox">
+            <label for="awards">Won award(s)</label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </section>
+  <h3>Copy Information</h3>
+  <section>
+    <table id="copies">
+      <thead>
+        <tr><th>Location</th><th>YTD / B'vation Circ</th><th>Status</th><th>Last Checked Out</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div>
+      <span class="fieldTitle"># of non-MPL copies:</span>
+      <input id="nonMPLcopies" type="text">
+    </div>
+  </section>
+  <h3 id="printForm">Print Report</h3>
+  <h3 id="startOver">Start Over</h3>
+  <script type="text/javascript" src="weedingSlip.js"></script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 
 | Current Version | Install on Firefox | Author |
 | :-------------: | :----------------: | :----: |
-| <br>2023.10.27 | <br>[Install MPL BibEx][1] | Lucas Schneider<br>Library IT Specialist<br>MPL–Central |
+| <br>2023.11.17 | <br>[Install MPL BibEx][1] | Lucas Schneider<br>Library IT Specialist<br>MPL–Central |
 
 MPL BibEx is a WebExtension for Firefox (79+) and Google Chrome that adds additional features to LibLimes's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of Wisconsin's South Central Library System, and, while not supported by SCLS, it has been vetted by them for security and is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
 
@@ -112,6 +112,6 @@ This feature will allow you to update a patron's account type from juvenile to a
 This web extension is developed by Lucas Schneider, a Library Page II at Madison Central Library. You may email Lucas comments, questions, or feature requests to [lschneider@madisonpubliclibrary.org](mailto:lschneider@madisonpubliclibrary.org).
 
 # Disclaimer
-This extension has been vetted for security by SCLS, however, it is neither supported nor endorsed by PTFS/LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
+This extension has been vetted for security by SCLS, however, it is neither supported nor endorsed by PTFS/LibLime or SCLS. It is independently developed by Lucas Schneider, Library IT Specialist for Madison Public Library. Please use the extension only at the discretion of your circulation or departmental supervisor.
 
   [1]: javascript:void(InstallTrigger.install({'MPL BibEx':'https://raw.githubusercontent.com/lucasschneider/mpl-bibex-firefox/master/releases/currXPI/mpl-bibex.xpi'}));

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="printWeedingSlip.css" />
+  <title>[printing] Withdrawal Slip</title>
+</head>
+
+<body>
+  <p class="title">Withdrawal Slip</p>
+  <section id="itemInfo">
+    <div><span id="title"></span></div>
+    <div><span id="barcode"></span></div>
+    <div><span id="ccode"></span></div>
+  </section>
+  <section id="copyWrap">
+    <table id="copies">
+      <thead>
+        <tr>
+          <th>Lib.</th><th>YTD / Circ</th><th>Status</th><th>Last CKO</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+  <section>
+    <div># of non-MPL Copies: <span id="nonMPLcopies"></span></div>
+    <div>Publication Date: <span id="pubDate"></span></div>
+    <div>Notes:<br><span id="notes"></span></div>
+  </section>
+  <p class="title">Core Collections <span id="inCoreColl"></span></p>
+  <section  id="recLevelWrap" class="boxed">
+    <div>Recommendation Level: <span id="recLevel"></span></div>
+  </section>
+  <p class="title">NoveList <span id="inNoveList"></span></p>
+  <section id="noveListWrap" class="boxed">
+    <p>In series? <span id="inSeries"></span></p>
+    <div id="seriesInfo">
+      <div>Series: <span id="seriesName"></span></div>
+      <div># in Series: <span id="seriesNumber"></span></div>
+    </div>
+    <p>Starred Reviews:</p>
+    <div id="reviewers">
+      <div><span id="booklist"></span> Booklist</div>
+      <div><span id="pubWeekly"></span> Publishers Weekly</div>
+      <div><span id="libJournal"></span> Library Journal</div>
+      <div><span id="kirkus"></span> Kirkus Reviews</div>
+    </div>
+    <div><span id="awards"></span> Award(s) won?</div>
+  </section>
+  <div id="datePrinted">Printed on <span id="today"></span></div>
+  <div id="spacer">.</div>
+  <script type="text/javascript" src="printWeedingSlip.js"></script>
+</body>
+
+</html>

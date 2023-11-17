@@ -672,5 +672,65 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "removePicklistContextMenu":
       browser.menus.remove("insert-picklist-sort-below");
       break;
+    case "getWeedingData":
+      return browser.tabs.create({
+        "url": "https://scls.bibliovation.com/app/search/" + request.barcode,
+        "active": true
+      }).then(tab => {
+        return browser.tabs.executeScript(tab.id, {
+          "file": "/weedingSlip/getItemBib.js"
+        }).then(res => {
+          browser.tabs.remove(tab.id);
+          return res;
+        });
+      }).then(resArr => {
+        let payload = resArr[0];
+        
+        return browser.tabs.create({
+          "url": "https://scls.bibliovation.com/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=" + payload.itemBib,
+          "active": true
+        }).then(tab => {
+          return browser.tabs.executeScript(tab.id, {
+            "file": "/weedingSlip/scrapeMARC.js"
+          }).then(resArr => {
+            browser.tabs.remove(tab.id);
+            // For now, we'll include the full title scraped form the Detail page in getItemBib.js
+            // rather than the MARC Title field (which is just one part of the full title).
+            //payload.title = resArr[0].title;
+            payload.pubDate = resArr[0].pubDate;
+            return payload;
+          });
+        });
+      }).then(res => {
+        let payload = res;
+  
+        return browser.tabs.create({
+          "url": "https://scls.bibliovation.com/app/staff/bib/" + payload.itemBib + "/items/circstatus",
+          "active": true
+        }).then(tab => {
+          return browser.tabs.executeScript(tab.id, {
+            "file": "/weedingSlip/scrapeStatuses.js"
+          }).then(resArr => {
+            browser.tabs.remove(tab.id);
+            payload.mplItems = resArr[0].copies;
+            payload.nonMPLcopies = resArr[0].nonMPLcopies;
+            return payload;
+          });
+        });
+      });
+    case "printWeedingSlip":
+      browser.tabs.create({
+        "active": false,
+        "url": browser.runtime.getURL("/weedingSlip/printWeedingSlip.html")
+      }).then(tab => {
+        setTimeout(() => {
+          browser.tabs.sendMessage(tab.id, {
+            "key": "printWeedingSlip",
+            "data": request.data
+          }).then(() => {
+            browser.tabs.remove(tab.id);
+          });
+        }, 500);
+      });
   }
 });

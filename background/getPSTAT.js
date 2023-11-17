@@ -1,8 +1,8 @@
 /**
  * The PSTATS object contains all of the PSTAT codes for
  * every county subdivision in Wisconsin except for Middleton,
- * Sun Prairie, and Verona, which will be queried via
- * https://mpl-bibex.lrschneider.com
+ * Sun Prairie, and Verona, which will be queried from
+ * https://mplnet.org/bibex/xml/pstats/
  *
  * @constructor
  * @author Lucas Schneider

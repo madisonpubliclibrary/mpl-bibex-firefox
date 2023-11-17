@@ -1,7 +1,8 @@
-const lostcard = document.getElementById('lostCard');
+const lostCard = document.getElementById('lostCard');
 const altPSTAT = document.getElementById('PSTAT2');
 const problemItem = document.getElementById('problemItem');
 const customPicklistSort = document.getElementById('customPicklistSort');
+const weedingSlip = document.getElementById('weedingSlip');
 const shortcut1 = document.getElementById('shortcut1');
 const shortcut2 = document.getElementById('shortcut2');
 const shortcut3 = document.getElementById('shortcut3');
@@ -11,7 +12,7 @@ const shortcut6 = document.getElementById('shortcut6');
 const shortcut7 = document.getElementById('shortcut7');
 const prefs = document.getElementById('prefs');
 
-lostcard.addEventListener('click', function() {
+lostCard.addEventListener('click', function() {
   browser.runtime.sendMessage({"key": "addLostCardNote"});
 });
 
@@ -29,6 +30,13 @@ problemItem.addEventListener('click', function() {
 customPicklistSort.addEventListener('click', function() {
   browser.tabs.create({
     "url": browser.runtime.getURL("../customPicklistSort/picklistSort.html"),
+    "active": true
+  });
+});
+
+weedingSlip.addEventListener('click', function() {
+  browser.tabs.create({
+    "url": browser.runtime.getURL("../weedingSlip/weedingSlip.html"),
     "active": true
   });
 });
