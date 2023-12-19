@@ -136,6 +136,10 @@ legend a:hover {
   display: none;
 }
 
+
+#inNoveList {
+  cursor: pointer;
+}
 #printForm {
   cursor: pointer;
   text-align: center;

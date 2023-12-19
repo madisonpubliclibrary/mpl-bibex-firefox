@@ -81,25 +81,6 @@
     copies.style.display = "table";
   }
 
-  function toggleNovelistCheckbox(ccode) {
-    let enableNoveList = ["BKAFI","BKAFIMY","BKAFIFA","BKAFISF"].includes(ccode);
-    inNoveList.disabled = !enableNoveList;
-    inNoveList.style.cursor = enableNoveList ? "pointer" : "not-allowed";
-
-    if (!enableNoveList) {
-      noveListWrap.style.display = "none";
-      inNoveList.checked = false;
-      inSeries.checked = false;
-      seriesName.value = "";
-      seriesNumber.value = "";
-      booklist.checked = false;
-      pubWeekly.checked = false;
-      libJournal.checked = false;
-      kirkus.checked = false;
-      awards.checked = false;
-    }
-  }
-
   inCoreColl.addEventListener("click", evt => {
     recLevelWrap.style.display = inCoreColl.checked ? "block" : "none";
   });
@@ -155,7 +136,6 @@
     recLevelWrap.style.display = "none";
     recLevel.value = "";
     inNoveList.checked = false;
-    inNoveList.disabled = true;
     noveListWrap.style.display = "none";
     inSeries.checked = false;
     seriesName.value = "";

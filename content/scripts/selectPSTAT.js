@@ -35,11 +35,11 @@
         .replace(/ c(ou)?n?ty /, ' co ')
         .replace(' highway ', ' hwy ')
         .replace(/ road(?= )?/, ' rd')
-        .replace(' n ', ' north ')
-        .replace(' s ', ' south ')
-        .replace(' e ', ' east ')
-        .replace(' w ', ' west ')
-        .replace(/ hl/," hill")
+        .replace(/ n\.? /, ' north ')
+        .replace(/ s\.? /, ' south ')
+        .replace(/ e\.? /, ' east ')
+        .replace(/ w\.? /, ' west ')
+        .replace(/ hl/,' hill')
         .split('#')[0];
     }
 

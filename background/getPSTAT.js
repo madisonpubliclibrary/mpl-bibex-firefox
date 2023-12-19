@@ -1218,7 +1218,7 @@ const pstats = new function() {
       "Omro city": "WI-LIB",
       "Oshkosh city": "WI-LIB",
       "Winneconne town": "WI-LIB",
-      "__default_": "WI-NOLIB"
+      "__default__": "WI-NOLIB"
     },
     "Wood": {
       "Arpin town": "W-ARP-T",
