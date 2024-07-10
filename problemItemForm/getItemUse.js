@@ -53,16 +53,17 @@
           let payload = {"found": false, "data": {'ytd': 0, 'totalUse': 0}}
           return new Promise((resolve, reject) => {
             let waitForItemBC = setInterval(() => {
-              let foundBC = item.querySelector("h4.itemlabel").textContent.match(/\d+/);
-              if (foundBC && foundBC.length === 1) {
+              let foundBC = item.querySelector("h4.itemlabel").textContent.match(/3\d{13}/);
+              if (item.textContent.includes('On Order Non-ACQ')) {
+                clearInterval(waitForItemBC);
+                resolve(payload);
+              } else if (foundBC && foundBC.length === 1) {
                 clearInterval(waitForItemBC);
                 if (itemBC === foundBC[0]) {
-                  console.log("found barcode");
                   payload.found = true;
 
                   let waitForItemData = setInterval(() => {
                     let historyRowsLabels = item.querySelectorAll('.item-circ-history li .itemlabel');
-                    console.log(historyRowsLabels);
                     for (let i = 0; i < historyRowsLabels.length; i++) {
                       if (historyRowsLabels[i].textContent.includes("Total Checkouts")) {
                         const CKOs = item.querySelector(".item-circ-history li:nth-of-type(" + (i+1) + ") div.itemdata");
