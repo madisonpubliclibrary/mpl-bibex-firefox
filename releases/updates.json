@@ -497,6 +497,13 @@
           "applications": {
             "gecko": { "strict_min_version": "109.0" }
           }
+        },
+        {
+          "version": "2024.9.25",
+          "update_link": "https://raw.githubusercontent.com/madisonpubliclibrary/mpl-bibex-firefox/master/releases/mpl-bibex-2024.09.25.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "109.0" }
+          }
         }
       ]
     }
