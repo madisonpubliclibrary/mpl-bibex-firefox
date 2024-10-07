@@ -54,7 +54,7 @@
           return new Promise((resolve, reject) => {
             let waitForItemBC = setInterval(() => {
               let foundBC = item.querySelector("h4.itemlabel").textContent.match(/3\d{13}/);
-              if (item.textContent.includes('On Order Non-ACQ')) {
+              if (/On Order (?:Non-)?ACQ/.test(item.textContent)) {
                 clearInterval(waitForItemBC);
                 resolve(payload);
               } else if (foundBC && foundBC.length === 1) {
