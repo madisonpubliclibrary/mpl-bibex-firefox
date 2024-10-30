@@ -34,21 +34,11 @@ const pstats = new function() {
       "Wisconsin Dells city": "A-WID-C",
       "__default__": "X-UND"
     },
-    "Ashland": { // Default to AS-LIB to include tribal land
-      "Agenda town": "AS-NOLIB",
-      "Ashland town": "AS-NOLIB",
-      "Butternut town": "AS-NOLIB",
-      "Chippewa town": "AS-NOLIB",
-      "Gingles town": "AS-NOLIB",
-      "Gordon town": "AS-NOLIB",
-      "Jacobs town": "AS-NOLIB",
-      "Marengo town": "AS-NOLIB",
-      "Morse town": "AS-NOLIB",
-      "Peeksville town": "AS-NOLIB",
-      "Sanborn town": "AS-NOLIB",
-      "Shanagolden town": "AS-NOLIB",
-      "White River town": "AS-NOLIB",
-      "__default__": "AS-LIB"
+    "Ashland": {
+      "Ashland city": "AS-LIB",
+      "La Pointe town": "AS-LIB",
+      "Mellen city": "AS-LIB",
+      "__default__": "AS-NOLIB"
     },
     "Barron": {
       "Barron city": "BA-LIB",
@@ -56,34 +46,18 @@ const pstats = new function() {
       "Chetek city": "BA-LIB",
       "Cumberland city": "BA-LIB",
       "Rice Lake city": "BA-LIB",
-      "Turtle Lake town": "BA-LIB",
+      "Turtle Lake village": "BA-LIB",
       "__default__": "BA-NOLIB"
     },
-    "Bayfield": { // Default to BY-LIB to include tribal land
-      "Barksdale town": "BY-NOLIB",
-      "Barnes town": "BY-NOLIB",
-      "Bayfield town": "BY-NOLIB",
-      "Bayview town": "BY-NOLIB",
-      "Bell town": "BY-NOLIB",
-      "Clover town": "BY-NOLIB",
-      "Delta town": "BY-NOLIB",
-      "Eileen town": "BY-NOLIB",
-      "Grand View town": "BY-NOLIB",
-      "Hughes town": "BY-NOLIB",
-      "Kelly town": "BY-NOLIB",
-      "Keystone town": "BY-NOLIB",
-      "Lincoln town": "BY-NOLIB",
-      "Mason town": "BY-NOLIB",
-      "Mason village": "BY-NOLIB",
-      "Namakagon town": "BY-NOLIB",
-      "Orienta town": "BY-NOLIB",
-      "Oulu town": "BY-NOLIB",
-      "Pilsen town": "BY-NOLIB",
-      "Port Wing town": "BY-NOLIB",
-      "Russell town": "BY-NOLIB",
-      "Tripp town": "BY-NOLIB",
-      "Washburn town": "BY-NOLIB",
-      "__default__": "BY-LIB"
+    "Bayfield": {
+      "Ashland city": "BY-LIB",
+      "Bayfield city": "BY-LIB",
+      "Cable town": "BY-LIB",
+      "Drummond town": "BY-LIB",
+      "Iron River town": "BY-LIB",
+      "Namakagon town": "BY-LIB",
+      "Washburn city": "BY-LIB",
+      "__default__": "BY-NOLIB"
     },
     "Brown": {
       "__default__": "BR-LIB"
@@ -131,8 +105,8 @@ const pstats = new function() {
       "Foster town": "CL-FOS-T",
       "Fremont town": "CL-FRE-T",
       "Grant town": "CL-GRA-T",
-      "Green Grove town": "CL-GRG-T",
       "Granton village": "CL-GRN-V",
+      "Green Grove town": "CL-GRG-T",
       "Greenwood city": "CL-GWD-C",
       "Hendren town": "CL-HEN-T",
       "Hewett town": "CL-HEW-T",
@@ -240,7 +214,7 @@ const pstats = new function() {
       "Edgerton city": "D-EDG-C",
       "Fitchburg city": "D-FIT-T",
       //"Madison city": "", // Handled separately
-      "Madison town": "D-MAD-T", // Dissolved on 11/1/2022
+      //"Madison town": "D-MAD-T", // Dissolved on 11/1/2022
       "Marshall village": "D-MARS-V",
       "Mazomanie town": "D-MAZ-T",
       "Mazomanie village": "D-MAZ-V",
@@ -326,13 +300,12 @@ const pstats = new function() {
       "__default__": "DO-LIB"
     },
     "Douglas": {
-      "Solon Springs town": "DS-LIB",
       "Superior city": "DS-LIB",
       "__default__": "DS-NOLIB"
     },
     "Dunn": {
       "Boyceville village": "DU-LIB",
-      "Colfax town": "DU-LIB",
+      "Colfax village": "DU-LIB",
       "Menomonie city": "DU-LIB",
       "Sand Creek town": "DU-LIB",
       "__default__": "DU-NOLIB"
@@ -342,6 +315,7 @@ const pstats = new function() {
       "Augusta city": "EC-LIB",
       "Eau Claire city": "EC-LIB",
       "Fairchild town": "EC-LIB",
+      "Fairchild village": "EC-LIB",
       "Fall Creek village": "EC-LIB",
       "__default__": "EC-NOLIB"
     },
@@ -366,19 +340,18 @@ const pstats = new function() {
       "__default__": "FR-NOLIB"
     },
     "Grant": {
-      "Bloomington town": "GR-LIB",
+      "Bloomington village": "GR-LIB",
       "Boscobel city": "GR-LIB",
-      "Cassville town": "GR-LIB",
+      "Cassville vilage": "GR-LIB",
       "Cuba City city": "GR-LIB",
       "Dickeyville village": "GR-LIB",
       "Fennimore city": "GR-LIB",
-      "Hazel Green town": "GR-LIB",
+      "Hazel Green village": "GR-LIB",
       "Lancaster city": "GR-LIB",
       "Livingston village": "GR-LIB",
       "Montfort village": "GR-LIB",
       "Muscoda village": "GR-LIB",
       "Platteville city": "GR-LIB",
-      "Potosi town": "GR-LIB",
       "__default__": "GR-NOLIB"
     },
     "Green": {
@@ -463,7 +436,6 @@ const pstats = new function() {
     "Iron": {
       "Hurley city": "IR-LIB",
       "Mercer town": "IR-LIB",
-      "Montreal city": "IR-LIB",
       "__default__": "IR-NOLIB"
     },
     "Jackson": {
@@ -732,6 +704,7 @@ const pstats = new function() {
       "Maple Valley town": "OC-LIB",
       "Oconto city": "OC-LIB",
       "Oconto Falls city": "OC-LIB",
+      "Pulaski village": "OC-LIB",
       "Suring village": "OC-LIB",
       "__default__": "OC-NOLIB"
     },
@@ -747,7 +720,7 @@ const pstats = new function() {
     },
     "Outagamie": {
       "Appleton city": "OU-LIB",
-      "Black Creek town": "OU-LIB",
+      "Black Creek village": "OU-LIB",
       "Hortonville village": "OU-LIB",
       "Kaukauna city": "OU-LIB",
       "Kimberly village": "OU-LIB",
@@ -755,17 +728,20 @@ const pstats = new function() {
       "New London city": "OU-LIB",
       "Seymour city": "OU-LIB",
       "Shiocton village": "OU-LIB",
+      "Wrightstown village": "OU-LIB",
       "__default__": "OU-NOLIB"
     },
     "Ozaukee": {
-      "Belgium town": "OZ-NOLIB",
-      "Belgium village": "OZ-NOLIB",
-      "Fredonia town": "OZ-NOLIB",
-      "Fredonia village": "OZ-NOLIB",
-      "Newburg village": "OZ-NOLIB",
-      "Port Washington town": "OZ-NOLIB",
-      "Saukville village": "OZ-NOLIB",
-      "__default__": "OZ-LIB"
+      "Bayside village": "OZ-LIB",
+      "Cedarburg city": "OZ-LIB",
+      "Cedarburg town": "OZ-LIB",
+      "Grafton town": "OZ-LIB",
+      "Grafton village": "OZ-LIB",
+      "Mequon city": "OZ-LIB",
+      "Port Washington city": "OZ-LIB",
+      "Saukville town": "OZ-LIB",
+      "Thiensville village": "OZ-LIB",
+      "__default__": "OZ-NOLIB"
     },
     "Pepin": {
       "Durand city": "PE-LIB",
@@ -783,13 +759,13 @@ const pstats = new function() {
     },
     "Polk": {
       "Amery city": "PO-LIB",
-      "Balsam Lake town": "PO-LIB",
+      "Balsam Lake village": "PO-LIB",
       "Centuria village": "PO-LIB",
-      "Clear Lake town": "PO-LIB",
+      "Clear Lake village": "PO-LIB",
       "Dresser village": "PO-LIB",
       "Frederic village": "PO-LIB",
-      "Luck town": "PO-LIB",
-      "Milltown town": "PO-LIB",
+      "Luck village": "PO-LIB",
+      "Milltown village": "PO-LIB",
       "Osceola town": "PO-LIB",
       "St. Croix Falls city": "PO-LIB",
       "__default__": "PO-NOLIB"
@@ -835,7 +811,7 @@ const pstats = new function() {
       "Racine city": "RA-LIB",
       "Rochester village": "RA-LIB",
       "Union Grove village": "RA-LIB",
-      "Waterford town": "RA-LIB",
+      "Waterford village": "RA-LIB",
       "__default__": "RA-NOLIB"
     },
     "Richland": {
@@ -896,9 +872,13 @@ const pstats = new function() {
       "__default__": "X-UND"
     },
     "Rusk": {
+      "Atlanta town": "RU-LIB",
       "Bruce village": "RU-LIB",
       "Hawkins town": "RU-LIB",
+      "Hawkins village": "RU-LIB",
       "Ladysmith city": "RU-LIB",
+      "South Fork town": "RU-LIB",
+      "Strickland town": "RU-LIB",
       "__default__": "RU-NOLIB"
     },
     "Sauk": {
@@ -944,20 +924,14 @@ const pstats = new function() {
       "Woodland town": "S-WOO-T",
       "__default__": "X-UND"
     },
-    "Sawyer": { // Default to SA-NOLIB to include tribal land
-      "Bass Lake town": "SA-NOLIB",
-      "Couderay town": "SA-NOLIB",
+    "Sawyer": { // Default to SA-LIB to include tribal land
       "Couderay village": "SA-NOLIB",
-      "Draper town": "SA-NOLIB",
       "Edgewater town": "SA-NOLIB",
       "Exeland village": "SA-NOLIB",
       "Hayward town": "SA-NOLIB",
       "Hunter town": "SA-NOLIB",
       "Lenroot town": "SA-NOLIB",
-      "Meadowbrook town": "SA-NOLIB",
       "Meteor town": "SA-NOLIB",
-      "Ojibwa town": "SA-NOLIB",
-      "Radisson town": "SA-NOLIB",
       "Radisson village": "SA-NOLIB",
       "Round Lake town": "SA-NOLIB",
       "Sand Lake town": "SA-NOLIB",
@@ -1045,7 +1019,7 @@ const pstats = new function() {
     "Trempealeau": {
       "Arcadia city": "TR-LIB",
       "Blair city": "TR-LIB",
-      "Ettrick town": "TR-LIB",
+      "Ettrick village": "TR-LIB",
       "Galesville city": "TR-LIB",
       "Independence city": "TR-LIB",
       "Osseo city": "TR-LIB",
@@ -1097,14 +1071,16 @@ const pstats = new function() {
     "Walworth": {
       "Burlington city": "WA-LIB",
       "Darien town": "WA-LIB",
+      "Darien village": "WA-LIB",
       "Delavan city": "WA-LIB",
-      "East Troy town": "WA-LIB",
+      "East Troy village": "WA-LIB",
       "Elkhorn city": "WA-LIB",
       "Fontana-on-Geneva Lake village": "WA-LIB",
       "Genoa City village": "WA-LIB",
       "Lake Geneva city": "WA-LIB",
-      "Sharon town": "WA-LIB",
-      "Walworth town": "WA-LIB",
+      "Sharon village": "WA-LIB",
+      "Walworth village": "WA-LIB",
+      "Whitewater city": "WA-LIB",
       "Williams Bay village": "WA-LIB",
       "__default__": "WA-NOLIB"
     },
@@ -1132,15 +1108,15 @@ const pstats = new function() {
       "Eagle village": "WK-LIB",
       "Elm Grove village": "WK-LIB",
       "Hartland village": "WK-LIB",
-      "Lisbon town": "WK-LIB",
       "Menomonee Falls village": "WK-LIB",
       "Merton town": "WK-LIB",
       "Milwaukee city": "WK-LIB",
-      "Mukwonago town": "WK-LIB",
+      "Mukwonago village": "WK-LIB",
       "Muskego city": "WK-LIB",
       "New Berlin city": "WK-LIB",
       "Oconomowoc city": "WK-LIB",
       "Pewaukee city": "WK-LIB",
+      "Pewaukee village": "WK-LIB",
       "Sussex village": "WK-LIB",
       "Waukesha city": "WK-LIB",
       "__default__": "WK-NOLIB"
