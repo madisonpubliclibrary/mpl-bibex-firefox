@@ -1411,7 +1411,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }, reject => {
       payload.error = reject.message;
     }).then(res => {
-      if (/madison|middleton|verona|monona|fitchburg/i.test(request.city)) {
+      if (/madison|middleton|verona|monona|fitchburg|waunakee/i.test(request.city)) {
         return queryAlderExceptions("exception", request.address);
       }
       // Pass along previous error message
