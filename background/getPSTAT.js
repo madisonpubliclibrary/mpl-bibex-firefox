@@ -1384,20 +1384,21 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       "error": "Unknown error occured.",
       "success": false,
     },
-    countySubCode = ""; // In case, e.g., a Madison, WI address has the county subdivision "Middleton city"
+    geocoderRes;
 
     return queryGeocoder(request.addressURI, request.city).then(res => {
+      geocoderRes = res;
+
       payload.success = true;
       payload.matchAddr = res.matchAddr;
       payload.zip = res.zip;
       payload.pstat = pstats.find(res.county,res.countySub,res.censusTract);
-      countySubCode = res.countySub.substring(0,3);
     }, reject => {
       payload.error = reject.message;
-    }).then(res => {
-      if (/^mid|ver|sun$/i.test(countySubCode)) {
-        return queryAlderExceptions(countySubCode, request.address);
-      } else if (/^mid|ver|sun$/i.test(request.city.substring(0,3))) {
+    }).then(() => {
+      if (geocoderRes && geocoderRes.countySub && /^(?:middleton|sun prairie|verona) city/i.test(geocoderRes.countySub)) {
+        return queryAlderExceptions(geocoderRes.countySub.substring(0,3), request.address);
+      } else if ((!geocoderRes || geocoderRes.countySub === undefined) && /^(?:middleton|sun prairie|verona)/i.test(request.city)) {
         return queryAlderExceptions(request.city.substring(0,3), request.address);
       } else {
         // Pass along previous error message
