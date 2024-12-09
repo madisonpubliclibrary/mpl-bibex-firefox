@@ -100,6 +100,7 @@ function checkAllAV() {
 // Listener for Set Default Options Button
 document.getElementById("setDefault").addEventListener('click', function() {
   browser.storage.sync.set({
+    "bibliovationBaseURL": "https://scls.bibliovation.com",
     "skin": "MAD",
     "parseAddr": true,
     "printBarcodeImage": true,

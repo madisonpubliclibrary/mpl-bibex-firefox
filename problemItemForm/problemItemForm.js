@@ -85,6 +85,7 @@
         "key": "getPatronData",
         "patronBarcode": patronBarcode.value
       }).then(resArr => {
+        console.log(resArr);
         if (resArr.length > 0) {
           let res = resArr[0];
 

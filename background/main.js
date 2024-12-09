@@ -383,6 +383,11 @@ browser.webNavigation.onCompleted.addListener(details => {
 
     // Inherent scripts
     browser.tabs.executeScript(details.tabId, {
+      "file": "/content/scripts/detectBibliovationURL.js",
+      "allFrames": true
+    });
+
+    browser.tabs.executeScript(details.tabId, {
       "file": "/content/scripts/fastaddWarning.js",
       "allFrames": true
     });
@@ -461,7 +466,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           else return 0;
         })[0];
       });
-      break;
     case "printBarcode":
       browser.storage.sync.get('receiptFont').then(res => {
         var receiptFont = res.hasOwnProperty('receiptFont') ? res.receiptFont : "36px";
@@ -495,7 +499,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
         return cleanedData;
       });
-      break;
     case "updateExtensionIcon":
       setIcon();
       break;
@@ -521,128 +524,129 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getPatronData":
-      return new Promise((resolve, reject) => {
-        if (request.hasOwnProperty('patronBarcode')) {
-          browser.tabs.create({
-            "url": "https://scls.bibliovation.com/cgi-bin/koha/members/member.pl?member=" +
-                request.patronBarcode,
+      return browser.storage.sync.get('bibliovationBaseURL').then(urlRes => {
+        const baseURL = urlRes.bibliovationBaseURL;
+        return new Promise((resolve, reject) => {
+          if (request.hasOwnProperty('patronBarcode')) {
+            browser.tabs.create({
+              "url": baseURL + "/cgi-bin/koha/members/member.pl?member=" +
+                  request.patronBarcode,
+              "active": false
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "code": "document.querySelector('a[href^=\"/app/staff/patron\"]').href.match(/\\d+/)[0]"
+              }).then(patronID => {
+                browser.tabs.remove(tab.id);
+                if (patronID.length > 0 && /\d+/.test(patronID[0])) {
+                  resolve(patronID[0]);
+                } else {
+                  throw new Error('Failed to get patron ID number.');
+                }
+              });
+            });
+          } else if (request.hasOwnProperty('patronID')) {
+            resolve(request.patronID);
+          } else {
+            throw new Error('Failed to get patron ID number.');
+          }
+        }).then(patronID => {
+          return browser.tabs.create({
+            "url": baseURL + "/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
+                patronID,
             "active": false
           }).then(tab => {
-            browser.tabs.executeScript(tab.id, {
-              "code": "document.querySelector('a[href^=\"/app/staff/patron\"]').href.match(/\\d+/)[0]"
-            }).then(patronID => {
+            return browser.tabs.executeScript(tab.id, {
+              "file": "/problemItemForm/getPatronData.js"
+            }).then(res => {
               browser.tabs.remove(tab.id);
-              if (patronID.length > 0 && /\d+/.test(patronID[0])) {
-                resolve(patronID[0]);
+              return res;
+            });
+          });
+        });
+      });
+    case "getItemData":
+      return browser.storage.sync.get('bibliovationBaseURL').then(urlRes => {
+        const baseURL = urlRes.bibliovationBaseURL;
+        return new Promise((resolve, reject) => {
+          browser.tabs.create({
+            "url": baseURL + "/app/search/" + request.itemBarcode,
+            "active": true
+          }).then(tab => {
+            browser.tabs.executeScript(tab.id, {
+              "file": "/problemItemForm/getItemBib.js"
+            }).then(bibNum => {
+              browser.tabs.remove(tab.id);
+              if (bibNum.length > 0 && /\d+/.test(bibNum[0])) {
+                resolve(bibNum[0]);
               } else {
-                throw new Error('Failed to get patron ID number.');
+                throw new Error('Failed to get item bib number.');
               }
             });
           });
-        } else if (request.hasOwnProperty('patronID')) {
-          resolve(request.patronID);
-        } else {
-          throw new Error('Failed to get patron ID number.');
-        }
-      }).then(patronID => {
-        return browser.tabs.create({
-          "url": "https://scls.bibliovation.com/cgi-bin/koha/members/moremember.pl?borrowernumber=" +
-              patronID,
-          "active": false
-        }).then(tab => {
-          return browser.tabs.executeScript(tab.id, {
-            "file": "/problemItemForm/getPatronData.js"
-          }).then(res => {
-            browser.tabs.remove(tab.id);
-            return res;
-          });
-        });
-      });
-      break;
-    case "getItemData":
-      return new Promise((resolve, reject) => {
-        browser.tabs.create({
-          "url": "https://scls.bibliovation.com/app/search/" + request.itemBarcode,
-          "active": true
-        }).then(tab => {
-          browser.tabs.executeScript(tab.id, {
-            "file": "/problemItemForm/getItemBib.js"
-          }).then(bibNum => {
-            browser.tabs.remove(tab.id);
-            if (bibNum.length > 0 && /\d+/.test(bibNum[0])) {
-              resolve(bibNum[0]);
+        }).then(bibNum => {
+          return browser.storage.sync.get('getItemUse').then(usePref => {
+            let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
+              browser.tabs.create({
+                "url": baseURL + "/app/staff/bib/" + bibNum + "/details?mbxItemBC=" + request.itemBarcode,
+                "active": true
+              }).then(tab => {
+                browser.tabs.executeScript(tab.id, {
+                  "file": "/problemItemForm/getItemTitleCopiesHolds.js"
+                }).then(res => {
+                  browser.tabs.remove(tab.id);
+                  resolve(res[0]);
+                });
+              });
+            });
+
+            if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
+              let getItemUse = new Promise((resolve, reject) => {
+                browser.tabs.create({
+                  "url": baseURL + "/app/staff/bib/" + bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
+                  "active": true
+                }).then(tab => {
+                  browser.tabs.executeScript(tab.id, {
+                    "file": "/problemItemForm/getItemUse.js"
+                  }).then(res => {
+                    browser.tabs.remove(tab.id);
+                    resolve(res[0]);
+                  });
+                });
+              });
+
+              let getItemPastUse = new Promise((resolve, reject) => {
+                browser.tabs.create({
+                  "url": baseURL + "/app/staff/bib/" + bibNum + "/items?mbxItemBC=" + request.itemBarcode,
+                  "active": true
+                }).then(tab => {
+                  browser.tabs.executeScript(tab.id, {
+                    "file": "/problemItemForm/getItemPastUse.js"
+                  }).then(res => {
+                    browser.tabs.remove(tab.id);
+                    resolve(res[0]);
+                  });
+                });
+              });
+
+              return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
+                /**
+                 * There is no way to calculate an item's exact total use in Bibliovation if it was
+                 * acquired before 2012. If the acquisition date is before 2012, item use should be
+                 * calculated by adding Dynix and Koha Past Use and the YTD. If the acquisition date
+                 * is after 2012, item use should use only the "total use" value.
+                 *
+                 * The most accurate use data will always be the larger of these two calculations, which
+                 * is what the extension calculates below.
+                 */
+                res[0].use = Math.max(parseInt(res[1].ytd) + parseInt(res[2].pastUse), parseInt(res[1].totalUse));
+                return res[0];
+              });
             } else {
-              throw new Error('Failed to get item bib number.');
+              return getItemTitleCopiesHolds.then(res => {return res});
             }
           });
         });
-      }).then(bibNum => {
-        return browser.storage.sync.get('getItemUse').then(usePref => {
-          let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
-            browser.tabs.create({
-              "url": "https://scls.bibliovation.com/app/staff/bib/" +
-                  bibNum + "/details?mbxItemBC=" + request.itemBarcode,
-              "active": true
-            }).then(tab => {
-              browser.tabs.executeScript(tab.id, {
-                "file": "/problemItemForm/getItemTitleCopiesHolds.js"
-              }).then(res => {
-                browser.tabs.remove(tab.id);
-                resolve(res[0]);
-              });
-            });
-          });
-
-          if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
-            let getItemUse = new Promise((resolve, reject) => {
-              browser.tabs.create({
-                "url": "https://scls.bibliovation.com/app/staff/bib/" +
-                    bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
-                "active": true
-              }).then(tab => {
-                browser.tabs.executeScript(tab.id, {
-                  "file": "/problemItemForm/getItemUse.js"
-                }).then(res => {
-                  browser.tabs.remove(tab.id);
-                  resolve(res[0]);
-                });
-              });
-            });
-
-            let getItemPastUse = new Promise((resolve, reject) => {
-              browser.tabs.create({
-                "url": "https://scls.bibliovation.com/app/staff/bib/" +
-                    bibNum + "/items?mbxItemBC=" + request.itemBarcode,
-                "active": true
-              }).then(tab => {
-                browser.tabs.executeScript(tab.id, {
-                  "file": "/problemItemForm/getItemPastUse.js"
-                }).then(res => {
-                  browser.tabs.remove(tab.id);
-                  resolve(res[0]);
-                });
-              });
-            });
-
-            return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
-              /**
-               * There is no way to calculate an item's exact total use in Bibliovation if it was
-               * acquired before 2012. If the acquisition date is before 2012, item use should be
-               * calculated by adding Dynix and Koha Past Use and the YTD. If the acquisition date
-               * is after 2012, item use should use only the "total use" value.
-               *
-               * The most accurate use data will always be the larger of these two calculations, which
-               * is what the extension calculates below.
-               */
-              res[0].use = Math.max(parseInt(res[1].ytd) + parseInt(res[2].pastUse), parseInt(res[1].totalUse));
-              return res[0];
-            });
-          } else {
-            return getItemTitleCopiesHolds.then(res => {return res});
-          }
-        });
       });
-      break;
     case "printProblemForm":
       browser.tabs.create({
         "active": false,
@@ -673,48 +677,51 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser.menus.remove("insert-picklist-sort-below");
       break;
     case "getWeedingData":
-      return browser.tabs.create({
-        "url": "https://scls.bibliovation.com/app/search/" + request.barcode,
-        "active": true
-      }).then(tab => {
-        return browser.tabs.executeScript(tab.id, {
-          "file": "/weedingSlip/getItemBib.js"
-        }).then(res => {
-          browser.tabs.remove(tab.id);
-          return res;
-        });
-      }).then(resArr => {
-        let payload = resArr[0];
-        
+      return browser.storage.sync.get('bibliovationBaseURL').then(urlRes => {
+        const baseURL = urlRes.bibliovationBaseURL;
         return browser.tabs.create({
-          "url": "https://scls.bibliovation.com/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=" + payload.itemBib,
+          "url": baseURL + "/app/search/" + request.barcode,
           "active": true
         }).then(tab => {
           return browser.tabs.executeScript(tab.id, {
-            "file": "/weedingSlip/scrapeMARC.js"
-          }).then(resArr => {
+            "file": "/weedingSlip/getItemBib.js"
+          }).then(res => {
             browser.tabs.remove(tab.id);
-            // For now, we'll include the full title scraped form the Detail page in getItemBib.js
-            // rather than the MARC Title field (which is just one part of the full title).
-            //payload.title = resArr[0].title;
-            payload.pubDate = resArr[0].pubDate;
-            return payload;
+            return res;
           });
-        });
-      }).then(res => {
-        let payload = res;
-  
-        return browser.tabs.create({
-          "url": "https://scls.bibliovation.com/app/staff/bib/" + payload.itemBib + "/items/circstatus",
-          "active": true
-        }).then(tab => {
-          return browser.tabs.executeScript(tab.id, {
-            "file": "/weedingSlip/scrapeStatuses.js"
-          }).then(resArr => {
-            browser.tabs.remove(tab.id);
-            payload.mplItems = resArr[0].copies;
-            payload.nonMPLcopies = resArr[0].nonMPLcopies;
-            return payload;
+        }).then(resArr => {
+          let payload = resArr[0];
+          
+          return browser.tabs.create({
+            "url": baseURL + "/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=" + payload.itemBib,
+            "active": true
+          }).then(tab => {
+            return browser.tabs.executeScript(tab.id, {
+              "file": "/weedingSlip/scrapeMARC.js"
+            }).then(resArr => {
+              browser.tabs.remove(tab.id);
+              // For now, we'll include the full title scraped form the Detail page in getItemBib.js
+              // rather than the MARC Title field (which is just one part of the full title).
+              //payload.title = resArr[0].title;
+              payload.pubDate = resArr[0].pubDate;
+              return payload;
+            });
+          });
+        }).then(res => {
+          let payload = res;
+    
+          return browser.tabs.create({
+            "url": baseURL + "/app/staff/bib/" + payload.itemBib + "/items/circstatus",
+            "active": true
+          }).then(tab => {
+            return browser.tabs.executeScript(tab.id, {
+              "file": "/weedingSlip/scrapeStatuses.js"
+            }).then(resArr => {
+              browser.tabs.remove(tab.id);
+              payload.mplItems = resArr[0].copies;
+              payload.nonMPLcopies = resArr[0].nonMPLcopies;
+              return payload;
+            });
           });
         });
       });
@@ -732,5 +739,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
         }, 500);
       });
+      break;
   }
 });

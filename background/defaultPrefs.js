@@ -1,5 +1,5 @@
 browser.storage.sync.get().then((res) => {
-  // Increment the resetCounter to trigger the extension to restore defalt settings
+  // Increment the resetCounter to trigger the extension to restore default settings
   // next time it loads
   let resetCounter = 2;
   let performReset = false;
@@ -8,6 +8,9 @@ browser.storage.sync.get().then((res) => {
     performReset = true;
   }
 
+  if (!res.hasOwnProperty('bibliovationBaseURL') || performReset) {
+    browser.storage.sync.set({"bibliovationBaseURL": "https://scls.bibliovation.com"});
+  }
   if (!res.hasOwnProperty('skin') || performReset) {
     browser.storage.sync.set({"skin": "MAD"});
   }
