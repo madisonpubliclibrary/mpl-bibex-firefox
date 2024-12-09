@@ -995,16 +995,18 @@ const pstats = new function() {
       "__default__": "SB-NOLIB"
     },
     "St. Croix": {
-      "Baldwin town": "SC-LIB",
+      "Baldwin village": "SC-LIB",
       "Deer Park village": "SC-LIB",
       "Glenwood City city": "SC-LIB",
-      "Hammond town": "SC-LIB",
+      "Hammond village": "SC-LIB",
       "Hudson city": "SC-LIB",
+      "Hudson town": "SC-LIB",
       "New Richmond city": "SC-LIB",
       "River Falls city": "SC-LIB",
       "Roberts village": "SC-LIB",
       "Somerset town": "SC-LIB",
       "Spring Valley village": "SC-LIB",
+      "St. Joseph town": "SC-LIB",
       "Woodville village": "SC-LIB",
       "__default__": "SC-NOLIB"
     },
