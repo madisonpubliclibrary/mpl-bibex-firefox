@@ -1004,7 +1004,7 @@ const pstats = new function() {
       "New Richmond city": "SC-LIB",
       "River Falls city": "SC-LIB",
       "Roberts village": "SC-LIB",
-      "Somerset town": "SC-LIB",
+      "Somerset village": "SC-LIB",
       "Spring Valley village": "SC-LIB",
       "St. Joseph town": "SC-LIB",
       "Woodville village": "SC-LIB",
@@ -1400,7 +1400,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }).then(() => {
       if (geocoderRes && geocoderRes.countySub && /^(?:middleton|sun prairie|verona) city/i.test(geocoderRes.countySub)) {
         return queryAlderExceptions(geocoderRes.countySub.substring(0,3), request.address);
-      } else if ((!geocoderRes || geocoderRes.countySub === undefined) && /^(?:middleton|sun prairie|verona)/i.test(request.city)) {
+      } else if ((!geocoderRes || geocoderRes.countySub === undefined) && /^(?:middleton|sun%20prairie|verona)/i.test(request.city)) {
         return queryAlderExceptions(request.city.substring(0,3), request.address);
       } else {
         // Pass along previous error message
