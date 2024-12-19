@@ -1321,7 +1321,8 @@ function queryGeocoder(addressURI,city) {
       throw new Error(censusTractData.errors.join("; "));
     } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
       throw new Error("[census.gov] No census tract data matched given address.");
-    } else if (!addressURI.replaceAll('%20',' ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
+    } else if (!addressURI.replaceAll('%20',' ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase()) &&
+        !addressURI.replaceAll('%20',' ').replaceAll(' hwy ', ' highway ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
       throw new Error("[census.gov] Matched wrong address: " + countyData.result.addressMatches[0].matchedAddress + ".");
     } else {
       countyData = countyData.result.addressMatches[0];
@@ -1414,7 +1415,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }, reject => {
       payload.error = reject.message;
     }).then(res => {
-      if (/madison|middleton|verona|monona|fitchburg|waunakee/i.test(request.city)) {
+      if (/madison|middleton|verona|monona|fitchburg|sun%20prairie|waunakee/i.test(request.city)) {
         return queryAlderExceptions("exception", request.address);
       }
       // Pass along previous error message

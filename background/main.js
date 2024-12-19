@@ -208,7 +208,7 @@ var SCLSLibs = function() {
     },
     "Portage": {
       "ALM": "122+Main+St,+Almond,+WI+54909",
-      //"AMH": "278+N+Main+St,+Amherst,+WI+54406", ** NON LINK LIBRARY **
+      "AMH": "278+N+Main+St,+Amherst,+WI+54406",
       "PLO": "2151+Roosevelt+Dr,+Plover,+WI+54467",
       "ROS": "137+N+Main+St,+Rosholt,+WI+54473",
       "STP": "1001+Main+St,+Stevens+Point,+WI+54481"
