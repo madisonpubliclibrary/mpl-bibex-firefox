@@ -78,6 +78,7 @@
     const zipElt = document.getElementById('zipcode');
     const zipEltAlt = document.getElementById('B_zipcode');
     const selectList = document.getElementsByName('sort1');
+    const patronType = document.getElementById('categorycode');
     const pstatNotice = document.createElement('div');
     const pstatNoticeAlt = document.createElement('div');
     const openTIGERwebWrapper = document.createElement('div');
@@ -237,6 +238,13 @@
         "city": getCity(targetCity, true)
       }).then(res => {
         if (res.success) {
+          console.log(res)
+          // Modify account type if applicable
+          if (res.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|seq|smb/i.test(branchList.value)) {
+            patronType.value = "RB";
+          }
+
+          // Set PSTAT and Zipcode
           if (res.pstat === "MI-NOLIB" || res.pstat === "MI-LIB") {
             pstatMsg.send(MSG_ERROR, "Ineligible Address Error: Accounts may not be created for Milwaukee County residents.", findAltPSTAT);
           } else {

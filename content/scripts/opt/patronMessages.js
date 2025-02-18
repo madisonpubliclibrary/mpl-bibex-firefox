@@ -10,12 +10,15 @@
       const msgLabel = document.createElement('label');
       const msgSelect = document.createElement('select');
       const defaultOpt  = document.createElement('option');
+      const miscGroup = document.createElement('optgroup');
       const onlineReg = document.createElement('option');
-      const easyAccess = document.createElement('option');
-      const easyAccessJU = document.createElement('option');
       const lostCko = document.createElement('option');
       const cardAtNxtCko = document.createElement('option');
       const laptopAgreement = document.createElement('option');
+      const easyAccessGroup = document.createElement('optgroup');
+      const easyAccess = document.createElement('option');
+      const easyAccessJU = document.createElement('option');
+      const easyAccessJUcharges = document.createElement('option');
       const rtdMailGroup = document.createElement('optgroup');
       const poRtd = document.createElement('option');
       const cardRtd = document.createElement('option');
@@ -46,23 +49,31 @@
 
       defaultOpt.value = "";
       defaultOpt.textContent = "Select BibEx Note";
+      
+      miscGroup.label = "Miscellaneous";
       onlineReg.value = "This account has been created from an online application. The card will be mailed to the address provided. Please archive this note upon first use. ";
       onlineReg.textContent = "Online Registration";
-      easyAccessJU.value = "Juvenile Easy Access Card - Parent or Guardian signature required to change patron category from LUJ to JU (full use card).";
-      easyAccessJU.textContent = "Easy Access Card (<16)"
-      easyAccess.value = "Easy Access Card - Patron must show proof of acceptable address to change patron category from LU to AD (full use card).";
-      easyAccess.textContent = "Easy Access Card (16+)";
       lostCko.value = "CKO allowed with lost items on " + currDate + ". ";
       lostCko.textContent = "Allowed CKO w/ Lost Items";
       cardAtNxtCko.value = "Patron must have library card at next checkout. ";
       cardAtNxtCko.textContent = "Have card at next checkout"
       laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file. ";
       laptopAgreement.textContent = "Patron signed laptop agreement";
+
+      easyAccessGroup.label = "Easy Access Card";
+      easyAccessJU.value = "Juvenile Easy Access Card - Parent or Guardian signature required to change patron category from LUJ to JU (full use card).";
+      easyAccessJU.textContent = "Easy Access Card (<16)"
+      easyAccessJUcharges.value = "Juvenile Easy Access Card - Charges on Parent/Guardian account must be resolved to change patron category from LUJ to JU (full use card).";
+      easyAccessJUcharges.textContent = "Easy Access Card (<16 charges)"
+      easyAccess.value = "Easy Access Card - Patron must show proof of acceptable address to change patron category from LU to AD (full use card).";
+      easyAccess.textContent = "Easy Access Card (16+)";
+
       rtdMailGroup.label = "Returned Mail";
       poRtd.value = "Mail returned by PO. Holds, if any, are suspended and notices are deactivated. ";
       poRtd.textContent = "Mail returned by post office";
       cardRtd.value = "Card was mailed to patron to establish proof of address, but was ret'd by PO. Card is now at MAD. When patron provides new address, please contact MAD-CIRC so card can be mailed again. ";
       cardRtd.textContent = "Library card returned by post office";
+
       badEmailGroup.label = "Bad Email Address";
       badEmail.value = "Email address not recognized, unable to send notices. Verify that mailing address and phone are correct. Enter new email address. Holds, if any, are suspended. Previous email was: ";
       badEmail.textContent = "Email address not recognized";
@@ -73,12 +84,17 @@
       wrapper.appendChild(msgLabel);
       wrapper.appendChild(msgSelect);
       msgSelect.appendChild(defaultOpt);
-      msgSelect.appendChild(onlineReg);
-      msgSelect.appendChild(easyAccessJU);
-      msgSelect.appendChild(easyAccess);
-      msgSelect.appendChild(lostCko);
-      msgSelect.appendChild(laptopAgreement);
-      msgSelect.appendChild(cardAtNxtCko);
+
+      msgSelect.appendChild(miscGroup);
+      miscGroup.appendChild(onlineReg);
+      miscGroup.appendChild(lostCko);
+      miscGroup.appendChild(laptopAgreement);
+      miscGroup.appendChild(cardAtNxtCko);
+
+      msgSelect.appendChild(easyAccessGroup);
+      easyAccessGroup.appendChild(easyAccessJU);
+      easyAccessGroup.appendChild(easyAccessJUcharges);
+      easyAccessGroup.appendChild(easyAccess);
 
       // Canned notes requested by MID
       if (res.hasOwnProperty('skin') && res.skin === 'MID') {

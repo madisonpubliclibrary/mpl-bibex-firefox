@@ -25,10 +25,10 @@
         currDate += day + '/' + date.getFullYear();
 
         if (opacNote.value && opacNote.value !== '') {
-          opacNote.value += "\n\n";
+          opacNote.value += "; ";
         }
         if (circNote.value && circNote.value !== '') {
-          circNote.value += "\n\n";
+          circNote.value += "; ";
         }
         opacNote.value += 'Your library card was found at ' + library + ' and may be retrieved from the 1st floor circulation desk with a photo ID. Thank you! ' + currDate + ' ';
         circNote.value += 'Patron\'s library card was found at ' + library + ' and may be retrieved from the 1st floor circulation desk with a photo ID. Thank you! ' + currDate + ' ';

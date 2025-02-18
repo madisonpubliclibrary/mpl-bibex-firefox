@@ -120,7 +120,7 @@
                     if (/Special expiration date of 05\/15\/20[0-9]{2} set due to residence at/.test(bn.value)) {
                       msg = "Please remove old dorm expiration note.\n\n" + noteBody;
                     }
-                    bn.value += "\n\n";
+                    bn.value += "; ";
                   }
 
                   alert(msg);
@@ -179,7 +179,7 @@
                   }
 
                   if (!staffInit) staffInit = "";
-                  if (bn.value !== '') bn.value += "\n\n";
+                  if (bn.value !== '') bn.value += "; ";
 
                   bn.value += "Patron's account is Limited Use due to temporary residence at " + item['name'] + " (" + item['address'] + "). Patron must show proof of valid residential address in order to remove restrictions. " + currDate() + " " + staffInit;
                 }

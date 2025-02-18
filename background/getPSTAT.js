@@ -1332,6 +1332,7 @@ function queryGeocoder(addressURI,city) {
       return {
         "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
         "county": countyData.geographies.Counties[0].BASENAME,
+        "reciprocal": !/adams|columbia|dane|green|protage|sauk|wood/i.test(countyData.geographies.Counties[0].BASENAME),
         "countySub": countySubData.geographies['County Subdivisions'][0].NAME,
         "censusTract": censusTractData.geographies['Census Tracts'][0].BASENAME,
         "zip": countyData.addressComponents.zip
@@ -1384,6 +1385,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       "matchAddr": undefined,
       "pstat": "X-UND",
       "zip": undefined,
+      "reciprocal": false,
       "error": "Unknown error occured.",
       "success": false,
     },
@@ -1395,6 +1397,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       payload.success = true;
       payload.matchAddr = res.matchAddr;
       payload.zip = res.zip;
+      payload.reciprocal = res.reciprocal;
       payload.pstat = pstats.find(res.county,res.countySub,res.censusTract);
     }, reject => {
       payload.error = reject.message;
