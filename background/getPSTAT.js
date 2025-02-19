@@ -745,7 +745,7 @@ const pstats = new function() {
     },
     "Pepin": {
       "Durand city": "PE-LIB",
-      "Pepin town": "PE-LIB",
+      "Pepin village": "PE-LIB",
       "__default__": "PE-NOLIB"
     },
     "Pierce": {
