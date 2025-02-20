@@ -240,7 +240,7 @@
         if (res.success) {
           console.log(res)
           // Modify account type if applicable
-          if (res.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|seq|smb/i.test(branchList.value)) {
+          if (res.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|seq|smb|dcl|pds/i.test(branchList.value)) {
             patronType.value = "RB";
           }
 
