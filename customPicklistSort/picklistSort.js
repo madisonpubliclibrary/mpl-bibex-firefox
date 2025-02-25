@@ -247,7 +247,7 @@ browser.storage.sync.get(["picklistLocColSort","picklistPBJFISort","picklistFont
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.checked = results.data[i][2] === 'true';
+            checkbox.checked = /^true$/i.test(results.data[i][2]);
             mergeBelow.append(checkbox);
             
             const notes = document.createElement('td');
