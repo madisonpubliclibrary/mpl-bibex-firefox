@@ -123,9 +123,13 @@
     gmapResponse.style = "margin-top:0.8em;margin-left:118px;font-size:1.25em;" +
         "font-weight:bold;font-style:italic;display:none";
 
+    scls.textContent = "SCLS";
+    scls.value = "SCLS";
+    scls.selected = true;
+    mapRegionList.appendChild(scls);
+
     madison.textContent = "Madison";
     madison.value = "MPL";
-    madison.selected = true;
     mapRegionList.appendChild(madison);
 
     counties.label = "Counties";
@@ -160,9 +164,7 @@
 
     mapRegionList.appendChild(counties);
 
-    scls.textContent = "SCLS";
-    scls.value = "SCLS";
-    mapRegionList.appendChild(scls);
+
 
     nearestLib.onclick = function() {
       let selected = document.getElementById('mapRegionList').selectedOptions[0].value;
@@ -173,8 +175,8 @@
             targetCity.value.toLowerCase()),
         "selected": selected
       }).then(result => {
-        branchList.value = result[0];
-        showGMapResponse("Closest Library: " + result[0], MSG_SUCCESS);
+        branchList.value = result;
+        showGMapResponse("Closest Library: " + result, MSG_SUCCESS);
       }, reject => {
         showGMapResponse(reject.message, MSG_ERROR);
       });
@@ -238,7 +240,6 @@
         "city": getCity(targetCity, true)
       }).then(res => {
         if (res.success) {
-          console.log(res)
           // Modify account type if applicable
           if (res.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|seq|smb|dcl|pds/i.test(branchList.value)) {
             patronType.value = "RB";
