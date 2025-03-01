@@ -22,7 +22,6 @@ const receiptFontSize = document.getElementById("receiptFontSize");
 const receiptFont = document.getElementById("receiptFont");
 const sundayDropbox = document.getElementById("sundayDropbox");
 const sundayDropboxPaused = document.getElementById("sundayDropboxPaused");
-const getItemUse = document.getElementById("getItemUse");
 const shortcutText1 = document.getElementById("shortcutText1");
 const shortcutLink1 = document.getElementById("shortcutLink1");
 const shortcutText2 = document.getElementById("shortcutText2");
@@ -63,7 +62,6 @@ function restoreOptions() {
     video.checked = res.video;
     receiptFont.value = res.receiptFont;
     sundayDropbox.checked = res.sundayDropbox;
-    getItemUse.checked = res.getItemUse;
     shortcutText1.value = res.shortcutText1;
     shortcutLink1.value = res.shortcutLink1;
     shortcutText2.value = res.shortcutText2;
@@ -124,7 +122,6 @@ document.getElementById("setDefault").addEventListener('click', function() {
     "receiptFont": "36px",
     "sundayDropbox": true,
     "sundayDropboxPaused": false,
-    "getItemUse": true,
     "shortcutText1": "Bibliovation—Checkin",
     "shortcutLink1": "https://scls.bibliovation.com/app/staff/circ/checkin/",
     "shortcutText2": "Bibliovation—Checkout",
@@ -273,9 +270,6 @@ receiptFont.addEventListener('change', function() {
 });
 document.getElementById("sundayDropboxSwitch").addEventListener('click', function() {
    browser.storage.sync.set({"sundayDropbox": sundayDropbox.checked});
-});
-document.getElementById("getItemUseSwitch").addEventListener('click', function() {
-   browser.storage.sync.set({"getItemUse": getItemUse.checked});
 });
 document.getElementById("shortcutText1").addEventListener('blur', function() {
   browser.storage.sync.set({"shortcutText1": shortcutText1.value});

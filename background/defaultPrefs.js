@@ -87,9 +87,6 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('sundayDropbox') || performReset) {
     browser.storage.sync.set({"sundayDropbox": true});
   }
-  if (!res.hasOwnProperty('getItemUse') || performReset) {
-    chrome.storage.sync.set({"getItemUse": true});
-  }
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1') || performReset
       || res.shortcutLink1 === "https://scls.bibliovation.com/app/staff/circ/checkin") { // Correct URL if missing final /
     browser.storage.sync.set({

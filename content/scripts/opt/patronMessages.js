@@ -41,6 +41,7 @@
           let staffInit = prompt("Enter your initials and library location (e.g. LS/MAD)");
           if (staffInit) bnMsg.value += "(" + staffInit + ")";
         }
+        bnMsg.focus();
       });
 
       bibNotes.addEventListener('change', function() {
@@ -91,12 +92,15 @@
       miscGroup.appendChild(laptopAgreement);
       miscGroup.appendChild(cardAtNxtCko);
 
-      msgSelect.appendChild(easyAccessGroup);
-      easyAccessGroup.appendChild(easyAccessJU);
-      easyAccessGroup.appendChild(easyAccessJUcharges);
-      easyAccessGroup.appendChild(easyAccess);
+      // Canned notes only for MAD
+      if (res.hasOwnProperty('skin') && res.skin === 'MAD') {
+        msgSelect.appendChild(easyAccessGroup);
+        easyAccessGroup.appendChild(easyAccessJU);
+        easyAccessGroup.appendChild(easyAccessJUcharges);
+        easyAccessGroup.appendChild(easyAccess);
+      }
 
-      // Canned notes requested by MID
+      // Canned notes only for MID
       if (res.hasOwnProperty('skin') && res.skin === 'MID') {
         const midGroup = document.createElement('optgroup');
 		    const allowOverride = document.createElement('option');
@@ -115,7 +119,6 @@
 		    midGroup.appendChild(allowOverride);
         midGroup.appendChild(remoteRenewal);
         midGroup.appendChild(onlineRegMID);
-        midGroup.appendChild(curbsideNoShow);
       }
 
       msgSelect.appendChild(rtdMailGroup);

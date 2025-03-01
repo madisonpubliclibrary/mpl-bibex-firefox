@@ -447,7 +447,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       for (let i = 0; i < libs.length; i += googleMapsDistMatrixRequestMax) {
         const libChunk = libs.slice(i, i + googleMapsDistMatrixRequestMax);
         distanceRequests.push("https://maps.googleapis.com/maps/api/distancematrix/json" +
-            "?key=AIzaSyACm32waDNAoshMxId42UZNtyMgws7Rv-k&origins=" +
+            "?[[[APIKEY]]]&origins=" +
             request.address + "&destinations=" +
             libChunk.map((lib) => `${lib.getAddressURI()}`).join("|"));
       }
@@ -616,66 +616,60 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             });
           });
         }).then(bibNum => {
-          return browser.storage.sync.get('getItemUse').then(usePref => {
-            let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
-              browser.tabs.create({
-                "url": baseURL + "/app/staff/bib/" + bibNum + "/details?mbxItemBC=" + request.itemBarcode,
-                "active": true
-              }).then(tab => {
-                browser.tabs.executeScript(tab.id, {
-                  "file": "/problemItemForm/getItemTitleCopiesHolds.js"
-                }).then(res => {
-                  browser.tabs.remove(tab.id);
-                  resolve(res[0]);
-                });
+          let getItemTitleCopiesHolds = new Promise((resolve, reject) => {
+            browser.tabs.create({
+              "url": baseURL + "/app/staff/bib/" + bibNum + "/details?mbxItemBC=" + request.itemBarcode,
+              "active": true
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "file": "/problemItemForm/getItemTitleCopiesHolds.js"
+              }).then(res => {
+                browser.tabs.remove(tab.id);
+                resolve(res[0]);
               });
             });
+          });
 
-            if (usePref.hasOwnProperty('getItemUse') && usePref.getItemUse) {
-              let getItemUse = new Promise((resolve, reject) => {
-                browser.tabs.create({
-                  "url": baseURL + "/app/staff/bib/" + bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
-                  "active": true
-                }).then(tab => {
-                  browser.tabs.executeScript(tab.id, {
-                    "file": "/problemItemForm/getItemUse.js"
-                  }).then(res => {
-                    browser.tabs.remove(tab.id);
-                    resolve(res[0]);
-                  });
-                });
+          let getItemUse = new Promise((resolve, reject) => {
+            browser.tabs.create({
+              "url": baseURL + "/app/staff/bib/" + bibNum + "/items/circstatus?mbxItemBC=" + request.itemBarcode,
+              "active": true
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "file": "/problemItemForm/getItemUse.js"
+              }).then(res => {
+                browser.tabs.remove(tab.id);
+                resolve(res[0]);
               });
+            });
+          });
 
-              let getItemPastUse = new Promise((resolve, reject) => {
-                browser.tabs.create({
-                  "url": baseURL + "/app/staff/bib/" + bibNum + "/items?mbxItemBC=" + request.itemBarcode,
-                  "active": true
-                }).then(tab => {
-                  browser.tabs.executeScript(tab.id, {
-                    "file": "/problemItemForm/getItemPastUse.js"
-                  }).then(res => {
-                    browser.tabs.remove(tab.id);
-                    resolve(res[0]);
-                  });
-                });
+          let getItemPastUse = new Promise((resolve, reject) => {
+            browser.tabs.create({
+              "url": baseURL + "/app/staff/bib/" + bibNum + "/items?mbxItemBC=" + request.itemBarcode,
+              "active": true
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "file": "/problemItemForm/getItemPastUse.js"
+              }).then(res => {
+                browser.tabs.remove(tab.id);
+                resolve(res[0]);
               });
+            });
+          });
 
-              return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
-                /**
-                 * There is no way to calculate an item's exact total use in Bibliovation if it was
-                 * acquired before 2012. If the acquisition date is before 2012, item use should be
-                 * calculated by adding Dynix and Koha Past Use and the YTD. If the acquisition date
-                 * is after 2012, item use should use only the "total use" value.
-                 *
-                 * The most accurate use data will always be the larger of these two calculations, which
-                 * is what the extension calculates below.
-                 */
-                res[0].use = Math.max(parseInt(res[1].ytd) + parseInt(res[2].pastUse), parseInt(res[1].totalUse));
-                return res[0];
-              });
-            } else {
-              return getItemTitleCopiesHolds.then(res => {return res});
-            }
+          return Promise.all([getItemTitleCopiesHolds, getItemUse, getItemPastUse]).then(res => {
+            /**
+             * There is no way to calculate an item's exact total use in Bibliovation if it was
+             * acquired before 2012. If the acquisition date is before 2012, item use should be
+             * calculated by adding Dynix and Koha Past Use and the YTD. If the acquisition date
+             * is after 2012, item use should use only the "total use" value.
+             *
+             * The most accurate use data will always be the larger of these two calculations, which
+             * is what the extension calculates below.
+             */
+            res[0].use = Math.max(parseInt(res[1].ytd) + parseInt(res[2].pastUse), parseInt(res[1].totalUse));
+            return res[0];
           });
         });
       });
