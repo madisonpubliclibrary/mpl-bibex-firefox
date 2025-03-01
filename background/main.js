@@ -447,7 +447,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       for (let i = 0; i < libs.length; i += googleMapsDistMatrixRequestMax) {
         const libChunk = libs.slice(i, i + googleMapsDistMatrixRequestMax);
         distanceRequests.push("https://maps.googleapis.com/maps/api/distancematrix/json" +
-            "?[[[APIKEY]]]&origins=" +
+            "?key=[API_KEY]&origins=" + // TODO: ADD API KEY BEFORE PACKAGING
             request.address + "&destinations=" +
             libChunk.map((lib) => `${lib.getAddressURI()}`).join("|"));
       }
@@ -465,19 +465,26 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           if (j.status !== "OK") {
             switch (j.status) {
               case "INVALID_REQUEST":
-                throw new Error("The provided request was invalid.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("The provided request was invalid.");
               case "MAX_ELEMENTS_EXCEEDED":
-                throw new Error("The product of origins and destinations exceeds the per-query limit.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("The product of origins and destinations exceeds the per-query limit.");
               case "MAX_DIMENSIONS_EXCEEDED":
-                throw new Error("The number of origins or destinations exceeds the per-query limit.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("The number of origins or destinations exceeds the per-query limit.");
               case "OVER_DAILY_LIMIT":
-                throw new Error("The daily request limit has been exceeded.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("The daily request limit has been exceeded.");
               case "OVER_QUERY_LIMIT":
-                throw new Error("The service has received too many requests from MPL BibEx today.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("The service has received too many requests from MPL BibEx today.");
               case "REQUEST_DENIED":
-                throw new Error("Request denied.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("Request denied.");
               case "UNKNOWN_ERROR":
-                throw new Error("Unknown error.");
+                if (j.hasOwnProperty('error_message')) throw new Error(j.error_message);
+                else throw new Error("Unknown error.");
             }
           }
         }
