@@ -2,9 +2,9 @@
 
 | Current Version | Install on Firefox | Author |
 | :-------------: | :----------------: | :----: |
-| <br>2025.3.2    | <br>[Install MPL BibEx][1]  | Lucas Schneider<br>Library IT Specialist<br>MPL–Central |
+| <br>2025.3.3    | <br>[Install MPL BibEx][1]  | Lucas Schneider<br>Library IT Specialist<br>MPL–Central |
 
-MPL BibEx is a WebExtension for Firefox (79+) and Google Chrome that adds additional features to LibLimes's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of Wisconsin's South Central Library System, and, while not supported by SCLS, it has been vetted by them for security and is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
+MPL BibEx is a WebExtension for Firefox (109+) and Google Chrome that adds additional features to LibLimes's Bibliovation Library Services Platform. BibEx is intended for use by member libraries of Wisconsin's South Central Library System, and, while not supported by SCLS, it has been vetted by them for security and is actively developed and maintained by Lucas Schneider, a Library Page II at MPL-Central.
 
 ## Table of Contents
 * [Inherent features of MPL BibEx](#inherent-features-of-mpl-bibex)
