@@ -1332,7 +1332,7 @@ function queryGeocoder(addressURI,city) {
       return {
         "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
         "county": countyData.geographies.Counties[0].BASENAME,
-        "reciprocal": !/^(?:adams|columbia|dane|green|protage|sauk|wood)$/i.test(countyData.geographies.Counties[0].BASENAME),
+        "reciprocal": !/^(?:adams|columbia|dane|green|portage|sauk|wood)$/i.test(countyData.geographies.Counties[0].BASENAME),
         "countySub": countySubData.geographies['County Subdivisions'][0].NAME,
         "censusTract": censusTractData.geographies['Census Tracts'][0].BASENAME,
         "zip": countyData.addressComponents.zip
