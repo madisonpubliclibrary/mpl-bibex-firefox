@@ -104,13 +104,13 @@
         }).then(result => {
           for (let item of result) {
             let fullAddr = (addr.value + ' ' + addr2.value).trim().replace(/[^\w\s]|_/g, "");
-            let regex = new RegExp(item['address_regex'], 'i');
-            let cityMatch = (new RegExp(item['city_regex'], 'i')).test(city.value);
+            let regex = new RegExp(item.streetRegEx, 'i');
+            let cityMatch = (new RegExp(item.cityRegEx, 'i')).test(city.value);
 
             if (regex.test(fullAddr) && cityMatch) {
-              if (item['type'] === "dorm") {
+              if (item.type === "Dorm") {
                 let noteBody = "Special expiration date of 05/15/" + year +
-                    " set due to residence at " + item['name'] + ", a university dorm." +
+                    " set due to residence at " + item.name + ", a university dorm." +
                     " Patron must verbally update address before account renewal (proof of address not necessary).",
                   msg = noteBody;
 
@@ -127,17 +127,15 @@
                   bn.value += noteBody;
                 }
                 return;
-              } else if (item['type'] === "unacceptable") {
+              } else if (item.type === "Unacceptable") {
                 if (patronActions[0].children[0].value !== "Override Block") {
-                  let msg = "--- STOP ---\nA library card CANNOT be issued to this address.\n" + item['address'] + " (" + item['name'] + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)";
-                  if (item['city_regex'] === 'madison') {
-                    msg += "\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttps://www.mplnet.org/wiki/bad-addresseslimited-use-addresses";
-                  }
+                  let msg = item.cityRegEx === 'madison' ? "--- STOP ---\nA library card CANNOT be issued to this address.\n" + item.street + " (" + item.name + ") is NOT an acceptable address for getting a library card.\n\nInform any patron providing this address that they must provide an acceptable (residential or partner agency) address in order to get a library card.\n\nIf a patron lives in the South Central Library System, but they don’t have a residential address, they can still get an Easy Access card by using the address of one of our partner agencies instead:\n\nThe Beacon: 615 E Washington Ave, 53703\nThe Salvation Army: 630 E Washington Ave, 53703\nDane County Job Center: 1819 Aberg Ave, 53704\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\n\nhttps://www.mplnet.org/wiki/unacceptable-addresses"
+                    : "--- STOP ---\nA library card CANNOT be issued to this address.\n" + item.street + " (" + item.name + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)";
                   alert(msg);
                   blockSubmit();
                 }
                 return;
-              } else if (item['type'] === "restricted" || item['type'] === "unique") {
+              } else if (item.type === "Restricted (LU)" || item.type=== "Unique (LU)") {
                 // Make account limited use
                 if (cc) {
                   if (cc.value === "AD") {
@@ -168,32 +166,30 @@
                 }
 
                 if (!bn.value.includes("Patron's account is Limited Use due to temporary residence at "
-                    + item['name'] + ' (' + item['address'] + ')')) {
-                  if (item['type'] === "restricted") {
-                    let promptText = "--- NOTE ---\nA library card issued to " + item['address'] + " (" +item['name'] + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address."
-                    promptText += item['city_regex'] === 'madison' ? "\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttps://www.mplnet.org/wiki/limited-use-addresses\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)"
-                                                                       : "\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)";
+                    + item.name + ' (' + item.street + ')')) {
+                  if (item.type === "Restricted (LU)") {
+                    let promptText = "--- NOTE ---\nA library card issued to " + item.street + " (" +item.name + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)";
                     staffInit = prompt(promptText);
-                  } else if (item['type'] === "unique") {
-                    staffInit = prompt(item['note'].replace(/\\n/g, "\n"));
+                  } else if (item.type === "Unique (LU)") {
+                    staffInit = prompt(item.customMessage.replace(/\\n/g, "\n"));
                   }
 
                   if (!staffInit) staffInit = "";
                   if (bn.value !== '') bn.value += "; ";
 
-                  bn.value += "Patron's account is Limited Use due to temporary residence at " + item['name'] + " (" + item['address'] + "). Patron must show proof of valid residential address in order to remove restrictions. " + currDate() + " " + staffInit;
+                  bn.value += "Patron's account is Limited Use due to temporary residence at " + item.name + " (" + item.street + "). Patron must show proof of valid residential address in order to remove restrictions. " + currDate() + " " + staffInit;
                 }
 
                 if (bn.value.match(/Patron's account is Limited Use due to temporary residence/g).length > 1) {
                   deleteLUNotice();
                 }
                 return;
-              } else if (item['type'] === "SaH") {
-                triggerAlertCooldown(item['note'].replace(/\\n/g, "\n"));
-              } else if (item['type'] === "WUO") { /*** Requested by STP ***/
+              } else if (item.type === "Safe at Home") {
+                triggerAlertCooldown(item.customMessage.replace(/\\n/g, "\n"));
+              } else if (item.type === "Web-use Only (STP)") {
                 if (cc) {
                   cc.value = "WEB";
-                    alert("--- NOTE ---\nA library card CANNOT be issued to this address.\n" + item['address'] + " (" + item['name'] + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. They may otherwise sign up for a Web-use Only account.");
+                    alert("--- NOTE ---\nA library card CANNOT be issued to this address.\n" + item.street + " (" + item.name + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. They may otherwise sign up for a Web-use Only account.");
                 }
                 return;
               }

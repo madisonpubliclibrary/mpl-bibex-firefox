@@ -1349,22 +1349,21 @@ function queryGeocoder(addressURI,city) {
  * @return {Promise} A Promise that will resolve the query results
 **/
 function queryAlderExceptions(libCode, address) {
-  return fetch("https://mplnet.org/bibex/xml/pstats/" + libCode).then(res => {
+  return fetch("https://development.mplnet.org/webex/pstats/json/" + libCode).then(res => {
     if (!res.ok) {
       throw new Error('[MPLnet] HTTP error, status = ' + res.status);
     }
     return res.text();
-  }).then(str => {
-    return (new window.DOMParser()).parseFromString(str, "text/xml");
-  }).then(data => {
-    if (data && data.getElementsByTagName('address').length > 0) {
-      for (let item of data.getElementsByTagName('address')) {
-        let regex = new RegExp(item.getElementsByTagName('regex')[0].textContent, "i");
+  }).then(jsonStr => {
+    let data = JSON.parse(jsonStr);
+    if (data && data.length > 0) {
+      for (let addr of data) {
+        let regex = new RegExp(addr.regex, "i");
         if (regex.test(address)) {
           return {
-            "pstat": item.getElementsByTagName('value')[0].textContent,
-            "zip": item.getElementsByTagName('zip')[0].textContent
-          };
+            "pstat": addr.pstatCode,
+            "zip": addr.zip
+          }
         }
       }
 
@@ -1374,7 +1373,7 @@ function queryAlderExceptions(libCode, address) {
         throw new Error("Address not found in database of " + libCode.toUpperCase() + " aldermanic districts.");
       }
     } else {
-      throw new Error("Error retrieving XML data from MPLnet.");
+      throw new Error("Error retrieving JSON data from MPLnet.");
     }
   });
 }

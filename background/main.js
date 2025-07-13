@@ -520,23 +520,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "parsePatronAddr":
-      return fetch("https://www.mplnet.org/bibex/xml/special").then(res => {
+      return fetch("https://development.mplnet.org/webex/notable/json").then(res => {
         if (!res.ok) {
           throw new Error('[MPLnet] HTTP error, status = ' + res.status);
         }
         return res.text();
-      }).then(str => {
-        return (new window.DOMParser()).parseFromString(str, "text/xml");
-      }).then(data => {
-        let cleanedData = [];
-        for (let item of data.children[0].children) {
-          let i = {};
-          for (let tag of item.children) {
-            i[tag.tagName] = tag.textContent;
-          }
-          cleanedData.push(i);
-        }
-        return cleanedData;
+      }).then(jsonStr => {
+        return JSON.parse(jsonStr);
       });
     case "updateExtensionIcon":
       setIcon();
