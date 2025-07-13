@@ -1358,7 +1358,7 @@ function queryAlderExceptions(libCode, address) {
     let data = JSON.parse(jsonStr);
     if (data && data.length > 0) {
       for (let addr of data) {
-        let regex = new RegExp(addr.regex, "i");
+        let regex = new RegExp(addr.regex.replace('\u0027','\''), "i");
         if (regex.test(address)) {
           return {
             "pstat": addr.pstatCode,
