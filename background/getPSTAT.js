@@ -1349,7 +1349,7 @@ function queryGeocoder(addressURI,city) {
  * @return {Promise} A Promise that will resolve the query results
 **/
 function queryAlderExceptions(libCode, address) {
-  return fetch("https://development.mplnet.org/webex/pstats/json/" + libCode).then(res => {
+  return fetch("https://www.mplnet.org/webex/pstats/json/" + libCode).then(res => {
     if (!res.ok) {
       throw new Error('[MPLnet] HTTP error, status = ' + res.status);
     }

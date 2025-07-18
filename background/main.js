@@ -520,7 +520,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "parsePatronAddr":
-      return fetch("https://development.mplnet.org/webex/notable/json").then(res => {
+      return fetch("https://www.mplnet.org/webex/notable/json").then(res => {
         if (!res.ok) {
           throw new Error('[MPLnet] HTTP error, status = ' + res.status);
         }
