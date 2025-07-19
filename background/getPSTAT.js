@@ -1262,7 +1262,7 @@ const pstats = new function() {
    * @param {string} countySub The name of the county subdivision
    * @param {string} censusTract The census tract number
    * @return {string} The SCLS PSTAT code corresponding to the provided county,
-   * sounty subdivision, and, if needed, census tract number
+   *                  county subdivision, and, if needed, census tract number
    */
   this.find = function(county, countySub, censusTract) {
     if (county === "Dane" && countySub === "Madison city") {
@@ -1274,69 +1274,52 @@ const pstats = new function() {
   };
 }();
 
+/**
+ * 
+ * @param {string} addressURI The URI encoded address
+ * @param {string} city The URI encoded city
+ * @return {Promise} A Promise that returns an array of matched address(es), with the full matched
+ *          address, the county, whether that county is outside of SCLS, the "county subdivision",
+ *          the census tract number, and the zipcode
+ */
 function queryGeocoder(addressURI,city) {
-  const baseURL = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="
-    countyURL = baseURL + addressURI + "&city=" + city
-        + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties&format=json",
-    countySubdivisionURL = baseURL + addressURI + "&city=" + city
-        + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=County+Subdivisions&format=json",
-    censusTractURL = baseURL + addressURI + "&city=" + city
-        + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Census Tracts&format=json";
+  const url = "https://geocoding.geo.census.gov/geocoder/geographies/address?street=" + addressURI
+    + "&city=" + city + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current"
+    + "&layers=Counties,County+Subdivisions,Census+Tracts&format=json";
 
-  const getCounty = fetch(countyURL, {"method": "GET"}).then(response => {
+  return fetch(url, {"method": "GET"}).then(response => {
     if(!response.ok && response.status != '400') {
       throw new Error('[census.gov] HTTP error, status = ' + response.status);
     }
     return response.json();
-  });
-
-  const getCountySub = fetch(countySubdivisionURL, {"method": "GET"}).then(response => {
-    if(!response.ok && response.status != '400') {
-      throw new Error('[census.gov] HTTP error, status = ' + response.status);
-    }
-    return response.json();
-  });
-
-  const getCensusTract = fetch(censusTractURL, {"method": "GET"}).then(response => {
-    if(!response.ok && response.status != '400') {
-      throw new Error('[census.gov] HTTP error, status = ' + response.status);
-    }
-    return response.json();
-  });
-
-  return Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
-    let countyData = vals[0],
-      countySubData = vals[1],
-      censusTractData = vals[2];
-
-    if (countyData.errors) {
+  }).then(json => {
+    if (!json) {
+      throw new Error("[census.gov] Unknown error");
+    } else if (json.hasOwnProperty('errors')) {
       throw new Error(countyData.errors.join("; "));
-    } else if (!countyData || !countyData.result || countyData.result.addressMatches.length === 0) {
-      throw new Error("[census.gov] No county data matched given address.");
-    } else if (countySubData.errors) {
-      throw new Error(countySubData.errors.join("; "));
-    } else if (!countySubData || !countySubData.result || countySubData.result.addressMatches.length === 0) {
-      throw new Error("[census.gov] No county subdivision data matched given address.");
-    } else if (censusTractData.errors) {
-      throw new Error(censusTractData.errors.join("; "));
-    } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
-      throw new Error("[census.gov] No census tract data matched given address.");
-    } else if (!addressURI.replaceAll('%20',' ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase()) &&
-        !addressURI.replaceAll('%20',' ').replaceAll(' hwy ', ' highway ').includes(countyData.result.addressMatches[0].addressComponents.streetName.toLowerCase())) {
-      throw new Error("[census.gov] Matched wrong address: " + countyData.result.addressMatches[0].matchedAddress + ".");
-    } else {
-      countyData = countyData.result.addressMatches[0];
-      countySubData = countySubData.result.addressMatches[0];
-      censusTractData = censusTractData.result.addressMatches[0];
+    } else if (json.hasOwnProperty('result') && json.result.addressMatches.length > 0) {
+      let matches = [];
+      for (let r of json.result.addressMatches) {
+        const county = r.geographies.Counties[0].BASENAME;
+        const countySub = r.geographies['County Subdivisions'][0].NAME;
+        const censusTract = r.geographies['Census Tracts'][0].BASENAME;
 
+        matches.push({
+          "matchAddr": r.matchedAddress,
+          "county": county,
+          "reciprocal": !/^(?:adams|columbia|dane|green|portage|sauk|wood)$/i.test(r.geographies.Counties[0].BASENAME),
+          "countySub": countySub,
+          "censusTract": censusTract,
+          "zip": r.addressComponents.zip,
+          "pstat": pstats.find(county,countySub,censusTract)
+        });
+      }
       return {
-        "matchAddr": countyData.matchedAddress.split(',')[0].toUpperCase(),
-        "county": countyData.geographies.Counties[0].BASENAME,
-        "reciprocal": !/^(?:adams|columbia|dane|green|portage|sauk|wood)$/i.test(countyData.geographies.Counties[0].BASENAME),
-        "countySub": countySubData.geographies['County Subdivisions'][0].NAME,
-        "censusTract": censusTractData.geographies['Census Tracts'][0].BASENAME,
-        "zip": countyData.addressComponents.zip
+        "hasGeoResults": true,
+        "matches": matches
       };
+    } else {
+      throw new Error("[census.gov] No matches returned");
     }
   });
 }
@@ -1368,78 +1351,63 @@ function queryAlderExceptions(libCode, address) {
       }
 
       if (libCode === "exception") {
-        throw new Error("Address not found in database of PSTAT exceptions");
+        throw new Error("[mplnet.org] Address not found in database of PSTAT exceptions");
       } else {
-        throw new Error("Address not found in database of " + libCode.toUpperCase() + " aldermanic districts.");
+        throw new Error("[mplnet.org] Address not found in database of " + libCode.toUpperCase() + " aldermanic districts");
       }
     } else {
-      throw new Error("Error retrieving JSON data from MPLnet.");
+      throw new Error("[mplnet.org] Error retrieving JSON data from MPLnet");
     }
   });
 }
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.key === "getPSTAT") {
-    let payload = {
-      "matchAddr": undefined,
-      "pstat": "X-UND",
-      "zip": undefined,
-      "reciprocal": false,
-      "error": "Unknown error occured.",
-      "success": false,
-    },
-    geocoderRes;
+    return queryGeocoder(request.addressURI, request.cityURI)
+      .catch(error => {
+        return {
+          "hasGeoResults": false,
+          "matches": [],
+          "error": error.message
+        }
+      }).then(geoResults => {
+        const followupQueries = [];
 
-    return queryGeocoder(request.addressURI, request.city).then(res => {
-      geocoderRes = res;
+        function addQueries(city) {
+          const queries = [];
 
-      payload.success = true;
-      payload.matchAddr = res.matchAddr;
-      payload.zip = res.zip;
-      payload.reciprocal = res.reciprocal;
-      payload.pstat = pstats.find(res.county,res.countySub,res.censusTract);
-    }, reject => {
-      payload.error = reject.message;
-    }).then(() => {
-      if (geocoderRes && geocoderRes.countySub && /^(?:middleton|sun prairie|verona) city/i.test(geocoderRes.countySub)) {
-        return queryAlderExceptions(geocoderRes.countySub.substring(0,3), request.address);
-      } else if ((!geocoderRes || geocoderRes.countySub === undefined) && /^(?:middleton|sun%20prairie|verona)/i.test(request.city)) {
-        return queryAlderExceptions(request.city.substring(0,3), request.address);
-      } else {
-        // Pass along previous error message
-        throw new Error(payload.error);
-      }
-    }).then(res => {
-      payload.success = true;
-      if (!payload.matchAddr) payload.matchAddr = request.address;
-      if (!payload.zip) payload.zip = res.zip;
-      payload.pstat = res.pstat;
-    }, reject => {
-      payload.error = reject.message;
-    }).then(res => {
-      if (/madison|middleton|verona|monona|fitchburg|sun%20prairie|waunakee/i.test(request.city)) {
-        return queryAlderExceptions("exception", request.address);
-      }
-      // Pass along previous error message
-      throw new Error(payload.error);
-    }).then(res => {
-      payload.success = true;
-      // Overwrite Census matched address in case of incorrect data, as with
-      // 822 E Washington Ave (Census returns W Washington Ave)
-      payload.matchAddr = request.address;
-      payload.zip = res.zip;
-      payload.pstat = res.pstat;
-    }, reject => {
-      payload.error = reject.message;
-    }).then(res => {
-      if (!payload.success && /^sun prairie/i.test(request.city.replace('%20',' '))) payload.pstat = "D-X-SUN";
-      else if (!payload.success && /^madison/i.test(request.city)) payload.pstat = "D-X-MAD";
-      else if (payload.pstat === "D-MAD-T") {
-        payload.error = "The Town of Madison was dissolved on Nov. 1, 2022. Please contact Madison Central Library circulation staff with the address that triggered this error.";
-        payload.success = false;
-      }
-      return payload;
-    });
+          const midRegEx = new RegExp('^middleton','i');
+          const sunRegEx = new RegExp('^sun(?:%20| )prairie','i');
+          const verRegEx = new RegExp('^verona','i');
+          const exceptionRegEx = new RegExp('^fitchburg|madison|middleton|monona|sun(?:%20| )prairie|verona|waunakee','i');
+
+          if (exceptionRegEx.test(city)) queries.push(queryAlderExceptions('exception',request.address));
+          if (midRegEx.test(city)) queries.push(queryAlderExceptions('mid',request.address));
+          if (sunRegEx.test(city)) queries.push(queryAlderExceptions('sun',request.address));
+          if (verRegEx.test(city)) queries.push(queryAlderExceptions('ver',request.address));
+
+          return Promise.allSettled(queries);
+        }
+
+        if (geoResults.hasGeoResults) {
+          for (let match of geoResults.matches) {
+            followupQueries.push(addQueries(match.countySub));
+          }
+        } else {
+          followupQueries.push(addQueries(request.cityURI));
+        }
+        
+        return Promise.allSettled(followupQueries).then(followupQueries => {
+          if (geoResults.hasGeoResults) {
+            for (let i = 0; i < geoResults.matches.length; i++) {
+              geoResults.matches[i].followupQuery = followupQueries[i];
+            }
+          } else {
+            geoResults.matches.push({'geoError': geoResults.error, 'followupQuery': followupQueries[0]});
+          }
+          return geoResults;
+        });
+      });
   } else if (request.key === "getAlternatePSTAT") {
     browser.tabs.query({
       "currentWindow": true,

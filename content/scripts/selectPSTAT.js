@@ -164,8 +164,6 @@
 
     mapRegionList.appendChild(counties);
 
-
-
     nearestLib.onclick = function() {
       let selected = document.getElementById('mapRegionList').selectedOptions[0].value;
 
@@ -181,6 +179,38 @@
         showGMapResponse(reject.message, MSG_ERROR);
       });
     };
+
+    /** Build modal dialog in case the US Census Geocoder matches more than one address */
+    // Create modal dialog HTML
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    const modalBody = document.createElement('div');
+    modalBody.classList.add('modalBody');
+    const modalTitle = document.createElement('h1');
+    modalTitle.textContent = 'Multiple Addresses Matched';
+    let modalText = document.createElement('div');
+    modalBody.append(modalTitle,modalText);
+    modal.appendChild(modalBody);
+    document.body.appendChild(modal);
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.classList.remove('modalOpen');
+    }
+
+    // Close modal by clicking grayed background
+    //document.addEventListener('click', e => {
+    //  if (e.target.classList.contains('modal')) closeModal();
+    //});
+
+    // Create modal styling
+    const style = document.createElement('style');
+    style.textContent = `
+      .modal {display:none;position:fixed;inset:0;z-index:10000;background-color:rgba(0,0,0,.75);padding:40px;overflow:auto;}
+      .modal.open {display:block;}
+      .modalBody {padding:20px;background:#fff;border-radius:25px;position:fixed;top:650px;}
+      body.modalOpen {overflow:hidden;}`;
+    document.head.append(style);
 
     // Add event listeners to the primary address and city fields
     if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
@@ -237,34 +267,106 @@
         "key": "getPSTAT",
         "address": targetAddr.value,
         "addressURI": cleanAddr(targetAddr, true),
-        "city": getCity(targetCity, true)
-      }).then(res => {
-        if (res.success) {
-          // Modify account type if applicable
-          if (res.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|seq|smb|dcl|pds/i.test(branchList.value)) {
-            patronType.value = "RB";
+        "cityURI": getCity(targetCity, true)
+      }).then(result => {
+        return new Promise((resolve,reject) => {
+          if (result.hasGeoResults && result.matches.length > 1) {
+            modalText.textContent = ''; // clear new modal text div
+            const modalInstructions = document.createElement('p');
+            modalInstructions.textContent = "Select the patron's address from the geocoder results:";
+            modalText.appendChild(modalInstructions);
+
+            const ul = document.createElement('ul');
+            for (let i = 0; i < result.matches.length; i++) {
+              const li = document.createElement('li');
+              li.style.margin = '1em 0';
+              li.textContent = '[' + result.matches[i].countySub + ']';
+
+              let useMatch = document.createElement('button');
+              useMatch.style.marginLeft = '1em';
+              useMatch.style.cursor = 'pointer';
+              useMatch.textContent = result.matches[i].matchAddr;
+              useMatch.setAttribute('data-match-index',i);
+              useMatch.addEventListener('click', e => {
+                closeModal();
+                resolve(result.matches[e.target.getAttribute('data-match-index')]);
+              });
+              li.appendChild(useMatch);
+
+              ul.appendChild(li);
+            }
+            modalText.appendChild(ul);
+
+            modal.classList.add('open');
+            document.body.classList.add('modalOpen');
+          } else if (result.matches.length === 1) {
+            resolve(result.matches[0]);
+          } else {
+            throw new Error('An unknown error occurred.');
+          }
+        }).then(match => {
+          const matchData = {
+            "success": false,
+            "address": targetAddr.value,
+            "city": getCity(targetCity, false),
+            "pstat": "X-UND",
+            "zip": "",
+            "reciprocal": false,
+            "error": "An unknown error occurred."
           }
 
-          // Set PSTAT and Zipcode
-          if (res.pstat === "MI-NOLIB" || res.pstat === "MI-LIB") {
-            pstatMsg.send(MSG_ERROR, "Ineligible Address Error: Accounts may not be created for Milwaukee County residents.", findAltPSTAT);
-          } else {
-            selectList[0].value = res.pstat;
-            targetZip.value = res.zip;
-            pstatMsg.send(MSG_SUCCESS, "PSTAT matched with: " + res.matchAddr, findAltPSTAT);
-            toggleGMapSearch(true);
+          // If Geocoder returned results fill in data fields
+          if (!match.hasOwnProperty('geoError')) {
+            matchData.success = true;
+            matchData.address = match.matchAddr;
+            matchData.city = match.countySub;
+            matchData.pstat = match.pstat;
+            matchData.zip = match.zip;
+            matchData.reciprocal = match.reciprocal;
           }
-        } else {
-          if (res.zip) targetZip.value = res.zip;
-          pstatMsg.send(MSG_ERROR, "Error: " + res.error, findAltPSTAT);
-          openTIGERwebWrapper.style.display = 'block';
 
-          if (findAltPSTAT) {
-            addrEltAlt.parentElement.appendChild(openTIGERwebWrapper);
-          } else {
-            addrElt.parentElement.appendChild(openTIGERwebWrapper);
+          const followupFulfilled = match.followupQuery.value.filter(q=>{return q.status === 'fulfilled'});
+          // If there were followup queries and at least one was fulfilled
+          if (followupFulfilled.length > 0) {
+            matchData.success = true;
+            matchData.address = targetAddr.value + ', ' + targetCity.value + ', ' + targetZip.value;
+            matchData.pstat = followupFulfilled[0].value.pstat;
+            matchData.zip = followupFulfilled[0].value.zip;
+          } else if (match.hasOwnProperty('geoError')) { // Else if there were no fulfilled followup queries and the geocoder failed
+            const followupRejected = match.followupQuery.value.filter(q=>{return q.status === 'rejected'});
+            matchData.error = match.geoError + '; ' + followupRejected.map(o => {return o.reason.toString().replace(/^Error: /,'')}).join('; ');
           }
-        }
+
+          return matchData
+        }).then(matchData => {
+          if (matchData.success) {
+            // Modify account type if applicable
+            if (matchData.reciprocal && /haw|hpb|lak|mad|mea|msb|pin|rdl|seq|smb|dcl|pds/i.test(branchList.value)) {
+              patronType.value = "RB";
+            }
+
+            // Set PSTAT and Zipcode
+            if (matchData.pstat === "MI-NOLIB" || matchData.pstat === "MI-LIB") {
+              pstatMsg.send(MSG_ERROR, "Ineligible Address Error: Accounts may not be created for Milwaukee County residents.", findAltPSTAT);
+            } else {
+              selectList[0].value = matchData.pstat;
+              targetZip.value = matchData.zip;
+              pstatMsg.send(MSG_SUCCESS, "PSTAT matched with: " + matchData.address, findAltPSTAT);
+              toggleGMapSearch(true);
+            }
+          } else {
+            if (/^madison/i.test(targetCity.value)) selectList[0].value = 'D-X-MAD';
+            if (/^sun(?:%20| )prairie/i.test(targetCity.value)) selectList[0].value = 'D-X-SUN';
+            pstatMsg.send(MSG_ERROR, "Error: " + matchData.error, findAltPSTAT);
+            openTIGERwebWrapper.style.display = 'block';
+
+            if (findAltPSTAT) {
+              addrEltAlt.parentElement.appendChild(openTIGERwebWrapper);
+            } else {
+              addrElt.parentElement.appendChild(openTIGERwebWrapper);
+            }
+          }
+        });
       });
 
       // Append Google Map elements
