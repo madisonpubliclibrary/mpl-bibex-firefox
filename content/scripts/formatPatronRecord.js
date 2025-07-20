@@ -60,8 +60,8 @@
       this.value = this.value.replace(/,/g, '');
       // Move suffix "JR" or "SR" to end of last name
       if (/ (S|J)R$/i.test(this.value)) {
-        let suffix = this.value.substr(this.value.length-3, this.value.length);
-        this.value = this.value.substr(0, this.value.length-3);
+        let suffix = this.value.substring(this.value.length-3, this.value.length);
+        this.value = this.value.substring(0, this.value.length-3);
         surname.value += "," + suffix.toUpperCase();
       }
       if (!/^[ 	]+/.test(this.value) && initials) {

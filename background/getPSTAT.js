@@ -1332,6 +1332,7 @@ function queryGeocoder(addressURI,city) {
  * @return {Promise} A Promise that will resolve the query results
 **/
 function queryAlderExceptions(libCode, address) {
+  address = address.replace(/ n\.? /i, ' north ').replace(/ s\.? /i, ' south ').replace(/ e\.? /i, ' east ').replace(/ w\.? /i, ' west ');
   return fetch("https://www.mplnet.org/webex/pstats/json/" + libCode).then(res => {
     if (!res.ok) {
       throw new Error('[MPLnet] HTTP error, status = ' + res.status);
@@ -1373,12 +1374,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }).then(geoResults => {
         const followupQueries = [];
 
-        function addQueries(city) {
+        function addQueries(city, fromGeocoder) {
           const queries = [];
 
-          const midRegEx = new RegExp('^middleton','i');
-          const sunRegEx = new RegExp('^sun(?:%20| )prairie','i');
-          const verRegEx = new RegExp('^verona','i');
+          const midRegEx = fromGeocoder ? new RegExp('^middleton city','i') : new RegExp('^middleton','i');
+          const sunRegEx = fromGeocoder ? new RegExp('^sun(?:%20| )prairie city','i') : new RegExp('^sun(?:%20| )prairie','i');
+          const verRegEx = fromGeocoder ? new RegExp('^verona city','i') : new RegExp('^verona','i');
           const exceptionRegEx = new RegExp('^fitchburg|madison|middleton|monona|sun(?:%20| )prairie|verona|waunakee','i');
 
           if (exceptionRegEx.test(city)) queries.push(queryAlderExceptions('exception',request.address));
@@ -1391,10 +1392,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         if (geoResults.hasGeoResults) {
           for (let match of geoResults.matches) {
-            followupQueries.push(addQueries(match.countySub));
+            followupQueries.push(addQueries(match.countySub, true));
           }
         } else {
-          followupQueries.push(addQueries(request.cityURI));
+          followupQueries.push(addQueries(request.cityURI, false));
         }
         
         return Promise.allSettled(followupQueries).then(followupQueries => {
